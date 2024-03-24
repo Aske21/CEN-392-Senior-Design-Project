@@ -1,8 +1,8 @@
 import { Stripe } from "stripe";
 
 const storeItems = new Map([
-  [1, { priceInCents: 10000, name: "Learn React Today" }],
-  [2, { priceInCents: 20000, name: "Learn CSS Today" }],
+  [1, { priceInCents: 10000, name: "Item 1" }],
+  [2, { priceInCents: 20000, name: "Item 2" }],
 ]);
 
 export class StripeService {
