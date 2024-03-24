@@ -1,3 +1,6 @@
+.env
+*.env
+
 # Ignore node_modules directory
 node_modules/
 
@@ -11,3 +14,4 @@ dist/
 *.pnp.js
 .pnp.*
 .cache
+
