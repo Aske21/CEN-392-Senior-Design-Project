@@ -18,7 +18,6 @@ const ENVIRONMENT = {
     entities: [],
     subscribers: [],
     migrations: [],
-    seederStorage: `sequelize`,
     dialectOptions: {
       charset: `utf8mb4`,
     },
