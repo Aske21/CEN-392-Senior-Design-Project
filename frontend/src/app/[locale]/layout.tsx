@@ -1,6 +1,8 @@
 import "@/styles/globals.css";
 import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";
+import QueryProvider from "@/hooks/QueryProvider";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 type RootLayoutProps = {
   children: React.ReactNode;
@@ -22,7 +24,10 @@ export default function RootLayout({ children, params }: RootLayoutProps) {
           fontSans.variable
         )}
       >
-        {children}
+        <QueryProvider>
+          <>{children}</>
+          <ReactQueryDevtools initialIsOpen={false} />
+        </QueryProvider>
       </body>
     </html>
   );
