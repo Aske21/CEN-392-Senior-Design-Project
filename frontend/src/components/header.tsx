@@ -1,30 +1,27 @@
 "use client";
 
+import React from "react";
+import useDisclosure from "@/hooks/useDisclossure";
 import Link from "next/link";
-import React, { useState } from "react";
 import { FaShoppingCart, FaBars, FaTimes } from "react-icons/fa";
 
 const Header = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  const { isOpen, onToggle } = useDisclosure();
 
   return (
     <div className="relative z-10 border-b py-4 bg-gray-50">
       <div className="container mx-auto flex justify-between items-center">
         <Link href="/">Shoppy</Link>
         <div className="md:hidden">
-          {isMenuOpen ? (
-            <FaTimes className="text-gray-600" onClick={toggleMenu} />
+          {isOpen ? (
+            <FaTimes className="text-gray-600" onClick={onToggle} />
           ) : (
-            <FaBars className="text-gray-600" onClick={toggleMenu} />
+            <FaBars className="text-gray-600" onClick={onToggle} />
           )}
         </div>
         <nav
           className={`md:flex md:space-x-4 items-center ${
-            isMenuOpen ? "block" : "hidden"
+            isOpen ? "block" : "hidden"
           } `}
         >
           <Link href="/">Products</Link>
