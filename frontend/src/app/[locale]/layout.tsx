@@ -3,6 +3,8 @@ import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";
 import QueryProvider from "@/hooks/QueryProvider";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
 
 type RootLayoutProps = {
   children: React.ReactNode;
@@ -25,7 +27,9 @@ export default function RootLayout({ children, params }: RootLayoutProps) {
         )}
       >
         <QueryProvider>
+          <Header />
           <>{children}</>
+          <Footer />
           <ReactQueryDevtools initialIsOpen={false} />
         </QueryProvider>
       </body>
