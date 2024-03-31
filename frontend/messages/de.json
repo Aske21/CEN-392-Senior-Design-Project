@@ -1,0 +1,16 @@
+{
+  "Common": {
+    "products": "Produkte",
+    "about": "Über uns",
+    "contact": "Kontakt",
+    "cart": "Warenkorb",
+    "author": "Autor"
+  },
+  "Footer": {
+    "eCommercePlatform": "Ihre bevorzugte E-Commerce-Plattform.",
+    "author": "Autor"
+  },
+  "Landing": {
+    "title": "Hallo Welt!"
+  }
+}

@@ -3,6 +3,10 @@ import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";
 import QueryProvider from "@/hooks/QueryProvider";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
+import Container from "@/components/container";
+import { NextIntlClientProvider, useMessages } from "next-intl";
 
 type RootLayoutProps = {
   children: React.ReactNode;
@@ -15,6 +19,8 @@ const fontSans = FontSans({
 });
 
 export default function RootLayout({ children, params }: RootLayoutProps) {
+  const messages = useMessages();
+
   return (
     <html lang={params.locale} suppressHydrationWarning>
       <head />
@@ -25,7 +31,11 @@ export default function RootLayout({ children, params }: RootLayoutProps) {
         )}
       >
         <QueryProvider>
-          <>{children}</>
+          <NextIntlClientProvider locale={params.locale} messages={messages}>
+            <Header />
+            <Container>{children}</Container>
+            <Footer />
+          </NextIntlClientProvider>
           <ReactQueryDevtools initialIsOpen={false} />
         </QueryProvider>
       </body>
