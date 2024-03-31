@@ -7,6 +7,7 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import Container from "@/components/container";
 import { NextIntlClientProvider, useMessages } from "next-intl";
+import StoreProvider from "./StoreProvider";
 
 type RootLayoutProps = {
   children: React.ReactNode;
@@ -32,9 +33,11 @@ export default function RootLayout({ children, params }: RootLayoutProps) {
       >
         <QueryProvider>
           <NextIntlClientProvider locale={params.locale} messages={messages}>
-            <Header />
-            <Container>{children}</Container>
-            <Footer />
+            <StoreProvider>
+              <Header />
+              <Container>{children}</Container>
+              <Footer />
+            </StoreProvider>
           </NextIntlClientProvider>
           <ReactQueryDevtools initialIsOpen={false} />
         </QueryProvider>
