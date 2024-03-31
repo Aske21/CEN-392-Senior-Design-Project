@@ -1,5 +1,16 @@
 {
-  "Index": {
+  "Common": {
+    "products": "Products",
+    "about": "About",
+    "contact": "Contact",
+    "cart": "Cart",
+    "author": "Author"
+  },
+  "Footer": {
+    "eCommercePlatform": "Your go to e-commerce platform.",
+    "author": "Author"
+  },
+  "Landing": {
     "title": "Hello world!"
   }
 }
