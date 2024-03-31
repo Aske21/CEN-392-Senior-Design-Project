@@ -4,10 +4,11 @@ import React from "react";
 import useDisclosure from "@/hooks/useDisclossure";
 import Link from "next/link";
 import { FaShoppingCart, FaBars, FaTimes } from "react-icons/fa";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 const Header = () => {
   const t = useTranslations("Common");
+  const locale = useLocale();
   const { isOpen, onToggle } = useDisclosure();
 
   return (
@@ -26,7 +27,7 @@ const Header = () => {
             isOpen ? "block" : "hidden"
           } `}
         >
-          <Link href="/">{t("products")}</Link>
+          <Link href={`${locale}/products`}>{t("products")}</Link>
           <Link href="/">{t("about")}</Link>
           <Link href="/">{t("contact")}</Link>
           <Link href="/">
