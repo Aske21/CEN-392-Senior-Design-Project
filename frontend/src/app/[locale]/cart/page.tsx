@@ -1,17 +1,19 @@
 "use client";
 
+// Import necessary modules
 import React from "react";
-import { selectCartTotalItems } from "@/lib/features/cart/cartSelectors";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import useCreateCheckoutSession from "@/hooks/payment/useCreateCheckoutSession";
+import { RootState } from "@/lib/store";
 import {
   clearCart,
   removeItem,
   updateItemQuantity,
 } from "@/lib/features/cart/cartSlice";
-import { RootState } from "@/lib/store";
+import { selectCartTotalItems } from "@/lib/features/cart/cartSelectors";
 import { useSelector, useDispatch } from "react-redux";
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import Link from "next/link";
 
 const CartPage = () => {
   const dispatch = useDispatch();
@@ -29,6 +31,8 @@ const CartPage = () => {
   const handleClearCart = () => {
     dispatch(clearCart());
   };
+
+  const { mutate } = useCreateCheckoutSession();
 
   return (
     <div className="max-w-4xl mx-auto p-4 flex flex-col h-screen">
@@ -70,17 +74,13 @@ const CartPage = () => {
           </>
         )}
       </div>
-      {totalCartItems !== 0 ? (
+      {totalCartItems !== 0 && (
         <div className="flex justify-start space-x-4 pb-4">
           <Button onClick={handleClearCart} variant="destructive">
             Clear Cart
           </Button>
-          <Button onClick={() => console.log("Proceed to checkout")}>
-            Proceed to Checkout
-          </Button>
+          <Button onClick={() => mutate(cartItems)}>Proceed to checkout</Button>
         </div>
-      ) : (
-        <></>
       )}
     </div>
   );

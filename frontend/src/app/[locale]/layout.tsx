@@ -39,7 +39,6 @@ export default function RootLayout({ children, params }: RootLayoutProps) {
               <Footer />
             </StoreProvider>
           </NextIntlClientProvider>
-          <ReactQueryDevtools initialIsOpen={false} />
         </QueryProvider>
       </body>
     </html>

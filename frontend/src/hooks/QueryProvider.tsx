@@ -1,9 +1,8 @@
 "use client";
-import { QueryClientProvider } from "@tanstack/react-query";
-import { PropsWithChildren } from "react";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { QueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
+import { PropsWithChildren, useState } from "react";
 
 const queryClientOptions = {
   defaultOptions: {
@@ -14,11 +13,10 @@ const queryClientOptions = {
 };
 
 const QueryProvider: React.FC<PropsWithChildren> = ({ children }) => {
-  const [queryClientStore] = useState(
-    () => new QueryClient(queryClientOptions)
-  );
+  const [queryClient] = useState(() => new QueryClient(queryClientOptions));
+
   return (
-    <QueryClientProvider client={queryClientStore}>
+    <QueryClientProvider client={queryClient}>
       {children}
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
