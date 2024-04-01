@@ -4,13 +4,12 @@ import React from "react";
 import useDisclosure from "@/hooks/useDisclossure";
 import Link from "next/link";
 import { FaShoppingCart, FaBars, FaTimes } from "react-icons/fa";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { useSelector } from "react-redux";
 import { selectCartTotalItems } from "@/lib/features/cart/cartSelectors";
 
 const Header = () => {
   const t = useTranslations("Common");
-  const locale = useLocale();
   const { isOpen, onToggle } = useDisclosure();
 
   const totalCartItems = useSelector(selectCartTotalItems);
@@ -31,10 +30,10 @@ const Header = () => {
             isOpen ? "block" : "hidden"
           } `}
         >
-          <Link href={`${locale}/products`}>{t("products")}</Link>
+          <Link href={`products`}>{t("products")}</Link>
           <Link href="/">{t("about")}</Link>
           <Link href="/">{t("contact")}</Link>
-          <Link href="/">
+          <Link href={`cart`}>
             <div className="relative">
               <div className="relative py-2">
                 <div className="t-0 absolute left-3">
