@@ -1,20 +1,22 @@
-import React from "react";
+"use client";
 
-import productsData from "./mockData";
 import ProductCard from "@/components/productCard";
+import useGetProducts from "@/hooks/product/useGetProducts";
 
-const Index = () => {
+const Products = () => {
+  const { data } = useGetProducts();
+
   return (
     <div className="container mx-auto py-8">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {productsData.map((product) => (
+        {data?.map((product) => (
           <ProductCard
             key={product.id}
             id={product.id as unknown as string}
             title={product.name}
             description={product.description}
-            price={product.price}
-            imageSrc={product.images[0]}
+            price={parseInt(product.price)}
+            imageSrc={product.images[0] as string}
           />
         ))}
       </div>
@@ -22,4 +24,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default Products;

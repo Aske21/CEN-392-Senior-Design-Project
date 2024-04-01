@@ -8,6 +8,7 @@ import Footer from "@/components/footer";
 import Container from "@/components/container";
 import { NextIntlClientProvider, useMessages } from "next-intl";
 import StoreProvider from "./StoreProvider";
+import { ThemeProvider } from "@/components/theme-provider";
 
 type RootLayoutProps = {
   children: React.ReactNode;
@@ -35,11 +36,19 @@ export default function RootLayout({ children, params }: RootLayoutProps) {
           <NextIntlClientProvider locale={params.locale} messages={messages}>
             <StoreProvider>
               <Header />
-              <Container>{children}</Container>
+              <Container>
+                <ThemeProvider
+                  attribute="class"
+                  defaultTheme="light"
+                  enableSystem
+                  disableTransitionOnChange
+                >
+                  {children}
+                </ThemeProvider>
+              </Container>
               <Footer />
             </StoreProvider>
           </NextIntlClientProvider>
-          <ReactQueryDevtools initialIsOpen={false} />
         </QueryProvider>
       </body>
     </html>
