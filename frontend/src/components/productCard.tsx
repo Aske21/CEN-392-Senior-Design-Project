@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import {
   Card,
@@ -39,28 +37,29 @@ export default function ProductCard({
 
   return (
     <div className="container mx-auto my-10">
-      <Card className="bg-white max-w-sm rounded-lg overflow-hidden shadow-md hover:shadow-lg transition duration-300">
+      <Card className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition duration-300">
         <CardHeader className="relative">
-          <Image
-            src={placeholder}
+          <img
+            src={imageSrc as string}
             alt="Product Image"
-            className="w-full h-48 bg-contain bg-center"
-            width={400}
-            height={300}
+            className="w-full h-48 object-cover" // Adjust height and width, and use object-cover for better image display
           />
         </CardHeader>
         <CardContent className="p-4">
           <Link href={`products/${id}`}>
-            <CardTitle className="text-xl font-semibold mb-2 hover:underline cursor-pointer">
+            <CardTitle
+              className="text-xl font-semibold mb-2 hover:underline cursor-pointer truncate"
+              title={title}
+            >
               {title}
             </CardTitle>
           </Link>
-          <CardDescription className="text-gray-600 mb-4">
+          <CardDescription className="text-gray-600 mb-4 truncate">
             {description}
           </CardDescription>
           <p className="text-gray-700 mb-2">${price}</p>
         </CardContent>
-        <CardFooter className="p-4 bg-gray-100 w-full">
+        <CardFooter className="p-4 bg-gray-100">
           <Button className="w-full" onClick={handleAddToCart}>
             Add to cart
           </Button>

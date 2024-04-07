@@ -1,6 +1,5 @@
 "use client";
 
-// Import necessary modules
 import React from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -14,9 +13,11 @@ import {
 import { selectCartTotalItems } from "@/lib/features/cart/cartSelectors";
 import { useSelector, useDispatch } from "react-redux";
 import { Separator } from "@/components/ui/separator";
+import { useRouter } from "next/navigation";
 
 const CartPage = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const totalCartItems = useSelector(selectCartTotalItems);
   const cartItems = useSelector((state: RootState) => state.cart.items);
 
@@ -32,7 +33,13 @@ const CartPage = () => {
     dispatch(clearCart());
   };
 
-  const { mutate } = useCreateCheckoutSession();
+  const { mutate, data } = useCreateCheckoutSession();
+  const handleProceedToCheckout = () => {
+    mutate(cartItems);
+    if (data) {
+      router.push(data);
+    }
+  };
 
   return (
     <div className="max-w-4xl mx-auto p-4 flex flex-col h-screen">
@@ -79,7 +86,7 @@ const CartPage = () => {
           <Button onClick={handleClearCart} variant="destructive">
             Clear Cart
           </Button>
-          <Button onClick={() => mutate(cartItems)}>Proceed to checkout</Button>
+          <Button onClick={handleProceedToCheckout}>Proceed to checkout</Button>
         </div>
       )}
     </div>
