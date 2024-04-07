@@ -7,17 +7,17 @@ export class StripeService {
     this.stripe = new Stripe(apiKey, {});
   }
 
-  async createCheckoutSession(
-    items: { name: string; priceInCents: number; quantity: number }[]
-  ): Promise<string> {
+  async createCheckoutSession(items: any[]) {
     try {
       const lineItems = items.map((item) => ({
         price_data: {
           currency: "usd",
           product_data: {
-            name: item.name,
+            name: item.title,
+            description: item.description,
+            images: [item.imageSrc],
           },
-          unit_amount: item.priceInCents,
+          unit_amount: Math.round(item.price * 100),
         },
         quantity: item.quantity,
       }));
@@ -26,11 +26,11 @@ export class StripeService {
         payment_method_types: ["card"],
         mode: "payment",
         line_items: lineItems,
-        success_url: `${process.env.CLIENT_URL}/success.html`,
-        cancel_url: `${process.env.CLIENT_URL}/cancel.html`,
+        success_url: `${process.env.CLIENT_URL}/`,
+        cancel_url: `${process.env.CLIENT_URL}/`,
       });
 
-      return session.url as string;
+      return session.url;
     } catch (error: any) {
       throw new Error(error.message);
     }
