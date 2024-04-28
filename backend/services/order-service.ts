@@ -1,5 +1,6 @@
 import { Order } from "../core/db/entity/order";
 import { appDataSource } from "../core/data-source";
+import { OrderStatus } from "../enums/OrderStatus";
 
 export class OrderService {
   private orderRepository = appDataSource.getRepository(Order);
@@ -31,5 +32,19 @@ export class OrderService {
 
   async deleteOrder(orderId: number): Promise<void> {
     await this.orderRepository.delete(orderId);
+  }
+
+  async updateOrderStatus(
+    orderId: number,
+    newStatus: OrderStatus
+  ): Promise<void> {
+    const order = await this.orderRepository.findOneBy({ id: orderId });
+
+    if (!order) {
+      throw new Error("Order not found");
+    }
+
+    order.status = newStatus;
+    await this.orderRepository.save(order);
   }
 }
