@@ -47,31 +47,4 @@ export class OrderService {
     order.status = newStatus;
     await this.orderRepository.save(order);
   }
-
-  async calculateOrderTotal(orderId: number): Promise<number> {
-    const order = await this.orderRepository.findOne({
-      where: { id: orderId },
-      relations: ["orderDetails"],
-    });
-
-    if (!order) {
-      throw new Error("Order not found");
-    }
-
-    let total = 0;
-
-    for (const orderDetail of order.orderDetails) {
-      const product = orderDetail.product;
-
-      if (!product) {
-        throw new Error("Product not found for order detail");
-      }
-
-      const subtotal = orderDetail.quantity * product.price;
-
-      total += subtotal;
-    }
-
-    return total;
-  }
 }

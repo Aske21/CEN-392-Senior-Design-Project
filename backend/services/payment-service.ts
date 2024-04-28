@@ -15,7 +15,9 @@ export class StripeService {
           product_data: {
             name: item.title,
             description: item.description,
-            images: [item.imageSrc],
+            images: [
+              "https://t3.ftcdn.net/jpg/06/02/01/02/360_F_602010207_lxtNtqEGXZx35KpD5o9zxeaVEiZt9Tfl.jpg",
+            ],
           },
           unit_amount: Math.round(item.price * 100),
         },
