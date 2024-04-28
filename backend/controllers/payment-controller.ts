@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { StripeService } from "../services/payment/index";
+import { StripeService } from "../services/payment-service";
 import config from "../core/config";
 
 const stripeService = new StripeService(

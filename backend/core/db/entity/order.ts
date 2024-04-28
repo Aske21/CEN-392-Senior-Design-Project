@@ -7,6 +7,7 @@ import {
 } from "typeorm";
 import { OrderDetails } from "./orderDetails";
 import { User } from "./user";
+import { OrderStatus } from "../../../enums/OrderStatus";
 
 @Entity()
 export class Order {
@@ -24,6 +25,9 @@ export class Order {
 
   @Column({ nullable: false })
   shippingAddress: string;
+
+  @Column({ nullable: false, default: OrderStatus.Pending })
+  status: OrderStatus;
 
   @OneToMany(() => OrderDetails, (orderDetail) => orderDetail.order)
   orderDetails: OrderDetails[];

@@ -1,5 +1,5 @@
-import { Product } from "../../core/db/entity/product";
-import { appDataSource } from "../../core/data-source";
+import { Product } from "../core/db/entity/product";
+import { appDataSource } from "../core/data-source";
 
 export class ProductService {
   private productRepository = appDataSource.getRepository(Product);
