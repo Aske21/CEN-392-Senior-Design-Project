@@ -3,12 +3,12 @@ import { Order } from "./order";
 import { UserType } from "../../../enums/UserType";
 
 @Entity()
-export class User {
+export class Users {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  googleId: string;
+  google_id: string;
 
   @Column()
   email: string;
@@ -17,7 +17,7 @@ export class User {
   username: string;
 
   @Column({ type: "enum", enum: UserType, default: UserType.CUSTOMER })
-  userType: UserType;
+  user_type: UserType;
 
   @OneToMany(() => Order, (order) => order.user)
   orders: Order[];

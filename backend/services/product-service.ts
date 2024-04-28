@@ -1,5 +1,5 @@
-import { Product } from "../../core/db/entity/product";
-import { appDataSource } from "../../core/data-source";
+import { Product } from "../core/db/entity/product";
+import { appDataSource } from "../core/data-source";
 
 export class ProductService {
   private productRepository = appDataSource.getRepository(Product);
@@ -31,5 +31,9 @@ export class ProductService {
 
   async deleteProduct(productId: number): Promise<void> {
     await this.productRepository.delete(productId);
+  }
+
+  async getProductByName(productName: string): Promise<Product | null> {
+    return await this.productRepository.findOneBy({ name: productName });
   }
 }

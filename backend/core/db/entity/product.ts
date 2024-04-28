@@ -44,7 +44,7 @@ export class Product {
   })
   updatedAt: Date;
 
-  @OneToMany(() => OrderDetails, (orderDetail) => orderDetail.product)
+  @OneToMany(() => OrderDetails, (orderDetail) => orderDetail.products)
   orderDetails: OrderDetails[];
 
   @ManyToOne(() => Inventory, (inventory) => inventory.products)

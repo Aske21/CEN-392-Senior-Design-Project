@@ -2,19 +2,23 @@ import {
   Column,
   Entity,
   ManyToOne,
-  OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { OrderDetails } from "./orderDetails";
-import { User } from "./user";
+import { OrderStatus } from "../../../enums/OrderStatus";
+import { OrderDetails } from "./orderDetails"; // Import OrderDetails
+import { Users } from "./user";
 
 @Entity()
 export class Order {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => User, (user) => user.orders)
-  user: User;
+  @Column({ nullable: false })
+  paymentId: string;
+
+  @ManyToOne(() => Users, (user) => user.orders)
+  user: Users;
 
   @Column()
   orderDate: Date;
@@ -25,6 +29,9 @@ export class Order {
   @Column({ nullable: false })
   shippingAddress: string;
 
-  @OneToMany(() => OrderDetails, (orderDetail) => orderDetail.order)
+  @Column({ nullable: false, default: OrderStatus.Pending })
+  status: OrderStatus;
+
+  @OneToOne(() => OrderDetails, (orderDetail) => orderDetail.order)
   orderDetails: OrderDetails[];
 }
