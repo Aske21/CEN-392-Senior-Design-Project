@@ -1,4 +1,14 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+  OneToMany,
+} from "typeorm";
+import { Inventory } from "./inventory";
+import { Category } from "./category";
+import { OrderDetails } from "./orderDetails";
 
 @Entity()
 export class Product {
@@ -14,14 +24,9 @@ export class Product {
   @Column({ type: "decimal", precision: 10, scale: 2, nullable: false })
   price: number;
 
-  @Column({ nullable: false })
-  category: string;
-
-  @Column({ nullable: false })
-  brand: string;
-
-  @Column({ type: "int", nullable: false })
-  stockQuantity: number;
+  @ManyToOne(() => Category, (category) => category.products)
+  @JoinColumn({ name: "categoryId" })
+  category: Category;
 
   @Column({ type: "simple-array", nullable: false })
   images: string[];
@@ -32,6 +37,17 @@ export class Product {
   @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   createdAt: Date;
 
-  @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
+  @Column({
+    type: "timestamp",
+    default: () => "CURRENT_TIMESTAMP",
+    onUpdate: "CURRENT_TIMESTAMP",
+  })
   updatedAt: Date;
+
+  @OneToMany(() => OrderDetails, (orderDetail) => orderDetail.product)
+  orderDetails: OrderDetails[];
+
+  @ManyToOne(() => Inventory, (inventory) => inventory.products)
+  @JoinColumn({ name: "inventoryId" })
+  inventory: Inventory;
 }
