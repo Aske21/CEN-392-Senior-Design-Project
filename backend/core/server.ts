@@ -4,9 +4,10 @@ import bodyParser from "body-parser";
 import config from "./config";
 import { appDataSource } from "./data-source";
 
-// routes
 import paymentRoutes from "../routes/payment";
 import productRoutes from "../routes/product";
+import { Product } from "./db/entity/product";
+import { ProductService } from "../services/product-service";
 
 const app = express();
 
@@ -31,5 +32,9 @@ export const initializeServer = async () => {
 
   app.listen(config.port, () => {
     console.log(`Server started at port ${config.port}`);
+  });
+
+  app.get("/", (req, res) => {
+    res.send("Welcome to E-commerce for Multi-Product Development");
   });
 };
