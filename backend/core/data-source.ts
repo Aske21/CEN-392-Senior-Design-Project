@@ -15,6 +15,7 @@ export const appDataSource = new DataSource({
   port: 5432,
   synchronize: true,
   logging: true,
+  ssl: true,
   entities: [Product, Category, Inventory, Order, OrderDetails, Users],
   subscribers: [],
   migrations: [],
