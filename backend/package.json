@@ -6,7 +6,9 @@
   "author": "Asim Veledarevic",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon --exec ts-node ./index.ts"
+    "build": "tsc",
+    "dev": "nodemon --exec ts-node ./index.ts",
+    "start": "tsc --skipLibCheck && node dist/index.js"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
