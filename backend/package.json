@@ -6,7 +6,7 @@
   "author": "Asim Veledarevic",
   "license": "MIT",
   "scripts": {
-    "build": "tsc",
+    "build": "yarn && tsc",
     "dev": "nodemon --exec ts-node ./index.ts",
     "start": "tsc --skipLibCheck && node dist/index.js"
   },
