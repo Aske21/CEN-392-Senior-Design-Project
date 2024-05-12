@@ -24,9 +24,10 @@ class StripeController {
   }
 
   async handleWebhookEvent(req: Request, res: Response): Promise<void> {
+    // TODO: Create order details on purchase
     const productService = new ProductService();
     const orderService = new OrderService();
-    const orderDetailsService = new OrderDetailsService();
+    // const orderDetailsService = new OrderDetailsService();
 
     try {
       const event = req.body;
@@ -55,30 +56,30 @@ class StripeController {
             status: OrderStatus.Pending,
           };
 
-          const order = await orderService.createOrder(newOrderData);
+          await orderService.createOrder(newOrderData);
 
-          let totalAmount = 0;
+          // let totalAmount = 0;
 
-          for (const item of purchasedItems) {
-            const product = await productService.getProductByName(item.name);
+          // for (const item of purchasedItems) {
+          //   const product = await productService.getProductByName(item.name);
 
-            if (!product) {
-              throw new Error(`Product not found: ${item.name}`);
-            }
+          //   if (!product) {
+          //     throw new Error(`Product not found: ${item.name}`);
+          //   }
 
-            const subtotal = item.quantity * product.price;
-            totalAmount += subtotal;
+          //   const subtotal = item.quantity * product.price;
+          //   totalAmount += subtotal;
 
-            const orderDetailData: Partial<OrderDetails> = {
-              order: order,
-              product: purchasedItems,
-              quantity: item.quantity,
-            };
+          //   const orderDetailData: Partial<OrderDetails> = {
+          //     order: order,
+          //     product: item,
+          //     quantity: item.quantity,
+          //   };
 
-            await orderDetailsService.createOrderDetails(orderDetailData);
-          }
+          //   await orderDetailsService.createOrderDetails(orderDetailData);
+          // }
 
-          await orderService.updateOrderStatus(order.id, OrderStatus.Paid);
+          // await orderService.updateOrderStatus(order.id, OrderStatus.Paid);
 
           res.status(200).send("Webhook received successfully");
           break;

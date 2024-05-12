@@ -16,7 +16,7 @@ export const appDataSource = new DataSource({
   port: 5432,
   synchronize: true,
   logging: true,
-  // ssl: true,
+  ssl: process.env.LOCAL === "true" ? false : true,
   entities: [
     Product,
     ProductCategory,

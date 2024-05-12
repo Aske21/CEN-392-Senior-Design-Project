@@ -11,7 +11,7 @@ import { ProductCategory } from "./product_category";
 import { OrderDetails } from "./order_details";
 import { ProductDiscount } from "./product_discount";
 
-@Entity({ name: "product" })
+@Entity()
 export class Product {
   @PrimaryGeneratedColumn()
   id: number;

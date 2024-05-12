@@ -9,7 +9,7 @@ import { OrderStatus } from "../../../enums/OrderStatus";
 import { OrderDetails } from "./order_details";
 import { Users } from "./user";
 
-@Entity({ name: "orders" })
+@Entity()
 export class Order {
   @PrimaryGeneratedColumn()
   id: number;
