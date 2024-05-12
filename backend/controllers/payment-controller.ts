@@ -71,7 +71,7 @@ class StripeController {
 
             const orderDetailData: Partial<OrderDetails> = {
               order: order,
-              products: purchasedItems,
+              product: purchasedItems,
               quantity: item.quantity,
             };
 
