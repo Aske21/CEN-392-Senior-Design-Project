@@ -1,9 +1,9 @@
 import { DataSource } from "typeorm";
 import { Product } from "./db/entity/product";
-import { Category } from "./db/entity/category";
-import { Inventory } from "./db/entity/inventory";
+import { Category } from "./db/entity/product_category";
+import { ProductInventory } from "./db/entity/product_inventory";
 import { Order } from "./db/entity/order";
-import { OrderDetails } from "./db/entity/orderDetails";
+import { OrderDetails } from "./db/entity/order_details";
 import { Users } from "./db/entity/user";
 
 export const appDataSource = new DataSource({
@@ -16,7 +16,7 @@ export const appDataSource = new DataSource({
   synchronize: true,
   logging: true,
   ssl: true,
-  entities: [Product, Category, Inventory, Order, OrderDetails, Users],
+  entities: [Product, Category, ProductInventory, Order, OrderDetails, Users],
   subscribers: [],
   migrations: [],
 });

@@ -1,4 +1,4 @@
-import { Inventory } from "./../core/db/entity/inventory";
+import { Inventory } from "../core/db/entity/product_inventory";
 import { appDataSource } from "../core/data-source";
 
 export class InventorySerice {

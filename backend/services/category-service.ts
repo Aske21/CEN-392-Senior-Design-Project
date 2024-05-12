@@ -1,5 +1,5 @@
 import { appDataSource } from "../core/data-source";
-import { Category } from "../core/db/entity/category";
+import { Category } from "../core/db/entity/product_category";
 
 export class CategoryService {
   private categoryRepository = appDataSource.getRepository(Category);

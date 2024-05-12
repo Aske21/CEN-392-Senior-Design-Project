@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { OrderStatus } from "../../../enums/OrderStatus";
-import { OrderDetails } from "./orderDetails"; // Import OrderDetails
+import { OrderDetails } from "./order_details";
 import { Users } from "./user";
 
 @Entity()

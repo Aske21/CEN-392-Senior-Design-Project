@@ -1,4 +1,4 @@
-import { OrderDetails } from "../core/db/entity/orderDetails";
+import { OrderDetails } from "../core/db/entity/order_details";
 import { appDataSource } from "../core/data-source";
 
 export class OrderDetailsService {

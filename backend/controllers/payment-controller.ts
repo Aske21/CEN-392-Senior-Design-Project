@@ -5,7 +5,7 @@ import { Order } from "../core/db/entity/order";
 import { OrderStatus } from "../enums/OrderStatus";
 import { ProductService } from "../services/product-service";
 import { OrderService } from "../services/order-service";
-import { OrderDetails } from "../core/db/entity/orderDetails";
+import { OrderDetails } from "../core/db/entity/order_details";
 import { UserType } from "../enums/UserType";
 
 const stripeService = new StripeService(

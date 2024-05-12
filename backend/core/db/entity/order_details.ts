@@ -8,7 +8,7 @@ import {
 import { Order } from "./order";
 import { Product } from "./product";
 
-@Entity()
+@Entity({ name: "order_details" })
 export class OrderDetails {
   @PrimaryGeneratedColumn()
   id: number;
@@ -16,7 +16,7 @@ export class OrderDetails {
   @ManyToOne(() => Order, (order) => order.orderDetails)
   order: Order;
 
-  @OneToMany(() => Product, (product) => product.orderDetails)
+  @OneToMany(() => Product, (product) => product.order_details)
   products: Product[];
 
   @Column()

@@ -6,9 +6,9 @@ import {
   JoinColumn,
   OneToMany,
 } from "typeorm";
-import { Inventory } from "./inventory";
-import { Category } from "./category";
-import { OrderDetails } from "./orderDetails";
+import { ProductInventory } from "./product_inventory";
+import { ProductCategory } from "./product_category";
+import { OrderDetails } from "./order_details";
 
 @Entity()
 export class Product {
@@ -24,9 +24,12 @@ export class Product {
   @Column({ type: "decimal", precision: 10, scale: 2, nullable: false })
   price: number;
 
-  @ManyToOne(() => Category, (category) => category.products)
+  @ManyToOne(
+    () => ProductCategory,
+    (product_category) => product_category.products
+  )
   @JoinColumn({ name: "categoryId" })
-  category: Category;
+  category: ProductCategory;
 
   @Column({ type: "simple-array", nullable: false })
   images: string[];
@@ -35,19 +38,22 @@ export class Product {
   attributes: { [key: string]: string };
 
   @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
-  createdAt: Date;
+  created_at: Date;
 
   @Column({
     type: "timestamp",
     default: () => "CURRENT_TIMESTAMP",
     onUpdate: "CURRENT_TIMESTAMP",
   })
-  updatedAt: Date;
+  updated_at: Date;
 
   @OneToMany(() => OrderDetails, (orderDetail) => orderDetail.products)
-  orderDetails: OrderDetails[];
+  order_details: OrderDetails[];
 
-  @ManyToOne(() => Inventory, (inventory) => inventory.products)
-  @JoinColumn({ name: "inventoryId" })
-  inventory: Inventory;
+  @ManyToOne(
+    () => ProductInventory,
+    (product_inventory) => product_inventory.products
+  )
+  @JoinColumn({ name: "inventory_id" })
+  inventory_id: ProductInventory;
 }
