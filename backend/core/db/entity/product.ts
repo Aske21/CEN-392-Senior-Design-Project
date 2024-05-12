@@ -11,7 +11,7 @@ import { ProductCategory } from "./product_category";
 import { OrderDetails } from "./order_details";
 import { ProductDiscount } from "./product_discount";
 
-@Entity()
+@Entity({ name: "product" })
 export class Product {
   @PrimaryGeneratedColumn()
   id: number;
@@ -48,7 +48,7 @@ export class Product {
   })
   updated_at: Date;
 
-  @OneToMany(() => OrderDetails, (orderDetail) => orderDetail.products)
+  @OneToMany(() => OrderDetails, (orderDetail) => orderDetail.product)
   order_details: OrderDetails[];
 
   @ManyToOne(

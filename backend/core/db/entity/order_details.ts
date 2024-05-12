@@ -1,10 +1,4 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  OneToMany,
-} from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Order } from "./order";
 import { Product } from "./product";
 
@@ -16,9 +10,12 @@ export class OrderDetails {
   @ManyToOne(() => Order, (order) => order.orderDetails)
   order: Order;
 
-  @OneToMany(() => Product, (product) => product.order_details)
-  products: Product[];
+  @ManyToOne(() => Product, (product) => product.order_details)
+  product: Product;
 
   @Column()
   quantity: number;
+
+  @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
+  created_at: Date;
 }
