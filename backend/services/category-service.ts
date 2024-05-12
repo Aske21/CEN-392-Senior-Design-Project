@@ -1,26 +1,28 @@
 import { appDataSource } from "../core/data-source";
-import { Category } from "../core/db/entity/product_category";
+import { ProductCategory } from "../core/db/entity/product_category";
 
 export class CategoryService {
-  private categoryRepository = appDataSource.getRepository(Category);
+  private categoryRepository = appDataSource.getRepository(ProductCategory);
 
-  async getAllCategories(): Promise<Category[] | null> {
+  async getAllCategories(): Promise<ProductCategory[] | null> {
     return this.categoryRepository.find();
   }
 
-  async getCategoryById(categoryId: number): Promise<Category | null> {
+  async getCategoryById(categoryId: number): Promise<ProductCategory | null> {
     return this.categoryRepository.findOneBy({ id: categoryId });
   }
 
-  async createCategory(categoryData: Partial<Category>): Promise<Category> {
+  async createCategory(
+    categoryData: Partial<ProductCategory>
+  ): Promise<ProductCategory> {
     const category = this.categoryRepository.create(categoryData);
     return this.categoryRepository.save(category);
   }
 
   async updateCategory(
     categoryId: number,
-    updateData: Partial<Category>
-  ): Promise<Category | undefined> {
+    updateData: Partial<ProductCategory>
+  ): Promise<ProductCategory | undefined> {
     const category = await this.categoryRepository.findOneBy({
       id: categoryId,
     });

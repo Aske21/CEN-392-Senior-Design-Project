@@ -1,26 +1,30 @@
-import { Inventory } from "../core/db/entity/product_inventory";
+import { ProductInventory } from "../core/db/entity/product_inventory";
 import { appDataSource } from "../core/data-source";
 
 export class InventorySerice {
-  private inventoryRepository = appDataSource.getRepository(Inventory);
+  private inventoryRepository = appDataSource.getRepository(ProductInventory);
 
-  async getAllCategories(): Promise<Inventory[] | null> {
+  async getAllCategories(): Promise<ProductInventory[] | null> {
     return this.inventoryRepository.find();
   }
 
-  async getInventoryById(inventoryId: number): Promise<Inventory | null> {
+  async getInventoryById(
+    inventoryId: number
+  ): Promise<ProductInventory | null> {
     return this.inventoryRepository.findOneBy({ id: inventoryId });
   }
 
-  async createInventory(inventoryData: Partial<Inventory>): Promise<Inventory> {
+  async createInventory(
+    inventoryData: Partial<ProductInventory>
+  ): Promise<ProductInventory> {
     const inventory = this.inventoryRepository.create(inventoryData);
     return this.inventoryRepository.save(inventory);
   }
 
   async updateCategory(
     inventoryId: number,
-    updateData: Partial<Inventory>
-  ): Promise<Inventory | undefined> {
+    updateData: Partial<ProductInventory>
+  ): Promise<ProductInventory | undefined> {
     const inventory = await this.inventoryRepository.findOneBy({
       id: inventoryId,
     });
