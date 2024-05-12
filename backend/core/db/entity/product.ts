@@ -9,6 +9,7 @@ import {
 import { ProductInventory } from "./product_inventory";
 import { ProductCategory } from "./product_category";
 import { OrderDetails } from "./order_details";
+import { ProductDiscount } from "./product_discount";
 
 @Entity()
 export class Product {
@@ -56,4 +57,7 @@ export class Product {
   )
   @JoinColumn({ name: "inventory_id" })
   inventory_id: ProductInventory;
+
+  @OneToMany(() => ProductDiscount, (discount) => discount.product)
+  discounts: ProductDiscount[];
 }

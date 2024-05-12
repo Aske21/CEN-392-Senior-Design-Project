@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Product } from "./product";
 
 @Entity({ name: "product_discount" })
 export class ProductDiscount {
@@ -23,4 +24,7 @@ export class ProductDiscount {
     onUpdate: "CURRENT_TIMESTAMP",
   })
   updated_at: Date;
+
+  @ManyToOne(() => Product, (product) => product.discounts)
+  product: Product;
 }
