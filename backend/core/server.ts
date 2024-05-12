@@ -1,13 +1,11 @@
-import express from "express";
-import cors from "cors";
 import bodyParser from "body-parser";
+import cors from "cors";
+import express from "express";
 import config from "./config";
 import { appDataSource } from "./data-source";
 
 import paymentRoutes from "../routes/payment";
 import productRoutes from "../routes/product";
-import { Product } from "./db/entity/product";
-import { ProductService } from "../services/product-service";
 
 const app = express();
 
@@ -36,5 +34,9 @@ export const initializeServer = async () => {
 
   app.get("/", (req, res) => {
     res.send("Welcome to E-commerce for Multi-Product Development");
+  });
+
+  app.get("/health", (req, res) => {
+    res.send("Healthy");
   });
 };
