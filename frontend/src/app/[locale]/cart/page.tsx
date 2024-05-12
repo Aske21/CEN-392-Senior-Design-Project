@@ -33,11 +33,21 @@ const CartPage = () => {
     dispatch(clearCart());
   };
 
-  const { mutate, data } = useCreateCheckoutSession();
-  const handleProceedToCheckout = () => {
-    mutate(cartItems);
-    if (data) {
-      router.push(data);
+  const { mutate } = useCreateCheckoutSession();
+  const handleProceedToCheckout = async () => {
+    try {
+      await mutate(cartItems, {
+        onSuccess: (checkoutSessionUrl) => {
+          if (checkoutSessionUrl) {
+            router.push(checkoutSessionUrl);
+          }
+        },
+        onError: (error: any) => {
+          console.error("Error creating checkout session:", error.message);
+        },
+      });
+    } catch (error: any) {
+      console.error("Error creating checkout session:", error.message);
     }
   };
 
