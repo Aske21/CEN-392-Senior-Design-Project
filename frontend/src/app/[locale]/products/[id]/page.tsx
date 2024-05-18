@@ -38,10 +38,10 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
           </div>
           <div className="md:w-1/2">
             <h1 className="text-3xl font-semibold mb-4">{name}</h1>
-            <p className="text-gray-700 mb-4">{description}</p>
-            <p className="text-gray-700 mb-2">Price: ${price}</p>
-            <p className="text-gray-700 mb-2">Category: {category}</p>
-            <p className="text-gray-700 mb-2">Brand: {brand}</p>
+            <p className="mb-4">{description}</p>
+            <p className="mb-2">Price: ${price}</p>
+            <p className="mb-2">Category: {category}</p>
+            <p className="mb-2">Brand: {brand}</p>
             <Button onClick={handleAddToCart}>Add to Cart</Button>
           </div>
         </div>

@@ -35,18 +35,16 @@ export default function RootLayout({ children, params }: RootLayoutProps) {
         <QueryProvider>
           <NextIntlClientProvider locale={params.locale} messages={messages}>
             <StoreProvider>
-              <Header />
-              <Container>
-                <ThemeProvider
-                  attribute="class"
-                  defaultTheme="light"
-                  enableSystem
-                  disableTransitionOnChange
-                >
-                  {children}
-                </ThemeProvider>
-              </Container>
-              <Footer />
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="light"
+                enableSystem
+                disableTransitionOnChange
+              >
+                <Header />
+                <Container>{children}</Container>
+                <Footer />
+              </ThemeProvider>
             </StoreProvider>
           </NextIntlClientProvider>
         </QueryProvider>

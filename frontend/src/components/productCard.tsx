@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Card,
   CardContent,
@@ -7,12 +6,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "./ui/button";
-import Image from "next/image";
+import { addItem } from "@/lib/features/cart/cartSlice";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
-import { addItem } from "@/lib/features/cart/cartSlice";
-import placeholder from "../../public/placeholder.jpg";
+import { Button } from "./ui/button";
 
 type ProductCardProps = {
   id: string;
@@ -37,12 +34,12 @@ export default function ProductCard({
 
   return (
     <div className="container mx-auto my-10">
-      <Card className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition duration-300">
+      <Card className=" rounded-lg overflow-hidden shadow-md hover:shadow-lg transition duration-300">
         <CardHeader className="relative">
           <img
             src={imageSrc as string}
             alt="Product Image"
-            className="w-full h-48 object-cover" // Adjust height and width, and use object-cover for better image display
+            className="w-full h-48 object-cover"
           />
         </CardHeader>
         <CardContent className="p-4">
@@ -54,12 +51,12 @@ export default function ProductCard({
               {title}
             </CardTitle>
           </Link>
-          <CardDescription className="text-gray-600 mb-4 truncate">
+          <CardDescription className="mb-4 truncate">
             {description}
           </CardDescription>
-          <p className="text-gray-700 mb-2">${price}</p>
+          <p className="mb-2">${price}</p>
         </CardContent>
-        <CardFooter className="p-4 bg-gray-100">
+        <CardFooter className="p-4 ">
           <Button className="w-full" onClick={handleAddToCart}>
             Add to cart
           </Button>
