@@ -25,7 +25,7 @@ const Header = () => {
   ];
 
   return (
-    <div className="relative z-10 border-b py-4 bg-gray-50">
+    <div className="relative z-10 border-b py-4">
       <div className="container mx-auto flex justify-between items-center">
         <NextLink href="/" locale={locale}>
           <span>ShoppyDev</span>
@@ -76,7 +76,7 @@ const Header = () => {
               </NextLink>
             </>
           ))}
-          {/* <ModeToggle /> */}
+          <ModeToggle />
         </nav>
       </div>
     </div>
