@@ -66,9 +66,9 @@ const CartPage = () => {
             {cartItems?.map((item: any) => (
               <div key={item.id} className="py-4">
                 <h3 className="text-lg font-semibold">{item.title}</h3>
-                <p className="text-gray-600">Price: ${item.price}</p>
+                <p>Price: ${item.price * item.quantity}</p>
                 <div className="flex items-center space-x-4">
-                  <p className="text-gray-600">Quantity:</p>
+                  <p>Quantity:</p>
                   <input
                     type="number"
                     min="1"
@@ -96,7 +96,9 @@ const CartPage = () => {
           <Button onClick={handleClearCart} variant="destructive">
             Clear Cart
           </Button>
-          <Button onClick={handleProceedToCheckout}>Proceed to checkout</Button>
+          <Button onClick={handleProceedToCheckout} variant="outline">
+            Proceed to checkout
+          </Button>
         </div>
       )}
     </div>
