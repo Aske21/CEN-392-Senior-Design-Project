@@ -46,7 +46,7 @@ const Header = () => {
             <>
               <NextLink
                 key={index}
-                href={`/${locale}/${route.path}`}
+                href={`${route.path}`}
                 locale={locale}
                 onClick={(e) => route.path === pathname && e.preventDefault()}
                 className={`${
@@ -76,7 +76,6 @@ const Header = () => {
               </NextLink>
             </>
           ))}
-          <ModeToggle />
         </nav>
       </div>
     </div>

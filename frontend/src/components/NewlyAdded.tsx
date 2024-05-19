@@ -1,14 +1,18 @@
-"use client";
+import { Product } from "@/@types/product";
+import ProductCard from "./ProductCard";
+import { useTranslations } from "next-intl";
 
-import ProductCard from "@/components/ProductCard";
-import useGetProducts from "@/hooks/product/useGetProducts";
+type Props = {
+  data: Product[];
+};
 
-const Products = () => {
-  const { data, isLoading } = useGetProducts();
-
-  if (isLoading) return <h1>hi</h1>;
+const NewlyAdded = ({ data }: Props) => {
+  const t = useTranslations("Common");
   return (
-    <div className="container mx-auto py-8">
+    <div>
+      <h2 className="text-3xl font-semibold mb-10 text-center mt-10">
+        {t("newly_added")}
+      </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {data?.map((product) => (
           <ProductCard
@@ -25,4 +29,4 @@ const Products = () => {
   );
 };
 
-export default Products;
+export default NewlyAdded;

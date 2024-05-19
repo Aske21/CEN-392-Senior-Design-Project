@@ -1,16 +1,37 @@
 {
   "Common": {
+    "browseCategories": "Browse Our Categories",
     "products": "Products",
     "about": "About",
     "contact": "Contact",
     "cart": "Cart",
-    "author": "Author"
+    "author": "Author",
+    "newly_added": "Newly Added",
+    "add_to_cart": "Add to Cart"
   },
   "Footer": {
-    "eCommercePlatform": "Your go to e-commerce platform.",
+    "eCommercePlatform": "Your go-to e-commerce platform.",
     "author": "Author"
   },
   "Landing": {
-    "title": "Hello world!"
-  }
+    "hero": "Welcome to ShoppyDev",
+    "hero_description": "Discover the best products at unbeatable prices",
+    "hero_cta": "Shop now",
+    "benefitsSection": {
+      "title": "Why Shop With Us?",
+      "fastDelivery": {
+        "title": "Fast Delivery",
+        "description": "Get your products delivered quickly with our fast delivery service."
+      },
+      "securePayments": {
+        "title": "Secure Payments",
+        "description": "Shop with confidence knowing that your payments are secure."
+      },
+      "premiumProducts": {
+        "title": "Premium Products",
+        "description": "Discover high-quality premium products that meet your needs."
+      }
+    }
+  },
+  "promoMessage": "Register and get 10% off your first purchase!"
 }

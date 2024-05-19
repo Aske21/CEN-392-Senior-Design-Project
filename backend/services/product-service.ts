@@ -36,4 +36,26 @@ export class ProductService {
   async getProductByName(productName: string): Promise<Product | null> {
     return await this.productRepository.findOneBy({ name: productName });
   }
+
+  async getNewlyAddedProducts(): Promise<Product[]> {
+    const twoWeeksAgo = new Date();
+    twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+
+    const products = await this.productRepository
+      .createQueryBuilder("product")
+      .where("product.created_at >= :twoWeeksAgo", { twoWeeksAgo })
+      .orderBy("product.created_at", "DESC")
+      .take(6)
+      .getMany();
+
+    if (products.length < 6) {
+      const latestProducts = await this.productRepository.find({
+        order: { created_at: "DESC" },
+        take: 6,
+      });
+      return latestProducts;
+    }
+
+    return products;
+  }
 }
