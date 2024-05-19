@@ -34,5 +34,22 @@
       }
     }
   },
-  "promoMessage": "Register and get 10% off your first purchase!"
+  "promoMessage": "Register and get 10% off your first purchase!",
+  "LoginForm": {
+    "title": "Login",
+    "description": "Enter your email below to login to your account.",
+    "email": "Email",
+    "password": "Password",
+    "signIn": "Sign in"
+  },
+  "RegisterForm": {
+    "title": "Register",
+    "description": "Fill in the details below to create your account.",
+    "name": "Name",
+    "surname": "Surname",
+    "email": "Email",
+    "password": "Password",
+    "repeatPassword": "Repeat password",
+    "signIn": "Sign up"
+  }
 }
