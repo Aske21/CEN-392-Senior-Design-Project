@@ -29,7 +29,7 @@ export const LanguagePicker: React.FC = () => {
     <DropdownMenu>
       <DropdownMenuTrigger>
         <Button type="button" variant="ghost" size="icon">
-          <GlobeIcon className="size-5" />
+          <GlobeIcon className="size-5 text-black" />
         </Button>
       </DropdownMenuTrigger>
 
@@ -51,7 +51,7 @@ export const LanguagePicker: React.FC = () => {
             handleLocaleChange("de");
           }}
         >
-          Spanish
+          Deutsch
         </DropdownMenuCheckboxItem>
       </DropdownMenuContent>
     </DropdownMenu>

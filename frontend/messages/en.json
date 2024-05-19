@@ -7,12 +7,13 @@
     "author": "Author"
   },
   "Footer": {
-    "eCommercePlatform": "Your go to e-commerce platform.",
+    "eCommercePlatform": "Your go-to e-commerce platform.",
     "author": "Author"
   },
   "Landing": {
     "hero": "Welcome to ShoppyDev",
     "hero_description": "Discover the best products at unbeatable prices",
     "hero_cta": "Shop now"
-  }
+  },
+  "promoMessage": "Register and get 10% off your first purchase!"
 }
