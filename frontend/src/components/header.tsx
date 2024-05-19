@@ -19,8 +19,8 @@ const Header = () => {
     { name: t("products"), path: "/products" },
     { name: t("about"), path: "/about" },
     { name: t("contact"), path: "/contact" },
-    { name: t("cart"), path: "/cart" },
     { name: t("login"), path: "/login" },
+    { name: t("cart"), path: "/cart" },
   ];
 
   return (

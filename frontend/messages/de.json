@@ -7,7 +7,8 @@
     "cart": "Warenkorb",
     "author": "Autor",
     "newly_added": "Neu hinzugefügt",
-    "add_to_cart": "In den Warenkorb"
+    "add_to_cart": "In den Warenkorb",
+    "login": "Login"
   },
   "Footer": {
     "eCommercePlatform": "Ihre bevorzugte E-Commerce-Plattform.",
