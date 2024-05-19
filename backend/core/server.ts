@@ -6,6 +6,8 @@ import { appDataSource } from "./data-source";
 
 import paymentRoutes from "../routes/payment";
 import productRoutes from "../routes/product";
+import inventoryRoutes from "../routes/product";
+import categoryRoutes from "../routes/product";
 
 const app = express();
 
@@ -21,6 +23,8 @@ app.use(bodyParser.json());
 const loadRoutes = () => {
   app.use("/payment", paymentRoutes);
   app.use("/product", productRoutes);
+  app.use("/inventory", inventoryRoutes);
+  app.use("/category", categoryRoutes);
 };
 
 export const initializeServer = async () => {

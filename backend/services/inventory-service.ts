@@ -1,10 +1,10 @@
 import { ProductInventory } from "../core/db/entity/product_inventory";
 import { appDataSource } from "../core/data-source";
 
-export class InventorySerice {
+export class InventoryService {
   private inventoryRepository = appDataSource.getRepository(ProductInventory);
 
-  async getAllCategories(): Promise<ProductInventory[] | null> {
+  async getAllInventories(): Promise<ProductInventory[] | null> {
     return this.inventoryRepository.find();
   }
 
@@ -21,7 +21,7 @@ export class InventorySerice {
     return this.inventoryRepository.save(inventory);
   }
 
-  async updateCategory(
+  async updateInventory(
     inventoryId: number,
     updateData: Partial<ProductInventory>
   ): Promise<ProductInventory | undefined> {
