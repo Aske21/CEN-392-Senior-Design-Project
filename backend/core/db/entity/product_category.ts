@@ -12,7 +12,7 @@ export class ProductCategory {
   @Column({ nullable: false })
   description: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: true })
   image: string;
 
   @OneToMany(() => Product, (product) => product.category)
