@@ -2,7 +2,7 @@ import LoginForm from "@/components/login-form";
 import RegisterForm from "@/components/register-form";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-export const Login = () => {
+const Login = () => {
   return (
     <div
       className="flex items-center justify-center"
