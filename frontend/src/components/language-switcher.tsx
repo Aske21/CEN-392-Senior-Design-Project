@@ -29,7 +29,7 @@ export const LanguagePicker: React.FC = () => {
     <DropdownMenu>
       <DropdownMenuTrigger>
         <Button type="button" variant="ghost" size="icon">
-          <GlobeIcon className="size-5 text-black" />
+          <GlobeIcon className="size-5 " />
         </Button>
       </DropdownMenuTrigger>
 

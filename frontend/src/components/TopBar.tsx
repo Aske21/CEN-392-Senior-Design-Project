@@ -8,7 +8,7 @@ const TopBar = () => {
 
   return (
     <div
-      className="flex justify-between items-center px-4 py-2 bg-gray-200"
+      className="flex justify-between items-center px-4 py-2 border-b"
       style={{ height: "40px" }}
     >
       <div>
