@@ -6,8 +6,8 @@ import { appDataSource } from "./data-source";
 
 import paymentRoutes from "../routes/payment";
 import productRoutes from "../routes/product";
-import inventoryRoutes from "../routes/product";
-import categoryRoutes from "../routes/product";
+import inventoryRoutes from "../routes/inventory";
+import categoryRoutes from "../routes/category";
 
 const app = express();
 
