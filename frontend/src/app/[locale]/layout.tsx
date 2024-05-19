@@ -9,6 +9,7 @@ import { NextIntlClientProvider, useMessages } from "next-intl";
 import { Inter as FontSans } from "next/font/google";
 import StoreProvider from "./StoreProvider";
 import { Toaster } from "@/components/ui/toaster";
+import TopBar from "@/components/TopBar";
 
 type RootLayoutProps = {
   children: React.ReactNode;
@@ -42,6 +43,7 @@ export default function RootLayout({ children, params }: RootLayoutProps) {
                 disableTransitionOnChange
               >
                 <Toaster />
+                <TopBar />
                 <Header />
                 <Container>{children}</Container>
                 <Footer />

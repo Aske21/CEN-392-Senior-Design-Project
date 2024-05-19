@@ -6,10 +6,7 @@ import useGetCategories from "@/hooks/category/useGetCategories";
 import { useTranslations } from "next-intl";
 
 const Index = () => {
-  const t = useTranslations("Landing");
-
-  const { data, isLoading } = useGetCategories();
-  console.log(data);
+  const { data } = useGetCategories();
 
   return (
     <div className="container mx-auto py-8">

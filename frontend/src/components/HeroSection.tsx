@@ -1,6 +1,7 @@
 // components/HeroSection.tsx
 import { useTranslations } from "next-intl";
 import React from "react";
+import { Button } from "./ui/button";
 
 const HeroSection = () => {
   const t = useTranslations("Landing");
@@ -11,12 +12,7 @@ const HeroSection = () => {
       <div className="relative z-10 flex flex-col items-center justify-center h-full text-center">
         <h1 className="text-5xl font-bold mb-4"> {t("hero")}</h1>
         <p className="text-xl mb-8">{t("hero_description")}</p>
-        <a
-          href="#categories"
-          className="px-8 py-4 bg-primary text-white rounded-full"
-        >
-          {t("hero_cta")}
-        </a>
+        <Button>{t("hero_cta")}</Button>
       </div>
     </section>
   );

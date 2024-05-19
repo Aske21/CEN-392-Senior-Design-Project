@@ -4,8 +4,9 @@ import ProductCard from "@/components/ProductCard";
 import useGetProducts from "@/hooks/product/useGetProducts";
 
 const Products = () => {
-  const { data } = useGetProducts();
+  const { data, isLoading } = useGetProducts();
 
+  if (isLoading) return <h1>hi</h1>;
   return (
     <div className="container mx-auto py-8">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
