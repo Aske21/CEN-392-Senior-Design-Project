@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import { Button } from "./ui/button";
 import { useToast } from "./ui/use-toast";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 type ProductCardProps = {
   id: string;
@@ -30,6 +31,7 @@ export default function ProductCard({
 }: ProductCardProps) {
   const { toast } = useToast();
   const dispatch = useDispatch();
+  const t = useTranslations("Common");
 
   const handleAddToCart = () => {
     dispatch(addItem({ id, title, description, price, imageSrc, quantity: 1 }));
@@ -68,7 +70,7 @@ export default function ProductCard({
         </CardContent>
         <CardFooter className="p-4 ">
           <Button className="w-full" onClick={handleAddToCart}>
-            Add to cart
+            {t("add_to_cart")}
           </Button>
         </CardFooter>
       </Card>
