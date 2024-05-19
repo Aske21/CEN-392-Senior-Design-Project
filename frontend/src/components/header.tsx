@@ -5,7 +5,7 @@ import { selectCartTotalItems } from "@/lib/features/cart/cartSelectors";
 import { useLocale, useTranslations } from "next-intl";
 import NextLink from "next/link";
 import { usePathname } from "next/navigation";
-import { FaBars, FaShoppingCart, FaTimes } from "react-icons/fa";
+import { FaBars, FaShoppingCart, FaTimes, FaUser } from "react-icons/fa";
 import { useSelector } from "react-redux";
 
 const Header = () => {
@@ -19,8 +19,8 @@ const Header = () => {
     { name: t("products"), path: "/products" },
     { name: t("about"), path: "/about" },
     { name: t("contact"), path: "/contact" },
+    { name: <FaUser />, path: "/login" }, // Login icon
     { name: t("cart"), path: "/cart" },
-    { name: t("login"), path: "/login" },
   ];
 
   return (
@@ -42,38 +42,32 @@ const Header = () => {
           } `}
         >
           {routes.map((route, index) => (
-            <>
-              <NextLink
-                key={index}
-                href={`${route.path}`}
-                locale={locale}
-                onClick={(e) => route.path === pathname && e.preventDefault()}
-                className={`${
-                  `/${locale}${route.path}` === pathname
-                    ? "underline decoration-slate-900 decoration-2 underline-offset-4"
-                    : ""
-                }`}
-              >
-                {route.name !== t("cart") ? (
-                  route.name
-                ) : (
-                  <span>
-                    <div className="relative">
-                      <div className="relative py-2">
-                        <div className="t-0 absolute left-3">
-                          {totalCartItems > 0 && (
-                            <p className="flex h-0.5 w-0.5 items-center justify-center rounded-full bg-red-500 p-2 text-xs text-white">
-                              {totalCartItems}{" "}
-                            </p>
-                          )}
-                        </div>
-                        <FaShoppingCart />
-                      </div>
+            <NextLink
+              key={index}
+              href={`${route.path}`}
+              locale={locale}
+              onClick={(e) => route.path === pathname && e.preventDefault()}
+              className={`${
+                `/${locale}${route.path}` === pathname
+                  ? "underline decoration-slate-900 decoration-2 underline-offset-4"
+                  : ""
+              }`}
+            >
+              <span>
+                <div className="relative">
+                  <div className="relative py-2">
+                    <div className="t-0 absolute left-3">
+                      {route.name === t("cart") && totalCartItems > 0 && (
+                        <p className="flex h-0.5 w-0.5 items-center justify-center rounded-full bg-red-500 p-2 text-xs text-white">
+                          {totalCartItems}{" "}
+                        </p>
+                      )}
                     </div>
-                  </span>
-                )}
-              </NextLink>
-            </>
+                    {route.name !== t("cart") ? route.name : <FaShoppingCart />}
+                  </div>
+                </div>
+              </span>
+            </NextLink>
           ))}
         </nav>
       </div>

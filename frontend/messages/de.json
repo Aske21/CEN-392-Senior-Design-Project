@@ -7,7 +7,8 @@
     "cart": "Warenkorb",
     "author": "Autor",
     "newly_added": "Neu hinzugefügt",
-    "add_to_cart": "In den Warenkorb"
+    "add_to_cart": "In den Warenkorb",
+    "login": "Login"
   },
   "Footer": {
     "eCommercePlatform": "Ihre bevorzugte E-Commerce-Plattform.",
@@ -33,5 +34,22 @@
       }
     }
   },
-  "promoMessage": "Registrieren Sie sich und erhalten Sie 10% Rabatt auf Ihren ersten Einkauf!"
+  "promoMessage": "Registrieren Sie sich und erhalten Sie 10% Rabatt auf Ihren ersten Einkauf!",
+  "LoginForm": {
+    "title": "Anmelden",
+    "description": "Geben Sie unten Ihre E-Mail-Adresse ein, um sich anzumelden.",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "signIn": "Einloggen"
+  },
+  "RegisterForm": {
+    "title": "Registrieren",
+    "description": "Füllen Sie die untenstehenden Details aus, um Ihr Konto zu erstellen.",
+    "name": "Name",
+    "surname": "Nachname",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "repeatPassword": "Passwort wiederholen",
+    "signIn": "Registrieren"
+  }
 }
