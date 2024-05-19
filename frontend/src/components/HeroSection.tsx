@@ -1,6 +1,4 @@
-// components/HeroSection.tsx
 import { useTranslations } from "next-intl";
-import React from "react";
 import { Button } from "./ui/button";
 
 const HeroSection = () => {

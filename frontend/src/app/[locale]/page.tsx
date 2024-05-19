@@ -1,9 +1,9 @@
 "use client";
 
-import HeroSection from "@/components/HeroSection";
 import { CategoryCarousel } from "@/components/CategoryCarousel";
+import HeroSection from "@/components/HeroSection";
+import { Separator } from "@/components/ui/separator";
 import useGetCategories from "@/hooks/category/useGetCategories";
-import { useTranslations } from "next-intl";
 
 const Index = () => {
   const { data } = useGetCategories();
@@ -11,7 +11,9 @@ const Index = () => {
   return (
     <div className="container mx-auto py-8">
       <HeroSection />
+      <Separator className="mb-4" />
       <CategoryCarousel categories={data ? data : []} />
+      <Separator className="mt-4" />
     </div>
   );
 };
