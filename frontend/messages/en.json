@@ -11,6 +11,8 @@
     "author": "Author"
   },
   "Landing": {
-    "title": "Hello world!"
+    "hero": "Welcome to ShoppyDev",
+    "hero_description": "Discover the best products at unbeatable prices",
+    "hero_cta": "Shop now"
   }
 }

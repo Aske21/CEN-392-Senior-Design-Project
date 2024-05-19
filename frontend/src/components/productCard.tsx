@@ -10,6 +10,8 @@ import { addItem } from "@/lib/features/cart/cartSlice";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { Button } from "./ui/button";
+import { useToast } from "./ui/use-toast";
+import { cn } from "@/lib/utils";
 
 type ProductCardProps = {
   id: string;
@@ -26,10 +28,18 @@ export default function ProductCard({
   price,
   imageSrc,
 }: ProductCardProps) {
+  const { toast } = useToast();
   const dispatch = useDispatch();
 
   const handleAddToCart = () => {
     dispatch(addItem({ id, title, description, price, imageSrc, quantity: 1 }));
+    toast({
+      title: "Cart updated",
+      description: "Item added to cart!",
+      className: cn(
+        "top-0 right-0 flex fixed md:max-w-[200px] md:top-4 md:right-4"
+      ),
+    });
   };
 
   return (

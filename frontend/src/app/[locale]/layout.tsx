@@ -1,14 +1,14 @@
-import "@/styles/globals.css";
-import { Inter as FontSans } from "next/font/google";
-import { cn } from "@/lib/utils";
-import QueryProvider from "@/hooks/QueryProvider";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import Container from "@/components/Container";
-import { NextIntlClientProvider, useMessages } from "next-intl";
-import StoreProvider from "./StoreProvider";
+import Footer from "@/components/Footer";
+import Header from "@/components/Header";
 import { ThemeProvider } from "@/components/theme-provider";
+import QueryProvider from "@/hooks/QueryProvider";
+import { cn } from "@/lib/utils";
+import "@/styles/globals.css";
+import { NextIntlClientProvider, useMessages } from "next-intl";
+import { Inter as FontSans } from "next/font/google";
+import StoreProvider from "./StoreProvider";
+import { Toaster } from "@/components/ui/toaster";
 
 type RootLayoutProps = {
   children: React.ReactNode;
@@ -41,6 +41,7 @@ export default function RootLayout({ children, params }: RootLayoutProps) {
                 enableSystem
                 disableTransitionOnChange
               >
+                <Toaster />
                 <Header />
                 <Container>{children}</Container>
                 <Footer />
