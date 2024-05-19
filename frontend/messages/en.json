@@ -14,7 +14,22 @@
   "Landing": {
     "hero": "Welcome to ShoppyDev",
     "hero_description": "Discover the best products at unbeatable prices",
-    "hero_cta": "Shop now"
+    "hero_cta": "Shop now",
+    "benefitsSection": {
+      "title": "Why Shop With Us?",
+      "fastDelivery": {
+        "title": "Fast Delivery",
+        "description": "Get your products delivered quickly with our fast delivery service."
+      },
+      "securePayments": {
+        "title": "Secure Payments",
+        "description": "Shop with confidence knowing that your payments are secure."
+      },
+      "premiumProducts": {
+        "title": "Premium Products",
+        "description": "Discover high-quality premium products that meet your needs."
+      }
+    }
   },
   "promoMessage": "Register and get 10% off your first purchase!"
 }

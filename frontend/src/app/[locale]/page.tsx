@@ -1,5 +1,6 @@
 "use client";
 
+import BenefitsSection from "@/components/BenefitsSection";
 import { CategoryCarousel } from "@/components/CategoryCarousel";
 import HeroSection from "@/components/HeroSection";
 import { Separator } from "@/components/ui/separator";
@@ -13,6 +14,8 @@ const Index = () => {
       <HeroSection />
       <Separator className="mb-4" />
       <CategoryCarousel categories={data ? data : []} />
+      <Separator className="mt-4" />
+      <BenefitsSection />
       <Separator className="mt-4" />
     </div>
   );
