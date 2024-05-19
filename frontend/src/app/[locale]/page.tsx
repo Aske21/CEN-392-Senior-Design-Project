@@ -1,4 +1,4 @@
-import { CarouselPlugin } from "@/components/product-carousel";
+import { CarouselPlugin } from "@/components/ProductCarousel";
 import { useTranslations } from "next-intl";
 
 const Index = () => {
