@@ -24,7 +24,7 @@ export function CategoryCarousel({ categories }: CategoryCarouselProps) {
 
   return (
     <div className="mb-8">
-      <h2 className="text-2xl font-semibold mb-4 text-center">
+      <h2 className="text-3xl font-semibold mb-10 text-center">
         {t("browseCategories")}
       </h2>
       <Carousel

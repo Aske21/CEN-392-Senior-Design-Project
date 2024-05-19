@@ -5,7 +5,9 @@
     "about": "About",
     "contact": "Contact",
     "cart": "Cart",
-    "author": "Author"
+    "author": "Author",
+    "newly_added": "Newly Added",
+    "add_to_cart": "Add to Cart"
   },
   "Footer": {
     "eCommercePlatform": "Your go-to e-commerce platform.",

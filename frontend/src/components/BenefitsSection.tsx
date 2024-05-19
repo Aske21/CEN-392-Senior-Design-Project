@@ -7,7 +7,7 @@ const BenefitsSection = () => {
   return (
     <section className="py-16">
       <div className="container mx-auto px-4">
-        <h2 className="text-4xl font-bold mb-10 text-center ">
+        <h2 className="text-3xl font-semibold mb-10 text-center">
           {t("benefitsSection.title")}
         </h2>
         <div className="grid grid-cols-1 gap-12 md:grid-cols-3">
@@ -16,7 +16,7 @@ const BenefitsSection = () => {
             <h3 className="text-2xl font-semibold mb-2 ">
               {t("benefitsSection.fastDelivery.title")}
             </h3>
-            <p className="text-lg ">
+            <p className="text-lg text-center">
               {t("benefitsSection.fastDelivery.description")}
             </p>
           </div>
@@ -25,7 +25,7 @@ const BenefitsSection = () => {
             <h3 className="text-2xl font-semibold mb-2 ">
               {t("benefitsSection.securePayments.title")}
             </h3>
-            <p className="text-lg ">
+            <p className="text-lg text-center">
               {t("benefitsSection.securePayments.description")}
             </p>
           </div>
@@ -34,7 +34,7 @@ const BenefitsSection = () => {
             <h3 className="text-2xl font-semibold mb-2 ">
               {t("benefitsSection.premiumProducts.title")}
             </h3>
-            <p className="text-lg ">
+            <p className="text-lg text-center	">
               {t("benefitsSection.premiumProducts.description")}
             </p>
           </div>
