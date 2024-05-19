@@ -1,5 +1,5 @@
 import { Product } from "@/@types/product";
-import ProductCard from "./ProductCard";
+import ProductCard from "./product-card";
 import { useTranslations } from "next-intl";
 
 type Props = {

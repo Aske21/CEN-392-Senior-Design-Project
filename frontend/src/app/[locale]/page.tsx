@@ -1,9 +1,9 @@
 "use client";
 
-import BenefitsSection from "@/components/BenefitsSection";
-import { CategoryCarousel } from "@/components/CategoryCarousel";
-import HeroSection from "@/components/HeroSection";
-import NewlyAdded from "@/components/NewlyAdded";
+import BenefitsSection from "@/components/benefits-section";
+import { CategoryCarousel } from "@/components/category-carousel";
+import HeroSection from "@/components/hero-section";
+import NewlyAdded from "@/components/newly-added";
 import { Separator } from "@/components/ui/separator";
 import useGetCategories from "@/hooks/category/useGetCategories";
 import useGetNewlyAddedProducts from "@/hooks/product/useGetNewlyAddedProducts";
