@@ -1,6 +1,6 @@
 "use client";
 
-import ProductCard from "@/components/ProductCard";
+import ProductCard from "@/components/product-card";
 import useGetProducts from "@/hooks/product/useGetProducts";
 
 const Products = () => {

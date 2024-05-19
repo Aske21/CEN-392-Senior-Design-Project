@@ -1,14 +1,12 @@
 "use client";
 
-import React from "react";
 import useDisclosure from "@/hooks/useDisclossure";
-import NextLink from "next/link";
-import { FaShoppingCart, FaBars, FaTimes } from "react-icons/fa";
-import { useLocale, useTranslations } from "next-intl";
-import { useSelector } from "react-redux";
 import { selectCartTotalItems } from "@/lib/features/cart/cartSelectors";
+import { useLocale, useTranslations } from "next-intl";
+import NextLink from "next/link";
 import { usePathname } from "next/navigation";
-import { ModeToggle } from "./theme-toggle";
+import { FaBars, FaShoppingCart, FaTimes } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const t = useTranslations("Common");
@@ -22,6 +20,7 @@ const Header = () => {
     { name: t("about"), path: "/about" },
     { name: t("contact"), path: "/contact" },
     { name: t("cart"), path: "/cart" },
+    { name: t("login"), path: "/login" },
   ];
 
   return (
