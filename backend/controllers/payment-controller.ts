@@ -6,7 +6,7 @@ import { OrderStatus } from "../enums/OrderStatus";
 import { ProductService } from "../services/product-service";
 import { OrderService } from "../services/order-service";
 import { OrderDetails } from "../core/db/entity/order_details";
-import { UserType } from "../enums/UserType";
+import { authMiddleware } from "../middleware/auth-middleware";
 
 const stripeService = new StripeService(
   process.env.STRIPE_SECRET_KEY as string
@@ -15,8 +15,27 @@ const stripeService = new StripeService(
 class StripeController {
   async createCheckoutSession(req: Request, res: Response): Promise<void> {
     try {
-      const { items } = req.body;
-      const sessionUrl = await stripeService.createCheckoutSession(items);
+      // User is attached by auth middleware
+      const user = (req as any).user;
+      
+      if (!user) {
+        res.status(401).json({ error: "Authentication required" });
+        return;
+      }
+
+      const { items, shippingAddress } = req.body;
+      
+      if (!items || !Array.isArray(items) || items.length === 0) {
+        res.status(400).json({ error: "Items are required" });
+        return;
+      }
+
+      const sessionUrl = await stripeService.createCheckoutSession(
+        items,
+        user.id,
+        shippingAddress
+      );
+      
       res.json({ url: sessionUrl });
     } catch (error: any) {
       res.status(500).json({ error: error.message });
@@ -35,28 +54,46 @@ class StripeController {
       switch (event.type) {
         case "checkout.session.completed":
           const paymentId = event.data.object.id;
-          const customerId = event.data.object.customer;
-          const purchasedItems = event.data.object.display_items;
+          const sessionData = event.data.object;
+          const userId = parseInt(sessionData.metadata?.userId || "0");
+          const shippingAddress = sessionData.metadata?.shippingAddress || "Not provided";
 
-          const user = {
-            id: 1,
-            google_id: "dummyGoogleId123",
-            email: "dummy@example.com",
-            username: "dummyUser",
-            user_type: UserType.CUSTOMER,
-            orders: [],
-          };
+          if (!userId) {
+            throw new Error("User ID not found in session metadata");
+          }
+
+          // Get user from database
+          const { AuthService } = await import("../services/auth-service");
+          const authService = new AuthService();
+          const user = await authService.getUserById(userId);
+
+          if (!user) {
+            throw new Error(`User with ID ${userId} not found`);
+          }
+
+          // Calculate total amount from line items
+          let totalAmount = 0;
+          if (sessionData.amount_total) {
+            totalAmount = sessionData.amount_total / 100; // Convert from cents to dollars
+          }
 
           const newOrderData: Partial<Order> = {
             paymentId: paymentId,
             user: user,
             orderDate: new Date(),
-            totalAmount: 0,
-            shippingAddress: "Address goes here",
-            status: OrderStatus.Pending,
+            totalAmount: totalAmount,
+            shippingAddress: shippingAddress,
+            status: OrderStatus.Paid,
           };
 
-          await orderService.createOrder(newOrderData);
+          const createdOrder = await orderService.createOrder(newOrderData);
+
+          // Create order details from line items if available
+          if (sessionData.line_items) {
+            const orderDetailsService = new OrderDetailsService();
+            // Note: Stripe API requires expanding line_items, so we might need to fetch the session with expanded line_items
+            // For now, we'll leave this as a TODO and handle it in a future update
+          }
 
           // let totalAmount = 0;
 

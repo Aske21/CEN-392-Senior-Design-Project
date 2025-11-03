@@ -8,7 +8,9 @@
     "author": "Autor",
     "newly_added": "Neu hinzugefügt",
     "add_to_cart": "In den Warenkorb",
-    "login": "Login"
+    "login": "Login",
+    "profile": "Profil",
+    "logout": "Abmelden"
   },
   "Footer": {
     "eCommercePlatform": "Ihre bevorzugte E-Commerce-Plattform.",
@@ -40,16 +42,31 @@
     "description": "Geben Sie unten Ihre E-Mail-Adresse ein, um sich anzumelden.",
     "email": "E-Mail",
     "password": "Passwort",
-    "signIn": "Einloggen"
+    "signIn": "Einloggen",
+    "signingIn": "Anmeldung läuft...",
+    "signInWithGoogle": "Mit Google anmelden",
+    "orContinueWith": "Oder fortfahren mit"
   },
   "RegisterForm": {
     "title": "Registrieren",
     "description": "Füllen Sie die untenstehenden Details aus, um Ihr Konto zu erstellen.",
-    "name": "Name",
-    "surname": "Nachname",
+    "firstName": "Vorname",
+    "lastName": "Nachname",
+    "dateOfBirth": "Geburtsdatum",
     "email": "E-Mail",
     "password": "Passwort",
     "repeatPassword": "Passwort wiederholen",
-    "signIn": "Registrieren"
+    "signIn": "Registrieren",
+    "registering": "Registrierung läuft...",
+    "signUpWithGoogle": "Mit Google registrieren",
+    "orContinueWith": "Oder fortfahren mit"
+  },
+  "LogoutPage": {
+    "title": "Abmeldung...",
+    "description": "Bitte warten Sie, während wir Sie abmelden."
+  },
+  "AuthCallback": {
+    "title": "Authentifizierung wird abgeschlossen...",
+    "description": "Bitte warten Sie, während wir Sie anmelden."
   }
 }

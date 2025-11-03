@@ -8,6 +8,7 @@ import paymentRoutes from "../routes/payment";
 import productRoutes from "../routes/product";
 import inventoryRoutes from "../routes/inventory";
 import categoryRoutes from "../routes/category";
+import authRoutes from "../routes/auth";
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use(
 app.use(bodyParser.json());
 
 const loadRoutes = () => {
+  app.use("/auth", authRoutes);
   app.use("/payment", paymentRoutes);
   app.use("/product", productRoutes);
   app.use("/inventory", inventoryRoutes);

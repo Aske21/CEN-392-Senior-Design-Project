@@ -7,14 +7,26 @@ export class Users {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ nullable: true })
   google_id: string;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @Column()
   username: string;
+
+  @Column({ nullable: true })
+  first_name: string;
+
+  @Column({ nullable: true })
+  last_name: string;
+
+  @Column({ nullable: true })
+  password: string;
+
+  @Column({ type: "date", nullable: true })
+  date_of_birth: Date;
 
   @Column({ type: "enum", enum: UserType, default: UserType.CUSTOMER })
   user_type: UserType;

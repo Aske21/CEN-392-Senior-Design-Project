@@ -7,7 +7,7 @@ export class StripeService {
     this.stripe = new Stripe(apiKey, {});
   }
 
-  async createCheckoutSession(items: any[]) {
+  async createCheckoutSession(items: any[], userId: number, shippingAddress?: string) {
     try {
       const lineItems = items.map((item) => ({
         price_data: {
@@ -26,8 +26,13 @@ export class StripeService {
         payment_method_types: ["card"],
         mode: "payment",
         line_items: lineItems,
-        success_url: `${process.env.CLIENT_URL}/`,
-        cancel_url: `${process.env.CLIENT_URL}/`,
+        success_url: `${process.env.CLIENT_URL}/order-success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${process.env.CLIENT_URL}/cart`,
+        // Store user ID and shipping address in metadata
+        metadata: {
+          userId: userId.toString(),
+          shippingAddress: shippingAddress || "",
+        },
       });
 
       return session.url;

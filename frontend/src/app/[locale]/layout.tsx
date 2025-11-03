@@ -3,6 +3,7 @@ import Footer from "@/components/footer";
 import Header from "@/components/header";
 import { ThemeProvider } from "@/components/theme-provider";
 import QueryProvider from "@/hooks/QueryProvider";
+import AuthInitializer from "@/components/auth-initializer";
 import { cn } from "@/lib/utils";
 import "@/styles/globals.css";
 import { NextIntlClientProvider, useMessages } from "next-intl";
@@ -36,18 +37,20 @@ export default function RootLayout({ children, params }: RootLayoutProps) {
         <QueryProvider>
           <NextIntlClientProvider locale={params.locale} messages={messages}>
             <StoreProvider>
-              <ThemeProvider
-                attribute="class"
-                defaultTheme="light"
-                enableSystem
-                disableTransitionOnChange
-              >
-                <Toaster />
-                <TopBar />
-                <Header />
-                <Container>{children}</Container>
-                <Footer />
-              </ThemeProvider>
+              <AuthInitializer>
+                <ThemeProvider
+                  attribute="class"
+                  defaultTheme="light"
+                  enableSystem
+                  disableTransitionOnChange
+                >
+                  <Toaster />
+                  <TopBar />
+                  <Header />
+                  <Container>{children}</Container>
+                  <Footer />
+                </ThemeProvider>
+              </AuthInitializer>
             </StoreProvider>
           </NextIntlClientProvider>
         </QueryProvider>

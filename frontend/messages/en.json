@@ -8,7 +8,9 @@
     "author": "Author",
     "newly_added": "Newly Added",
     "add_to_cart": "Add to Cart",
-    "login": "Login"
+    "login": "Login",
+    "profile": "Profile",
+    "logout": "Log out"
   },
   "Footer": {
     "eCommercePlatform": "Your go-to e-commerce platform.",
@@ -40,16 +42,31 @@
     "description": "Enter your email below to login to your account.",
     "email": "Email",
     "password": "Password",
-    "signIn": "Sign in"
+    "signIn": "Sign in",
+    "signingIn": "Signing in...",
+    "signInWithGoogle": "Sign in with Google",
+    "orContinueWith": "Or continue with"
   },
   "RegisterForm": {
     "title": "Register",
     "description": "Fill in the details below to create your account.",
-    "name": "Name",
-    "surname": "Surname",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "dateOfBirth": "Date of Birth",
     "email": "Email",
     "password": "Password",
     "repeatPassword": "Repeat password",
-    "signIn": "Sign up"
+    "signIn": "Sign up",
+    "registering": "Registering...",
+    "signUpWithGoogle": "Sign up with Google",
+    "orContinueWith": "Or continue with"
+  },
+  "LogoutPage": {
+    "title": "Signing out...",
+    "description": "Please wait while we sign you out."
+  },
+  "AuthCallback": {
+    "title": "Completing authentication...",
+    "description": "Please wait while we sign you in."
   }
 }

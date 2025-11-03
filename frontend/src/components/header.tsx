@@ -2,24 +2,46 @@
 
 import useDisclosure from "@/hooks/useDisclossure";
 import { selectCartTotalItems } from "@/lib/features/cart/cartSelectors";
+import { useAppSelector, useAppDispatch } from "@/lib/hooks";
+import {
+  selectIsAuthenticated,
+  selectAuthUser,
+} from "@/lib/features/auth/authSelectors";
+import { logout } from "@/lib/features/auth/authSlice";
 import { useLocale, useTranslations } from "next-intl";
 import NextLink from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { FaBars, FaShoppingCart, FaTimes, FaUser } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
 
 const Header = () => {
   const t = useTranslations("Common");
   const { isOpen, onToggle } = useDisclosure();
   const locale = useLocale();
-  const totalCartItems = useSelector(selectCartTotalItems);
+  const router = useRouter();
+  const totalCartItems = useAppSelector(selectCartTotalItems);
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
+  const user = useAppSelector(selectAuthUser);
+  const dispatch = useAppDispatch();
   const pathname = usePathname();
+
+  const handleLogout = () => {
+    dispatch(logout());
+    router.push("/auth/logout");
+  };
 
   const routes = [
     { name: t("products"), path: "/products" },
     { name: t("about"), path: "/about" },
     { name: t("contact"), path: "/contact" },
-    { name: <FaUser />, path: "/login" },
     { name: t("cart"), path: "/cart" },
   ];
 
@@ -58,6 +80,49 @@ const Header = () => {
               </span>
             </NextLink>
           ))}
+          {isAuthenticated ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="relative h-10 w-10 rounded-full"
+                >
+                  <div className="flex items-center justify-center h-full w-full rounded-full bg-primary text-primary-foreground">
+                    <span className="text-sm font-medium">
+                      {user?.username?.[0]?.toUpperCase() || "U"}
+                    </span>
+                  </div>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56" align="end" forceMount>
+                <DropdownMenuLabel className="font-normal">
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium leading-none">
+                      {user?.username || "User"}
+                    </p>
+                    <p className="text-xs leading-none text-muted-foreground">
+                      {user?.email}
+                    </p>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <NextLink href="/profile" locale={locale}>
+                    {t("profile")}
+                  </NextLink>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleLogout}>
+                  {t("logout")}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <NextLink href="/login" locale={locale}>
+              <Button variant="ghost" size="icon">
+                <FaUser />
+              </Button>
+            </NextLink>
+          )}
         </nav>
         <div className="md:hidden">
           {isOpen ? (
@@ -109,6 +174,25 @@ const Header = () => {
                   </NextLink>
                 </li>
               ))}
+              <li className="py-2">
+                {isAuthenticated ? (
+                  <div className="flex flex-col items-center space-y-2">
+                    <div className="text-sm font-medium">
+                      {user?.username || "User"}
+                    </div>
+                    <Button variant="outline" size="sm" onClick={handleLogout}>
+                      {t("logout")}
+                    </Button>
+                  </div>
+                ) : (
+                  <NextLink href="/login" locale={locale}>
+                    <Button variant="ghost" size="sm">
+                      <FaUser className="mr-2" />
+                      {t("login")}
+                    </Button>
+                  </NextLink>
+                )}
+              </li>
             </ul>
           </nav>
         )}
