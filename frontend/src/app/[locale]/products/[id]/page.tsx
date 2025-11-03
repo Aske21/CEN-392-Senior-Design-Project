@@ -16,6 +16,8 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
     return <div>Error: Unable to fetch product details</div>;
   }
   const { id, name, description, price, category, brand, images } = data;
+  const categoryLabel = typeof category === "string" ? category : category?.name || "N/A";
+  
   const handleAddToCart = () => {
     dispatch(
       addItem({
@@ -40,7 +42,7 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
             <h1 className="text-3xl font-semibold mb-4">{name}</h1>
             <p className="mb-4">{description}</p>
             <p className="mb-2">Price: ${price}</p>
-            <p className="mb-2">Category: {category}</p>
+            <p className="mb-2">Category: {categoryLabel}</p>
             <p className="mb-2">Brand: {brand}</p>
             <Button onClick={handleAddToCart}>Add to Cart</Button>
           </div>

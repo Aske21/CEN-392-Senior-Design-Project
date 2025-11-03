@@ -8,12 +8,17 @@ dotenv.config({
 const ENVIRONMENT = {
   port: process.env.PORT || 5000,
   db: {
-    database: process.env.DB_DATABASE,
-    username: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
+    database: process.env.RDS_DB_NAME || process.env.DB_DATABASE,
+    username: process.env.RDS_USERNAME || process.env.DB_USERNAME,
+    password: process.env.RDS_PASSWORD || process.env.DB_PASSWORD,
+    host: process.env.RDS_HOSTNAME || process.env.DB_HOST,
+    port: process.env.RDS_PORT || process.env.DB_PORT,
     dialect: process.env.DB_CONNECTION || `postgres`,
+    ssl: process.env.DB_SSL
+      ? {
+          rejectUnauthorized: false,
+        }
+      : false,
     synchronize: true,
     entities: [],
     subscribers: [],

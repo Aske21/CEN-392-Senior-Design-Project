@@ -68,5 +68,38 @@
   "AuthCallback": {
     "title": "Authentifizierung wird abgeschlossen...",
     "description": "Bitte warten Sie, während wir Sie anmelden."
+  },
+  "ProductsPage": {
+    "title": "Produkte",
+    "showing": "Zeige {count} von {total} Produkten",
+    "errorTitle": "Fehler beim Laden der Produkte",
+    "errorMessage": "Bitte versuchen Sie es später erneut.",
+    "noProductsTitle": "Keine Produkte gefunden",
+    "noProductsMessage": "Passen Sie Ihre Filter an.",
+    "previous": "Zurück",
+    "next": "Weiter",
+    "pageOfTotal": "Seite {page} von {total}"
+  },
+  "ProductFilters": {
+    "filtersTitle": "Filter",
+    "filtersButton": "Filter",
+    "clearAll": "Alle Filter löschen",
+    "categoryLabel": "Kategorie",
+    "allCategories": "Alle Kategorien",
+    "priceRange": "Preisspanne",
+    "minPrice": "Mindestpreis",
+    "maxPrice": "Höchstpreis",
+    "apply": "Anwenden",
+    "clear": "Löschen"
+  },
+  "ProductSearchSort": {
+    "searchLabel": "Produkte suchen",
+    "searchPlaceholder": "Suche nach Name oder Beschreibung...",
+    "sortLabel": "Sortieren nach",
+    "createdDesc": "Neueste zuerst",
+    "nameAsc": "Name (A-Z)",
+    "nameDesc": "Name (Z-A)",
+    "priceAsc": "Preis (aufsteigend)",
+    "priceDesc": "Preis (absteigend)"
   }
 }

@@ -32,17 +32,46 @@ const loadRoutes = () => {
 export const initializeServer = async () => {
   await appDataSource.initialize();
 
-  loadRoutes();
+  // Health check route - check before other routes for faster response
+  app.get("/health", async (req, res) => {
+    try {
+      // Check database connection
+      const isConnected = appDataSource.isInitialized;
 
-  app.listen(config.port, () => {
-    console.log(`Server started at port ${config.port}`);
+      if (isConnected) {
+        // Optional: Test actual query
+        await appDataSource.query("SELECT 1");
+
+        res.status(200).json({
+          status: "healthy",
+          timestamp: new Date().toISOString(),
+          database: "connected",
+          uptime: process.uptime(),
+        });
+      } else {
+        res.status(503).json({
+          status: "unhealthy",
+          timestamp: new Date().toISOString(),
+          database: "disconnected",
+        });
+      }
+    } catch (error) {
+      res.status(503).json({
+        status: "unhealthy",
+        timestamp: new Date().toISOString(),
+        database: "error",
+        error: error instanceof Error ? error.message : "Unknown error",
+      });
+    }
   });
 
   app.get("/", (req, res) => {
     res.send("Welcome to E-commerce for Multi-Product Development");
   });
 
-  app.get("/health", (req, res) => {
-    res.send("Healthy");
+  loadRoutes();
+
+  app.listen(config.port || 5000, () => {
+    console.log(`Server started at port ${config.port || 5000}`);
   });
 };
