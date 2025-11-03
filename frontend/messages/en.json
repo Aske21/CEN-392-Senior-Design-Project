@@ -68,5 +68,38 @@
   "AuthCallback": {
     "title": "Completing authentication...",
     "description": "Please wait while we sign you in."
+  },
+  "ProductsPage": {
+    "title": "Products",
+    "showing": "Showing {count} of {total} products",
+    "errorTitle": "Error loading products",
+    "errorMessage": "Please try again later.",
+    "noProductsTitle": "No products found",
+    "noProductsMessage": "Try adjusting your filters.",
+    "previous": "Previous",
+    "next": "Next",
+    "pageOfTotal": "Page {page} of {total}"
+  },
+  "ProductFilters": {
+    "filtersTitle": "Filters",
+    "filtersButton": "Filters",
+    "clearAll": "Clear All Filters",
+    "categoryLabel": "Category",
+    "allCategories": "All Categories",
+    "priceRange": "Price Range",
+    "minPrice": "Min price",
+    "maxPrice": "Max price",
+    "apply": "Apply",
+    "clear": "Clear"
+  },
+  "ProductSearchSort": {
+    "searchLabel": "Search Products",
+    "searchPlaceholder": "Search by name or description...",
+    "sortLabel": "Sort By",
+    "createdDesc": "Newest First",
+    "nameAsc": "Name (A-Z)",
+    "nameDesc": "Name (Z-A)",
+    "priceAsc": "Price (Low to High)",
+    "priceDesc": "Price (High to Low)"
   }
 }
