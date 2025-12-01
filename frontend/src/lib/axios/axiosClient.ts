@@ -15,7 +15,7 @@ abstract class AxiosClient {
 
   private _initializeRequestInterceptor = () => {
     this.instance.interceptors.request.use(
-      (config: AxiosRequestConfig) => {
+      (config) => {
         // Get token from Redux Persist storage
         const token = getAuthTokenFromStorage();
         
