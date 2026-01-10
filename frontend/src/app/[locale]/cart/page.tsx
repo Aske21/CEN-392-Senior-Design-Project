@@ -16,8 +16,10 @@ import { Separator } from "@/components/ui/separator";
 import { useRouter } from "next/navigation";
 import { useAppSelector } from "@/lib/hooks";
 import { selectIsAuthenticated, selectAuthUser } from "@/lib/features/auth/authSelectors";
+import ProductImage from "@/components/product-image";
+import useValidateDiscount from "@/hooks/discount/useValidateDiscount";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { FiTag, FiX } from "react-icons/fi";
 
 const CartPage = () => {
   const dispatch = useDispatch();
@@ -26,9 +28,15 @@ const CartPage = () => {
   const user = useAppSelector(selectAuthUser);
   const totalCartItems = useSelector(selectCartTotalItems);
   const cartItems = useSelector((state: RootState) => state.cart.items);
-  const [shippingAddress, setShippingAddress] = useState("");
-  const [showCheckout, setShowCheckout] = useState(false);
   const [error, setError] = useState("");
+  const [discountCode, setDiscountCode] = useState("");
+  const [appliedDiscount, setAppliedDiscount] = useState<{
+    code: string;
+    amount: number;
+  } | null>(null);
+  const [discountError, setDiscountError] = useState("");
+
+  const { mutate: validateDiscount, isLoading: isValidatingDiscount } = useValidateDiscount();
 
   const handleRemoveItem = (itemId: string) => {
     dispatch(removeItem(itemId));
@@ -50,130 +58,284 @@ const CartPage = () => {
       return;
     }
 
-    if (!showCheckout) {
-      setShowCheckout(true);
-      return;
-    }
-
-    if (!shippingAddress.trim()) {
-      setError("Please enter a shipping address");
-      return;
-    }
-
     setError("");
 
     try {
       await mutate(
-        { items: cartItems, shippingAddress },
+        { items: cartItems, discountCode: appliedDiscount?.code || null },
         {
           onSuccess: (checkoutSessionUrl) => {
-            if (checkoutSessionUrl) {
-              window.location.href = checkoutSessionUrl;
+            if (!checkoutSessionUrl) {
+              setError("No checkout URL received from server");
+              return;
+            }
+            
+            if (typeof checkoutSessionUrl !== "string") {
+              setError(`Invalid URL type: ${typeof checkoutSessionUrl}`);
+              return;
+            }
+            
+            if (checkoutSessionUrl.trim() === "") {
+              setError("Empty checkout URL received");
+              return;
+            }
+            
+            try {
+              const url = new URL(checkoutSessionUrl);
+              
+              if (url.protocol !== "http:" && url.protocol !== "https:") {
+                setError(`Invalid URL protocol: ${url.protocol}`);
+                return;
+              }
+              
+              window.location.assign(checkoutSessionUrl);
+            } catch (urlError: any) {
+              setError(`Invalid checkout URL: ${checkoutSessionUrl}`);
             }
           },
           onError: (error: any) => {
             setError(error.message || "Failed to create checkout session");
-            console.error("Error creating checkout session:", error);
           },
         }
       );
     } catch (error: any) {
       setError(error.message || "Failed to create checkout session");
-      console.error("Error creating checkout session:", error);
     }
   };
 
+  const calculateSubtotal = () => {
+    return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+  };
+
+  const calculateTotal = () => {
+    const subtotal = calculateSubtotal();
+    const discount = appliedDiscount?.amount || 0;
+    return Math.max(0, subtotal - discount);
+  };
+
+  const handleApplyDiscount = () => {
+    if (!discountCode.trim()) {
+      setDiscountError("Please enter a discount code");
+      return;
+    }
+
+    if (!isAuthenticated) {
+      setDiscountError("Please login to apply discount codes");
+      return;
+    }
+
+    setDiscountError("");
+    const subtotal = calculateSubtotal();
+
+    validateDiscount(
+      { code: discountCode.trim(), totalAmount: subtotal },
+      {
+        onSuccess: (data) => {
+          if (data.valid && data.discountAmount) {
+            setAppliedDiscount({
+              code: data.discount!.code,
+              amount: data.discountAmount,
+            });
+            setDiscountCode("");
+            setDiscountError("");
+          } else {
+            setDiscountError(data.error || "Invalid discount code");
+          }
+        },
+        onError: (error: any) => {
+          setDiscountError(error.message || "Failed to validate discount code");
+        },
+      }
+    );
+  };
+
+  const handleRemoveDiscount = () => {
+    setAppliedDiscount(null);
+    setDiscountCode("");
+    setDiscountError("");
+  };
+
   return (
-    <div className="max-w-4xl mx-auto p-4 flex flex-col h-screen">
-      <div className="flex-grow-0.8 overflow-y-auto">
-        {totalCartItems === 0 ? (
-          <>
-            <p>Your cart is empty.</p>
-            <Link href="products">
-              <b>Browse products</b>
-            </Link>
-          </>
-        ) : (
-          <>
-            {cartItems?.map((item: any) => (
-              <div key={item.id} className="py-4">
-                <h3 className="text-lg font-semibold">{item.title}</h3>
-                <p>Price: ${item.price * item.quantity}</p>
-                <div className="flex items-center space-x-4">
-                  <p>Quantity:</p>
-                  <input
-                    type="number"
-                    min="1"
-                    value={item.quantity}
-                    onChange={(e) =>
-                      handleUpdateQuantity(item.id, parseInt(e.target.value))
-                    }
-                    className="border rounded-md px-2 py-1 w-16 text-center"
-                  />
-                  <button
-                    onClick={() => handleRemoveItem(item.id)}
-                    className="text-red-500 hover:text-red-700"
-                  >
-                    Remove
-                  </button>
+    <div className="max-w-6xl mx-auto p-4 md:p-6 lg:p-8">
+      <h1 className="text-2xl md:text-3xl font-bold mb-6">Shopping Cart</h1>
+      
+      <div className="flex flex-col lg:flex-row gap-8">
+        <div className="flex-1">
+          {totalCartItems === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-lg text-gray-600 dark:text-gray-400 mb-4">Your cart is empty.</p>
+              <Link href="/products">
+                <Button>Browse products</Button>
+              </Link>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {cartItems?.map((item: any) => (
+                <div
+                  key={item.id}
+                  className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 md:p-6 shadow-sm"
+                >
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <div className="flex-shrink-0">
+                      <div className="w-24 h-24 md:w-32 md:h-32 rounded-lg overflow-hidden">
+                        <ProductImage
+                          src={item.imageSrc || ""}
+                          alt={item.title}
+                          className="w-full h-full object-cover rounded-lg"
+                          width={128}
+                          height={128}
+                        />
+                      </div>
+                    </div>
+                    
+                    <div className="flex-1 flex flex-col justify-between">
+                      <div>
+                        <h3 className="text-lg md:text-xl font-semibold mb-2">{item.title}</h3>
+                        {item.description && (
+                          <p className="text-sm text-gray-600 dark:text-gray-400 mb-2 line-clamp-2">
+                            {item.description}
+                          </p>
+                        )}
+                        <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                          ${(item.price * item.quantity).toFixed(2)}
+                        </p>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">
+                          ${item.price.toFixed(2)} each
+                        </p>
+                      </div>
+                      
+                      <div className="flex items-center justify-between mt-4">
+                        <div className="flex items-center gap-3">
+                          <label className="text-sm font-medium">Quantity:</label>
+                          <input
+                            type="number"
+                            min="1"
+                            value={item.quantity}
+                            onChange={(e) =>
+                              handleUpdateQuantity(item.id, parseInt(e.target.value) || 1)
+                            }
+                            className="border border-gray-300 dark:border-gray-600 rounded-md px-3 py-1.5 w-20 text-center bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                          />
+                        </div>
+                        <Button
+                          onClick={() => handleRemoveItem(item.id)}
+                          variant="destructive"
+                          size="sm"
+                        >
+                          Remove
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <Separator className="my-4" />
-              </div>
-            ))}
-          </>
-        )}
-      </div>
-      {totalCartItems !== 0 && (
-        <div className="space-y-4 pb-4">
-          {!isAuthenticated && (
-            <div className="bg-yellow-50 border border-yellow-200 rounded p-4">
-              <p className="text-sm text-yellow-800">
-                Please <Link href="/login" className="underline font-semibold">login</Link> to proceed with checkout.
-              </p>
+              ))}
             </div>
           )}
-          
-          {showCheckout && isAuthenticated && (
-            <div className="border rounded-lg p-4 space-y-4">
-              <h3 className="font-semibold">Shipping Information</h3>
+        </div>
+
+        {totalCartItems !== 0 && (
+          <div className="lg:w-80">
+            <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 shadow-sm sticky top-4">
+              <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
+              
+              <div className="space-y-3 mb-6">
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-600 dark:text-gray-400">Subtotal</span>
+                  <span className="font-medium">${calculateSubtotal().toFixed(2)}</span>
+                </div>
+
+                {appliedDiscount && (
+                  <>
+                    <div className="flex justify-between text-sm text-green-600 dark:text-green-400">
+                      <div className="flex items-center gap-2">
+                        <FiTag className="w-4 h-4" />
+                        <span>Discount ({appliedDiscount.code})</span>
+                        <button
+                          onClick={handleRemoveDiscount}
+                          className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+                          aria-label="Remove discount"
+                        >
+                          <FiX className="w-3 h-3" />
+                        </button>
+                      </div>
+                      <span className="font-medium">-${appliedDiscount.amount.toFixed(2)}</span>
+                    </div>
+                    <Separator />
+                  </>
+                )}
+
+                <div className="flex justify-between text-lg font-semibold">
+                  <span>Total</span>
+                  <span>${calculateTotal().toFixed(2)}</span>
+                </div>
+              </div>
+
+              {isAuthenticated && !appliedDiscount && (
+                <div className="mb-6">
+                  <div className="flex gap-2">
+                    <Input
+                      type="text"
+                      placeholder="Enter discount code"
+                      value={discountCode}
+                      onChange={(e) => {
+                        setDiscountCode(e.target.value.toUpperCase());
+                        setDiscountError("");
+                      }}
+                      onKeyPress={(e) => {
+                        if (e.key === "Enter") {
+                          handleApplyDiscount();
+                        }
+                      }}
+                      className="flex-1"
+                    />
+                    <Button
+                      onClick={handleApplyDiscount}
+                      disabled={isValidatingDiscount || !discountCode.trim()}
+                      variant="outline"
+                    >
+                      Apply
+                    </Button>
+                  </div>
+                  {discountError && (
+                    <p className="text-sm text-red-500 mt-2">{discountError}</p>
+                  )}
+                </div>
+              )}
+
+              {!isAuthenticated && (
+                <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4 mb-4">
+                  <p className="text-sm text-yellow-800 dark:text-yellow-200">
+                    Please <Link href="/login" className="underline font-semibold">login</Link> to proceed with checkout.
+                  </p>
+                </div>
+              )}
+              
               {error && (
-                <div className="text-sm text-red-500 bg-red-50 p-2 rounded">
+                <div className="text-sm text-red-500 bg-red-50 dark:bg-red-900/20 dark:text-red-400 p-3 rounded-lg mb-4">
                   {error}
                 </div>
               )}
-              <div className="grid gap-2">
-                <Label htmlFor="shipping-address">Shipping Address</Label>
-                <Input
-                  id="shipping-address"
-                  type="text"
-                  placeholder="123 Main St, City, State, ZIP"
-                  value={shippingAddress}
-                  onChange={(e) => setShippingAddress(e.target.value)}
-                  required
-                />
+              
+              <div className="space-y-3">
+                <Button 
+                  onClick={handleProceedToCheckout} 
+                  className="w-full"
+                  disabled={isLoading || !isAuthenticated}
+                >
+                  {isLoading ? "Processing..." : "Proceed to checkout"}
+                </Button>
+                <Button 
+                  onClick={handleClearCart} 
+                  variant="outline"
+                  className="w-full"
+                >
+                  Clear Cart
+                </Button>
               </div>
             </div>
-          )}
-          
-          <div className="flex justify-start space-x-4">
-            <Button onClick={handleClearCart} variant="destructive">
-              Clear Cart
-            </Button>
-            <Button 
-              onClick={handleProceedToCheckout} 
-              variant="outline"
-              disabled={isLoading}
-            >
-              {isLoading 
-                ? "Processing..." 
-                : showCheckout && isAuthenticated 
-                  ? "Complete Checkout" 
-                  : "Proceed to checkout"
-              }
-            </Button>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };

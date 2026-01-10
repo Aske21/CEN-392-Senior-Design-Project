@@ -203,4 +203,51 @@ export class ProductService {
 
     return products;
   }
+
+  async getRecommendedProducts(productId: number, limit: number = 4): Promise<Product[]> {
+    const product = await this.productRepository.findOne({
+      where: { id: productId },
+      relations: ["category"],
+    });
+
+    if (!product) {
+      return [];
+    }
+
+    const queryBuilder = this.productRepository
+      .createQueryBuilder("product")
+      .leftJoinAndSelect("product.category", "category")
+      .where("product.id != :productId", { productId });
+
+    if (product.category) {
+      queryBuilder.andWhere("product.categoryId = :categoryId", {
+        categoryId: product.category.id,
+      });
+    }
+
+    const recommended = await queryBuilder
+      .orderBy("product.created_at", "DESC")
+      .take(limit)
+      .getMany();
+
+    if (recommended.length < limit) {
+      const additionalProducts = await this.productRepository
+        .createQueryBuilder("product")
+        .leftJoinAndSelect("product.category", "category")
+        .where("product.id != :productId", { productId })
+        .andWhere(
+          product.category
+            ? "product.categoryId != :categoryId OR product.categoryId IS NULL"
+            : "product.categoryId IS NOT NULL",
+          product.category ? { categoryId: product.category.id } : {}
+        )
+        .orderBy("product.created_at", "DESC")
+        .take(limit - recommended.length)
+        .getMany();
+
+      return [...recommended, ...additionalProducts].slice(0, limit);
+    }
+
+    return recommended;
+  }
 }

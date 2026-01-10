@@ -83,6 +83,21 @@ class ProductApi extends AxiosClient {
       throw new Error(`Error fetching products: ${error}`);
     }
   }
+
+  public async getRecommendedProducts(
+    productId: string,
+    limit?: number
+  ): Promise<Product[]> {
+    try {
+      const url = `/product/${productId}/recommendations${
+        limit ? `?limit=${limit}` : ""
+      }`;
+      const response = await this.instance.get(url);
+      return response as unknown as Product[];
+    } catch (error) {
+      throw new Error(`Error fetching recommended products: ${error}`);
+    }
+  }
 }
 
 export default ProductApi;

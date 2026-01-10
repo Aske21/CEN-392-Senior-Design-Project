@@ -26,8 +26,13 @@ export class ProductController {
       const searchParam = req.query.search as string | undefined;
       const filters = {
         page: req.query.page ? parseInt(req.query.page as string) : undefined,
-        limit: req.query.limit ? parseInt(req.query.limit as string) : undefined,
-        search: searchParam && searchParam.trim().length > 0 ? searchParam.trim() : undefined,
+        limit: req.query.limit
+          ? parseInt(req.query.limit as string)
+          : undefined,
+        search:
+          searchParam && searchParam.trim().length > 0
+            ? searchParam.trim()
+            : undefined,
         categoryId: req.query.categoryId
           ? parseInt(req.query.categoryId as string)
           : undefined,
@@ -98,6 +103,29 @@ export class ProductController {
       res.status(200).json(products);
     } catch (error) {
       console.error("Error fetching newly added products:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  }
+
+  async getRecommendedProducts(req: Request, res: Response): Promise<void> {
+    const productId: number = parseInt(req.params.id);
+    const limit: number = req.query.limit
+      ? parseInt(req.query.limit as string)
+      : 4;
+
+    try {
+      if (!productId || isNaN(productId)) {
+        res.status(400).json({ error: "Invalid product ID" });
+        return;
+      }
+
+      const products = await productService.getRecommendedProducts(
+        productId,
+        limit
+      );
+      res.status(200).json(products);
+    } catch (error) {
+      console.error("Error fetching recommended products:", error);
       res.status(500).json({ error: "Internal server error" });
     }
   }

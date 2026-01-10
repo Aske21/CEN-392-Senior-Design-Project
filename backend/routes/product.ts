@@ -6,6 +6,7 @@ const productController = new ProductController();
 
 router.get("/newlyadded", (req, res) => productController.getNewlyAddedProducts(req, res));
 router.get("/", (req, res) => productController.getAllProducts(req, res));
+router.get("/:id/recommendations", (req, res) => productController.getRecommendedProducts(req, res));
 router.get("/:id", (req, res) => productController.getProductById(req, res));
 router.post("/", (req, res) => productController.createProduct(req, res));
 router.put("/:id", (req, res) => productController.updateProduct(req, res));

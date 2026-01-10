@@ -9,6 +9,7 @@ import productRoutes from "../routes/product";
 import inventoryRoutes from "../routes/inventory";
 import categoryRoutes from "../routes/category";
 import authRoutes from "../routes/auth";
+import discountRoutes from "../routes/discount";
 
 const app = express();
 
@@ -27,6 +28,7 @@ const loadRoutes = () => {
   app.use("/product", productRoutes);
   app.use("/inventory", inventoryRoutes);
   app.use("/category", categoryRoutes);
+  app.use("/discount", discountRoutes);
 };
 
 export const initializeServer = async () => {

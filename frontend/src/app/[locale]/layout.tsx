@@ -4,6 +4,7 @@ import Header from "@/components/header";
 import { ThemeProvider } from "@/components/theme-provider";
 import QueryProvider from "@/hooks/QueryProvider";
 import AuthInitializer from "@/components/auth-initializer";
+import RegistrationBanner from "@/components/registration-banner";
 import { cn } from "@/lib/utils";
 import "@/styles/globals.css";
 import { NextIntlClientProvider, useMessages } from "next-intl";
@@ -47,6 +48,7 @@ export default function RootLayout({ children, params }: RootLayoutProps) {
                   <Toaster />
                   <TopBar />
                   <Header />
+                  <RegistrationBanner />
                   <Container>{children}</Container>
                   <Footer />
                 </ThemeProvider>

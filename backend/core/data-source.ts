@@ -6,6 +6,7 @@ import { Order } from "./db/entity/order";
 import { OrderDetails } from "./db/entity/order_details";
 import { Users } from "./db/entity/user";
 import { ProductDiscount } from "./db/entity/product_discount";
+import { DiscountUsage } from "./db/entity/discount_usage";
 
 export const appDataSource = new DataSource({
   type: "postgres",
@@ -16,16 +17,18 @@ export const appDataSource = new DataSource({
   port: parseInt(process.env.RDS_PORT || process.env.DB_PORT || "5432"),
   synchronize: true,
   logging: true,
-  ssl: process.env.DB_SSL
-    ? {
-        rejectUnauthorized: false,
-      }
-    : false,
+  ssl:
+    process.env.DB_SSL === "true" || process.env.DB_SSL === "1"
+      ? {
+          rejectUnauthorized: false,
+        }
+      : false,
   entities: [
     Product,
     ProductCategory,
     ProductInventory,
     ProductDiscount,
+    DiscountUsage,
     Order,
     OrderDetails,
     Users,

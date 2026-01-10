@@ -1,13 +1,21 @@
 import { useMutation } from "react-query";
 import { getAuthTokenFromStorage } from "@/lib/utils/auth";
 
-const useCreateCheckoutSession = () => {
-  const createCheckoutSessionMutation = useMutation(
-    async (data: {
-      items: any[];
-      shippingAddress?: string;
-      discountCode?: string | null;
-    }) => {
+interface ValidateDiscountResponse {
+  valid: boolean;
+  discount?: {
+    code: string;
+    name: string;
+    discountPercentage: number;
+  };
+  discountAmount?: number;
+  finalAmount?: number;
+  error?: string;
+}
+
+const useValidateDiscount = () => {
+  const validateDiscountMutation = useMutation(
+    async (data: { code: string; totalAmount: number }) => {
       const token = getAuthTokenFromStorage();
 
       if (!token) {
@@ -15,7 +23,7 @@ const useCreateCheckoutSession = () => {
       }
 
       const response = await fetch(
-        `${process.env.NEXT_API_URL}/payment/create-checkout-session`,
+        `${process.env.NEXT_API_URL}/discount/validate`,
         {
           method: "POST",
           headers: {
@@ -23,24 +31,23 @@ const useCreateCheckoutSession = () => {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
-            items: data.items,
-            shippingAddress: data.shippingAddress,
-            discountCode: data.discountCode,
+            code: data.code,
+            totalAmount: data.totalAmount,
           }),
         }
       );
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error || "Failed to create checkout session");
+        throw new Error(errorData.error || "Failed to validate discount code");
       }
 
       const responseData = await response.json();
-      return responseData.url;
+      return responseData as ValidateDiscountResponse;
     }
   );
 
-  return createCheckoutSessionMutation;
+  return validateDiscountMutation;
 };
 
-export default useCreateCheckoutSession;
+export default useValidateDiscount;

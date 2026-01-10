@@ -17,25 +17,53 @@ class StripeController {
     try {
       // User is attached by auth middleware
       const user = (req as any).user;
-      
+
       if (!user) {
         res.status(401).json({ error: "Authentication required" });
         return;
       }
 
-      const { items, shippingAddress } = req.body;
-      
+      const { items, shippingAddress, discountCode } = req.body;
+
       if (!items || !Array.isArray(items) || items.length === 0) {
         res.status(400).json({ error: "Items are required" });
         return;
       }
 
+      let totalAmount = items.reduce(
+        (sum, item) => sum + item.price * item.quantity,
+        0
+      );
+
+      let discountAmount = 0;
+      let appliedDiscountCode = null;
+
+      if (discountCode) {
+        const { DiscountService } = await import(
+          "../services/discount-service"
+        );
+        const discountService = new DiscountService();
+        const validation = await discountService.validateDiscountCode(
+          discountCode,
+          user.id,
+          totalAmount
+        );
+
+        if (validation.valid && validation.discountAmount) {
+          discountAmount = validation.discountAmount;
+          appliedDiscountCode = validation.discount!.code;
+          totalAmount = totalAmount - discountAmount;
+        }
+      }
+
       const sessionUrl = await stripeService.createCheckoutSession(
         items,
         user.id,
-        shippingAddress
+        shippingAddress,
+        discountAmount,
+        appliedDiscountCode
       );
-      
+
       res.json({ url: sessionUrl });
     } catch (error: any) {
       res.status(500).json({ error: error.message });
@@ -56,7 +84,8 @@ class StripeController {
           const paymentId = event.data.object.id;
           const sessionData = event.data.object;
           const userId = parseInt(sessionData.metadata?.userId || "0");
-          const shippingAddress = sessionData.metadata?.shippingAddress || "Not provided";
+          const shippingAddress =
+            sessionData.metadata?.shippingAddress || "Not provided";
 
           if (!userId) {
             throw new Error("User ID not found in session metadata");
@@ -77,14 +106,33 @@ class StripeController {
             totalAmount = sessionData.amount_total / 100; // Convert from cents to dollars
           }
 
+          const discountCode = sessionData.metadata?.discountCode || null;
+          const discountAmount = sessionData.metadata?.discountAmount
+            ? parseFloat(sessionData.metadata.discountAmount)
+            : undefined;
+
           const newOrderData: Partial<Order> = {
             paymentId: paymentId,
             user: user,
             orderDate: new Date(),
             totalAmount: totalAmount,
+            discountAmount: discountAmount,
+            discountCode: discountCode,
             shippingAddress: shippingAddress,
             status: OrderStatus.Paid,
           };
+
+          if (discountCode) {
+            const { DiscountService } = await import(
+              "../services/discount-service"
+            );
+            const discountService = new DiscountService();
+            await discountService.applyDiscount(
+              discountCode,
+              userId,
+              totalAmount + (discountAmount || 0)
+            );
+          }
 
           const createdOrder = await orderService.createOrder(newOrderData);
 

@@ -13,6 +13,7 @@ import { Button } from "./ui/button";
 import { useToast } from "./ui/use-toast";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
+import ProductImage from "./product-image";
 
 type ProductCardProps = {
   id: string;
@@ -45,35 +46,37 @@ export default function ProductCard({
   };
 
   return (
-    <div className="container mx-auto my-10">
-      <Card className=" rounded-lg overflow-hidden shadow-md hover:shadow-lg transition duration-300">
-        <CardHeader className="relative">
-          <img
+    <Card className="rounded-lg overflow-hidden shadow-md hover:shadow-lg transition duration-300 h-full flex flex-col">
+      <CardHeader className="relative p-0">
+        <div className="w-full h-48 overflow-hidden">
+          <ProductImage
             src={imageSrc as string}
-            alt="Product Image"
-            className="w-full h-48 object-cover"
+            alt={title}
+            className="w-full h-full object-cover"
+            width={400}
+            height={192}
           />
-        </CardHeader>
-        <CardContent className="p-4">
-          <Link href={`products/${id}`}>
-            <CardTitle
-              className="text-xl font-semibold mb-2 hover:underline cursor-pointer truncate"
-              title={title}
-            >
-              {title}
-            </CardTitle>
-          </Link>
-          <CardDescription className="mb-4 truncate">
-            {description}
-          </CardDescription>
-          <p className="mb-2">${price}</p>
-        </CardContent>
-        <CardFooter className="p-4 ">
-          <Button className="w-full" onClick={handleAddToCart}>
-            {t("add_to_cart")}
-          </Button>
-        </CardFooter>
-      </Card>
-    </div>
+        </div>
+      </CardHeader>
+      <CardContent className="p-4 flex-1 flex flex-col">
+        <Link href={`products/${id}`}>
+          <CardTitle
+            className="text-xl font-semibold mb-2 hover:underline cursor-pointer truncate"
+            title={title}
+          >
+            {title}
+          </CardTitle>
+        </Link>
+        <CardDescription className="mb-4 truncate flex-1">
+          {description}
+        </CardDescription>
+        <p className="mb-2 text-lg font-semibold">${price}</p>
+      </CardContent>
+      <CardFooter className="p-4 pt-0">
+        <Button className="w-full" onClick={handleAddToCart}>
+          {t("add_to_cart")}
+        </Button>
+      </CardFooter>
+    </Card>
   );
 }

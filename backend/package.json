@@ -8,7 +8,8 @@
   "scripts": {
     "build": "yarn && tsc",
     "dev": "nodemon --exec ts-node ./index.ts",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "create-discount": "ts-node ./scripts/create-10off-discount.ts"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",

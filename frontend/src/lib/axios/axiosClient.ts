@@ -1,4 +1,9 @@
-import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
+import axios, {
+  AxiosError,
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosResponse,
+} from "axios";
 import { getAuthTokenFromStorage } from "../utils/auth";
 
 abstract class AxiosClient {
@@ -18,16 +23,16 @@ abstract class AxiosClient {
       (config) => {
         // Get token from Redux Persist storage
         const token = getAuthTokenFromStorage();
-        
+
         if (token && config.headers) {
           config.headers.Authorization = `Bearer ${token}`;
         }
-        
+
         return config;
       },
       (error) => Promise.reject(error)
     );
-  }
+  };
 
   private _initializeResponseInterceptor = () => {
     this.instance.interceptors.response.use(
