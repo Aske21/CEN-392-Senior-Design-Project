@@ -38,6 +38,38 @@ const Header = () => {
     router.push("/auth/logout");
   };
 
+  // Generate a consistent color based on user's username or email
+  const getUserColor = () => {
+    if (!user) return "#6366f1"; // Default color if no user
+
+    const seed = user.username || user.email || "user";
+    let hash = 0;
+    for (let i = 0; i < seed.length; i++) {
+      hash = seed.charCodeAt(i) + ((hash << 5) - hash);
+    }
+
+    // Generate a vibrant color (avoiding too light or too dark colors)
+    const hue = Math.abs(hash) % 360;
+    const saturation = 60 + (Math.abs(hash) % 20); // 60-80%
+    const lightness = 45 + (Math.abs(hash) % 15); // 45-60%
+
+    return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+  };
+
+  // Determine if text should be light or dark based on background color
+  const getTextColor = (bgColor: string) => {
+    // For HSL colors, check lightness
+    const match = bgColor.match(/hsl\((\d+),\s*(\d+)%,\s*(\d+)%\)/);
+    if (match) {
+      const lightness = parseInt(match[3]);
+      return lightness < 50 ? "#ffffff" : "#000000";
+    }
+    return "#ffffff"; // Default to white
+  };
+
+  const userColor = getUserColor();
+  const textColor = getTextColor(userColor);
+
   const routes = [
     { name: t("products"), path: "/products" },
     { name: t("about"), path: "/about" },
@@ -85,13 +117,12 @@ const Header = () => {
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="ghost"
-                  className="relative h-10 w-10 rounded-full"
+                  className="relative h-10 w-10 rounded-full p-0 border-0"
+                  style={{ backgroundColor: userColor, color: textColor }}
                 >
-                  <div className="flex items-center justify-center h-full w-full rounded-full bg-primary text-primary-foreground">
-                    <span className="text-sm font-medium">
-                      {user?.username?.[0]?.toUpperCase() || "U"}
-                    </span>
-                  </div>
+                  <span className="text-sm font-medium">
+                    {user?.username?.[0]?.toUpperCase() || "U"}
+                  </span>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56" align="end" forceMount>

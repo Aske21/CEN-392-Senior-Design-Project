@@ -101,5 +101,154 @@
     "nameDesc": "Name (Z-A)",
     "priceAsc": "Price (Low to High)",
     "priceDesc": "Price (High to Low)"
+  },
+  "About": {
+    "title": "About Us",
+    "subtitle": "Learn more about our mission, values, and commitment to excellence",
+    "mission": {
+      "title": "Our Mission",
+      "description": "What drives us every day",
+      "content": "At ShoppyDev, our mission is to provide customers with the best shopping experience possible. We are committed to offering high-quality products, exceptional customer service, and competitive prices. We believe that shopping should be convenient, enjoyable, and accessible to everyone."
+    },
+    "values": {
+      "title": "Our Values",
+      "quality": {
+        "title": "Quality First",
+        "description": "We carefully curate our product selection to ensure only the highest quality items reach our customers."
+      },
+      "customer": {
+        "title": "Customer Centric",
+        "description": "Our customers are at the heart of everything we do. Their satisfaction is our top priority."
+      },
+      "innovation": {
+        "title": "Innovation",
+        "description": "We continuously improve our platform and services to stay ahead of the curve and meet evolving customer needs."
+      }
+    },
+    "story": {
+      "title": "Our Story",
+      "paragraph1": "ShoppyDev was founded with a simple vision: to make online shopping easier, more accessible, and more enjoyable for everyone. We started as a small team of passionate individuals who believed that e-commerce could be better.",
+      "paragraph2": "Over the years, we've grown into a trusted platform serving thousands of customers worldwide. Our commitment to quality, customer service, and innovation has remained constant throughout our journey.",
+      "paragraph3": "Today, we continue to evolve and adapt to meet the changing needs of our customers while staying true to our core values and mission."
+    },
+    "whyChooseUs": {
+      "title": "Why Choose Us?",
+      "wideSelection": {
+        "title": "Wide Selection",
+        "description": "Browse through thousands of products across multiple categories to find exactly what you're looking for."
+      },
+      "competitivePrices": {
+        "title": "Competitive Prices",
+        "description": "We offer the best prices in the market, ensuring you get great value for your money."
+      },
+      "excellentService": {
+        "title": "Excellent Service",
+        "description": "Our dedicated support team is always ready to help you with any questions or concerns."
+      },
+      "fastShipping": {
+        "title": "Fast Shipping",
+        "description": "Get your orders delivered quickly and safely to your doorstep with our reliable shipping partners."
+      }
+    }
+  },
+  "Contact": {
+    "title": "Contact Us",
+    "subtitle": "We'd love to hear from you. Get in touch with us!",
+    "info": {
+      "title": "Contact Information",
+      "description": "Feel free to reach out to us through any of the following channels:",
+      "email": {
+        "title": "Email",
+        "value": "support@shoppydev.com"
+      },
+      "phone": {
+        "title": "Phone",
+        "value": "+1 (555) 123-4567"
+      },
+      "address": {
+        "title": "Address",
+        "value": "123 Commerce Street, Business City, BC 12345"
+      },
+      "hours": {
+        "title": "Business Hours",
+        "value": "Monday - Friday: 9:00 AM - 6:00 PM EST"
+      }
+    },
+    "social": {
+      "title": "Follow Us",
+      "description": "Stay connected with us on social media for the latest updates, promotions, and news."
+    },
+    "form": {
+      "title": "Send us a Message",
+      "description": "Fill out the form below and we'll get back to you as soon as possible.",
+      "name": "Name",
+      "namePlaceholder": "Your full name",
+      "email": "Email",
+      "emailPlaceholder": "your.email@example.com",
+      "subject": "Subject",
+      "subjectPlaceholder": "What is this regarding?",
+      "message": "Message",
+      "messagePlaceholder": "Tell us how we can help you...",
+      "submit": "Send Message",
+      "submitting": "Sending...",
+      "successMessage": "Thank you! Your message has been sent successfully. We'll get back to you soon.",
+      "errorMessage": "Something went wrong. Please try again later."
+    }
+  },
+  "OrderSuccess": {
+    "title": "Order Confirmed!",
+    "subtitle": "Thank you for your purchase. Your order has been successfully placed.",
+    "loading": "Loading order details...",
+    "error": "Unable to load order details at this time.",
+    "errorNote": "Your payment was successful! The order details may still be processing. Please check your email for confirmation or contact support if needed.",
+    "orderDetails": {
+      "title": "Order Details",
+      "orderNumber": "Order Number",
+      "items": "Order Items",
+      "quantity": "Quantity",
+      "subtotal": "Subtotal",
+      "discount": "Discount",
+      "total": "Total",
+      "shippingAddress": "Shipping Address",
+      "receiptNote": "A confirmation email with your order details and receipt has been sent to your email address.",
+      "noItems": "No items found in this order."
+    },
+    "actions": {
+      "continueShopping": "Continue Shopping",
+      "backToHome": "Back to Home"
+    }
+  },
+  "Profile": {
+    "title": "My Profile",
+    "tabs": {
+      "profile": "Profile Information",
+      "orders": "My Orders"
+    },
+    "profileInfo": {
+      "title": "Profile Information",
+      "description": "Your account details",
+      "username": "Username",
+      "email": "Email",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "dateOfBirth": "Date of Birth"
+    },
+    "orders": {
+      "title": "Order History",
+      "description": "View all your past orders",
+      "noOrders": "You haven't placed any orders yet.",
+      "orderNumber": "Order",
+      "status": "Status",
+      "quantity": "Quantity",
+      "subtotal": "Subtotal",
+      "discount": "Discount",
+      "total": "Total",
+      "shippingAddress": "Shipping Address",
+      "noItems": "No items in this order",
+      "showing": "Showing {count} of {total} orders",
+      "pageOfTotal": "Page {page} of {total}",
+      "previous": "Previous",
+      "next": "Next"
+    }
   }
 }

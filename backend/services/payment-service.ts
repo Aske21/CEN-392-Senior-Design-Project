@@ -1,10 +1,16 @@
 import { Stripe } from "stripe";
 
 export class StripeService {
-  private stripe: Stripe;
+  public stripe: Stripe;
 
   constructor(apiKey: string) {
     this.stripe = new Stripe(apiKey, {});
+  }
+
+  async getCheckoutSession(sessionId: string) {
+    return await this.stripe.checkout.sessions.retrieve(sessionId, {
+      expand: ["line_items", "line_items.data.price.product"],
+    });
   }
 
   async createCheckoutSession(
@@ -44,6 +50,9 @@ export class StripeService {
               name: item.title,
               description: item.description,
               images: images,
+              metadata: {
+                productId: item.id?.toString() || "",
+              },
             },
             unit_amount: Math.round(item.price * 100),
           },
@@ -60,6 +69,9 @@ export class StripeService {
               name: `Discount${discountCode ? ` (${discountCode})` : ""}`,
               description: "Discount applied",
               images: [],
+              metadata: {
+                productId: "", // Empty for discount items
+              },
             },
             unit_amount: -discountAmountInCents,
           },
@@ -83,9 +95,49 @@ export class StripeService {
         line_items: lineItems,
         success_url: successUrl,
         cancel_url: cancelUrl,
+        // Enable shipping address collection
+        shipping_address_collection: {
+          allowed_countries: [
+            "US",
+            "CA",
+            "GB",
+            "DE",
+            "FR",
+            "IT",
+            "ES",
+            "AU",
+            "NL",
+            "BE",
+            "AT",
+            "CH",
+            "SE",
+            "NO",
+            "DK",
+            "FI",
+            "PL",
+            "CZ",
+            "IE",
+            "PT",
+            "GR",
+            "HU",
+            "RO",
+            "BG",
+            "HR", // Croatia
+            "BA", // Bosnia and Herzegovina
+            "RS", // Serbia
+            "SK",
+            "SI",
+            "LT",
+            "LV",
+            "EE",
+            "LU",
+            "MT",
+            "CY",
+          ],
+        },
         metadata: {
           userId: userId.toString(),
-          shippingAddress: shippingAddress || "",
+          shippingAddress: shippingAddress || "", // Fallback if provided
           discountCode: discountCode || "",
           discountAmount: discountAmount.toString(),
         },

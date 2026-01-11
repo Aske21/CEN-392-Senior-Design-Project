@@ -4,6 +4,7 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  JoinColumn,
 } from "typeorm";
 import { OrderStatus } from "../../../enums/OrderStatus";
 import { OrderDetails } from "./order_details";
@@ -18,6 +19,7 @@ export class Order {
   paymentId: string;
 
   @ManyToOne(() => Users, (user) => user.orders)
+  @JoinColumn({ name: "userId" })
   user: Users;
 
   @Column()

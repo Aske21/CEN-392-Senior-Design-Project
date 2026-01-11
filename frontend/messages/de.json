@@ -101,5 +101,154 @@
     "nameDesc": "Name (Z-A)",
     "priceAsc": "Preis (aufsteigend)",
     "priceDesc": "Preis (absteigend)"
+  },
+  "About": {
+    "title": "Über uns",
+    "subtitle": "Erfahren Sie mehr über unsere Mission, Werte und unser Engagement für Exzellenz",
+    "mission": {
+      "title": "Unsere Mission",
+      "description": "Was uns jeden Tag antreibt",
+      "content": "Bei ShoppyDev ist es unsere Mission, unseren Kunden das bestmögliche Einkaufserlebnis zu bieten. Wir sind bestrebt, hochwertige Produkte, außergewöhnlichen Kundenservice und wettbewerbsfähige Preise anzubieten. Wir glauben, dass Einkaufen bequem, angenehm und für jeden zugänglich sein sollte."
+    },
+    "values": {
+      "title": "Unsere Werte",
+      "quality": {
+        "title": "Qualität zuerst",
+        "description": "Wir kuratieren unsere Produktauswahl sorgfältig, um sicherzustellen, dass nur Produkte höchster Qualität unsere Kunden erreichen."
+      },
+      "customer": {
+        "title": "Kundenorientiert",
+        "description": "Unsere Kunden stehen im Mittelpunkt alles, was wir tun. Ihre Zufriedenheit hat für uns oberste Priorität."
+      },
+      "innovation": {
+        "title": "Innovation",
+        "description": "Wir verbessern kontinuierlich unsere Plattform und Dienstleistungen, um mit der Zeit zu gehen und sich entwickelnde Kundenbedürfnisse zu erfüllen."
+      }
+    },
+    "story": {
+      "title": "Unsere Geschichte",
+      "paragraph1": "ShoppyDev wurde mit einer einfachen Vision gegründet: Online-Shopping für alle einfacher, zugänglicher und angenehmer zu machen. Wir begannen als kleines Team leidenschaftlicher Menschen, die glaubten, dass E-Commerce besser sein könnte.",
+      "paragraph2": "Im Laufe der Jahre sind wir zu einer vertrauenswürdigen Plattform geworden, die Tausende von Kunden weltweit bedient. Unser Engagement für Qualität, Kundenservice und Innovation ist während unserer gesamten Reise konstant geblieben.",
+      "paragraph3": "Heute entwickeln und passen wir uns weiterhin an, um die sich ändernden Bedürfnisse unserer Kunden zu erfüllen, während wir unseren Kernwerten und unserer Mission treu bleiben."
+    },
+    "whyChooseUs": {
+      "title": "Warum uns wählen?",
+      "wideSelection": {
+        "title": "Große Auswahl",
+        "description": "Durchsuchen Sie Tausende von Produkten in mehreren Kategorien, um genau das zu finden, wonach Sie suchen."
+      },
+      "competitivePrices": {
+        "title": "Wettbewerbsfähige Preise",
+        "description": "Wir bieten die besten Preise auf dem Markt und sorgen dafür, dass Sie ein großartiges Preis-Leistungs-Verhältnis erhalten."
+      },
+      "excellentService": {
+        "title": "Ausgezeichneter Service",
+        "description": "Unser engagiertes Support-Team ist immer bereit, Ihnen bei Fragen oder Anliegen zu helfen."
+      },
+      "fastShipping": {
+        "title": "Schneller Versand",
+        "description": "Erhalten Sie Ihre Bestellungen schnell und sicher mit unseren zuverlässigen Versandpartnern an Ihre Haustür geliefert."
+      }
+    }
+  },
+  "Contact": {
+    "title": "Kontaktieren Sie uns",
+    "subtitle": "Wir freuen uns, von Ihnen zu hören. Nehmen Sie Kontakt mit uns auf!",
+    "info": {
+      "title": "Kontaktinformationen",
+      "description": "Kontaktieren Sie uns gerne über einen der folgenden Kanäle:",
+      "email": {
+        "title": "E-Mail",
+        "value": "support@shoppydev.com"
+      },
+      "phone": {
+        "title": "Telefon",
+        "value": "+1 (555) 123-4567"
+      },
+      "address": {
+        "title": "Adresse",
+        "value": "Handelsstraße 123, Geschäftsstadt, BC 12345"
+      },
+      "hours": {
+        "title": "Geschäftszeiten",
+        "value": "Montag - Freitag: 9:00 - 18:00 Uhr EST"
+      }
+    },
+    "social": {
+      "title": "Folgen Sie uns",
+      "description": "Bleiben Sie über soziale Medien mit uns in Verbindung, um die neuesten Updates, Aktionen und Nachrichten zu erhalten."
+    },
+    "form": {
+      "title": "Senden Sie uns eine Nachricht",
+      "description": "Füllen Sie das untenstehende Formular aus und wir werden uns so schnell wie möglich bei Ihnen melden.",
+      "name": "Name",
+      "namePlaceholder": "Ihr vollständiger Name",
+      "email": "E-Mail",
+      "emailPlaceholder": "ihre.email@beispiel.com",
+      "subject": "Betreff",
+      "subjectPlaceholder": "Worum geht es?",
+      "message": "Nachricht",
+      "messagePlaceholder": "Teilen Sie uns mit, wie wir Ihnen helfen können...",
+      "submit": "Nachricht senden",
+      "submitting": "Wird gesendet...",
+      "successMessage": "Vielen Dank! Ihre Nachricht wurde erfolgreich gesendet. Wir werden uns bald bei Ihnen melden.",
+      "errorMessage": "Etwas ist schief gelaufen. Bitte versuchen Sie es später erneut."
+    }
+  },
+  "OrderSuccess": {
+    "title": "Bestellung bestätigt!",
+    "subtitle": "Vielen Dank für Ihren Einkauf. Ihre Bestellung wurde erfolgreich aufgegeben.",
+    "loading": "Bestelldetails werden geladen...",
+    "error": "Bestelldetails konnten derzeit nicht geladen werden.",
+    "errorNote": "Ihre Zahlung war erfolgreich! Die Bestelldetails werden möglicherweise noch verarbeitet. Bitte überprüfen Sie Ihre E-Mail zur Bestätigung oder kontaktieren Sie den Support bei Bedarf.",
+    "orderDetails": {
+      "title": "Bestelldetails",
+      "orderNumber": "Bestellnummer",
+      "items": "Bestellte Artikel",
+      "quantity": "Menge",
+      "subtotal": "Zwischensumme",
+      "discount": "Rabatt",
+      "total": "Gesamt",
+      "shippingAddress": "Lieferadresse",
+      "receiptNote": "Eine Bestätigungs-E-Mail mit Ihren Bestelldetails und der Quittung wurde an Ihre E-Mail-Adresse gesendet.",
+      "noItems": "Keine Artikel in dieser Bestellung gefunden."
+    },
+    "actions": {
+      "continueShopping": "Weiter einkaufen",
+      "backToHome": "Zurück zur Startseite"
+    }
+  },
+  "Profile": {
+    "title": "Mein Profil",
+    "tabs": {
+      "profile": "Profilinformationen",
+      "orders": "Meine Bestellungen"
+    },
+    "profileInfo": {
+      "title": "Profilinformationen",
+      "description": "Ihre Kontodaten",
+      "username": "Benutzername",
+      "email": "E-Mail",
+      "firstName": "Vorname",
+      "lastName": "Nachname",
+      "dateOfBirth": "Geburtsdatum"
+    },
+    "orders": {
+      "title": "Bestellverlauf",
+      "description": "Alle Ihre vergangenen Bestellungen anzeigen",
+      "noOrders": "Sie haben noch keine Bestellungen aufgegeben.",
+      "orderNumber": "Bestellung",
+      "status": "Status",
+      "quantity": "Menge",
+      "subtotal": "Zwischensumme",
+      "discount": "Rabatt",
+      "total": "Gesamt",
+      "shippingAddress": "Lieferadresse",
+      "noItems": "Keine Artikel in dieser Bestellung",
+      "showing": "Zeige {count} von {total} Bestellungen",
+      "pageOfTotal": "Seite {page} von {total}",
+      "previous": "Zurück",
+      "next": "Weiter"
+    }
   }
 }
