@@ -23,6 +23,35 @@ class CategoryApi extends AxiosClient {
       throw new Error(`Error fetching category: ${error}`);
     }
   }
+
+  public async createCategory(
+    categoryData: Partial<Category>,
+  ): Promise<Category> {
+    try {
+      return await this.instance.post("/category", categoryData);
+    } catch (error) {
+      throw new Error(`Error creating category: ${error}`);
+    }
+  }
+
+  public async updateCategory(
+    id: number,
+    categoryData: Partial<Category>,
+  ): Promise<Category> {
+    try {
+      return await this.instance.put(`/category/${id}`, categoryData);
+    } catch (error) {
+      throw new Error(`Error updating category: ${error}`);
+    }
+  }
+
+  public async deleteCategory(id: number): Promise<void> {
+    try {
+      await this.instance.delete(`/category/${id}`);
+    } catch (error) {
+      throw new Error(`Error deleting category: ${error}`);
+    }
+  }
 }
 
 export default CategoryApi;

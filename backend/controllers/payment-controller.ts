@@ -14,7 +14,7 @@ import { DiscountService } from "../services/discount-service";
 import { InventoryService } from "../services/inventory-service";
 
 const stripeService = new StripeService(
-  process.env.STRIPE_SECRET_KEY as string
+  process.env.STRIPE_SECRET_KEY as string,
 );
 
 class StripeController {
@@ -37,7 +37,7 @@ class StripeController {
 
       let totalAmount = items.reduce(
         (sum, item) => sum + item.price * item.quantity,
-        0
+        0,
       );
 
       let discountAmount = 0;
@@ -48,7 +48,7 @@ class StripeController {
         const validation = await discountService.validateDiscountCode(
           discountCode,
           user.id,
-          totalAmount
+          totalAmount,
         );
 
         if (validation.valid && validation.discountAmount) {
@@ -63,7 +63,7 @@ class StripeController {
         user.id,
         shippingAddress,
         discountAmount,
-        appliedDiscountCode
+        appliedDiscountCode,
       );
 
       res.json({ url: sessionUrl });
@@ -116,7 +116,7 @@ class StripeController {
           event = stripeService.stripe.webhooks.constructEvent(
             body,
             sig,
-            webhookSecret
+            webhookSecret,
           );
         } catch (err: any) {
           console.error("Webhook signature verification failed:", err.message);
@@ -133,7 +133,7 @@ class StripeController {
           event = body;
         }
         console.warn(
-          "⚠️  Stripe webhook secret not set - skipping signature verification"
+          "⚠️  Stripe webhook secret not set - skipping signature verification",
         );
       }
 
@@ -153,7 +153,17 @@ class StripeController {
           if (!userId) {
             throw new Error("User ID not found in session metadata");
           }
+          const existingOrder =
+            await orderService.getOrderByPaymentId(paymentId);
 
+          if (existingOrder) {
+            console.log(
+              `Order already exists for payment ${paymentId}, skipping`,
+            );
+
+            res.status(200).send("Order already processed");
+            return;
+          }
           // Get user from database
           const authService = new AuthService();
           const user = await authService.getUserById(userId);
@@ -206,7 +216,7 @@ class StripeController {
             await discountService.applyDiscount(
               discountCode,
               userId,
-              totalAmount + (discountAmount || 0)
+              totalAmount + (discountAmount || 0),
             );
           }
 
@@ -280,7 +290,7 @@ class StripeController {
 
               if (!product) {
                 console.error(
-                  `Product not found for line item: ${JSON.stringify(lineItem)}`
+                  `Product not found for line item: ${JSON.stringify(lineItem)}`,
                 );
                 continue;
               }
@@ -306,18 +316,18 @@ class StripeController {
               // Update inventory quantity
               if (product.inventory_id && product.inventory_id.id) {
                 const inventory = await inventoryService.getInventoryById(
-                  product.inventory_id.id
+                  product.inventory_id.id,
                 );
                 if (inventory) {
                   const newQuantity = Math.max(
                     0,
-                    inventory.total_stock_quantity - (lineItem.quantity || 1)
+                    inventory.total_stock_quantity - (lineItem.quantity || 1),
                   );
                   await inventoryService.updateInventory(inventory.id, {
                     total_stock_quantity: newQuantity,
                   });
                   console.log(
-                    `Updated inventory for product ${product.id}: ${inventory.total_stock_quantity} -> ${newQuantity}`
+                    `Updated inventory for product ${product.id}: ${inventory.total_stock_quantity} -> ${newQuantity}`,
                   );
                 }
               }

@@ -3,6 +3,7 @@ import cors from "cors";
 import express from "express";
 import config from "./config";
 import { appDataSource } from "./data-source";
+import path from "path";
 
 import paymentRoutes, { webhookRouter } from "../routes/payment";
 import productRoutes from "../routes/product";
@@ -11,10 +12,12 @@ import categoryRoutes from "../routes/category";
 import authRoutes from "../routes/auth";
 import discountRoutes from "../routes/discount";
 import orderRoutes from "../routes/order";
+import uploadRoutes from "../routes/upload";
+import adminRoutes from "../routes/admin";
 
 const app = express();
 
-// Trust proxy - required when behind a load balancer (like AWS Elastic Beanstalk)
+// Trust proxy - required when behind a reverse proxy or load balancer
 // This allows Express to correctly handle X-Forwarded-* headers
 app.set("trust proxy", true);
 
@@ -26,7 +29,7 @@ app.use(
     credentials: false, // Must be false when origin is "*"
     preflightContinue: false,
     optionsSuccessStatus: 204,
-  })
+  }),
 );
 
 // Regular JSON parser for all routes (webhook will use raw body from its router)
@@ -35,7 +38,7 @@ app.use(bodyParser.json());
 const loadRoutes = () => {
   // Webhook route must be registered before JSON parser
   app.use("/payment", webhookRouter);
-  
+
   app.use("/auth", authRoutes);
   app.use("/payment", paymentRoutes);
   app.use("/product", productRoutes);
@@ -43,6 +46,8 @@ const loadRoutes = () => {
   app.use("/category", categoryRoutes);
   app.use("/discount", discountRoutes);
   app.use("/order", orderRoutes);
+  app.use("/admin/uploads", uploadRoutes);
+  app.use("/admin", adminRoutes);
 };
 
 export const initializeServer = async () => {

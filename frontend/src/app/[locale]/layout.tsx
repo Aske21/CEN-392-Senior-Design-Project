@@ -1,17 +1,12 @@
-import Container from "@/components/container";
-import Footer from "@/components/footer";
-import Header from "@/components/header";
 import { ThemeProvider } from "@/components/theme-provider";
 import QueryProvider from "@/hooks/QueryProvider";
 import AuthInitializer from "@/components/auth-initializer";
-import RegistrationBanner from "@/components/registration-banner";
 import { cn } from "@/lib/utils";
 import "@/styles/globals.css";
 import { NextIntlClientProvider, useMessages } from "next-intl";
 import { Inter as FontSans } from "next/font/google";
 import StoreProvider from "./StoreProvider";
 import { Toaster } from "@/components/ui/toaster";
-import TopBar from "@/components/top-bar";
 
 type RootLayoutProps = {
   children: React.ReactNode;
@@ -32,7 +27,7 @@ export default function RootLayout({ children, params }: RootLayoutProps) {
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased",
-          fontSans.variable
+          fontSans.variable,
         )}
       >
         <QueryProvider>
@@ -46,11 +41,7 @@ export default function RootLayout({ children, params }: RootLayoutProps) {
                   disableTransitionOnChange
                 >
                   <Toaster />
-                  <TopBar />
-                  <Header />
-                  <RegistrationBanner />
-                  <Container>{children}</Container>
-                  <Footer />
+                  {children}
                 </ThemeProvider>
               </AuthInitializer>
             </StoreProvider>

@@ -27,7 +27,7 @@ class DiscountController {
       const validation = await discountService.validateDiscountCode(
         code,
         user.id,
-        totalAmount
+        totalAmount,
       );
 
       if (!validation.valid) {
@@ -48,6 +48,29 @@ class DiscountController {
         discountAmount: validation.discountAmount,
         finalAmount: totalAmount - (validation.discountAmount || 0),
       });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  }
+
+  async getAllDiscounts(req: Request, res: Response): Promise<void> {
+    try {
+      const discounts = await discountService.getAllDiscounts();
+      res.json(discounts);
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  }
+
+  async deleteDiscount(req: Request, res: Response): Promise<void> {
+    try {
+      const discountId = parseInt(req.params.id);
+      if (Number.isNaN(discountId)) {
+        res.status(400).json({ error: "Invalid discount id" });
+        return;
+      }
+      await discountService.deleteDiscount(discountId);
+      res.status(200).json({ message: "Discount deleted" });
     } catch (error: any) {
       res.status(500).json({ error: error.message });
     }
@@ -95,8 +118,12 @@ class DiscountController {
 
       if (productId) {
         const { Product } = await import("../core/db/entity/product");
-        const productRepository = (await import("../core/data-source")).appDataSource.getRepository(Product);
-        const product = await productRepository.findOne({ where: { id: productId } });
+        const productRepository = (
+          await import("../core/data-source")
+        ).appDataSource.getRepository(Product);
+        const product = await productRepository.findOne({
+          where: { id: productId },
+        });
         if (product) {
           discountData.product = product;
         }

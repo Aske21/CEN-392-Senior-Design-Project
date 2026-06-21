@@ -9,12 +9,12 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { loginUser, googleAuthUser } from "@/lib/features/auth/authThunks";
+import { loginUser } from "@/lib/features/auth/authThunks";
 import {
   selectAuthLoading,
   selectAuthError,
@@ -30,7 +30,11 @@ const loginSchema = z.object({
 
 type LoginFormData = z.infer<typeof loginSchema>;
 
-const LoginForm = () => {
+interface LoginFormProps {
+  adminLogin?: boolean;
+}
+
+const LoginForm = ({ adminLogin = false }: LoginFormProps) => {
   const t = useTranslations("LoginForm");
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -54,10 +58,19 @@ const LoginForm = () => {
     }
   }, [dispatch]);
 
+  const locale = useLocale();
+
   const onSubmit = async (data: LoginFormData) => {
     try {
-      await dispatch(loginUser(data)).unwrap();
-      router.push("/");
+      const result = await dispatch(loginUser(data)).unwrap();
+      if (result?.user?.user_type === "admin") {
+        router.push(`/${locale}/admin`);
+      } else {
+        if (adminLogin) {
+          dispatch(setError("This account does not have admin access."));
+        }
+        router.push(`/${locale}`);
+      }
     } catch (err) {}
   };
 

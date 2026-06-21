@@ -32,9 +32,8 @@ export class InventoryController {
   async createInventory(req: Request, res: Response): Promise<void> {
     const inventoryData = req.body;
     try {
-      const newInventory = await inventoryService.createInventory(
-        inventoryData
-      );
+      const newInventory =
+        await inventoryService.createInventory(inventoryData);
       res.status(201).json(newInventory);
     } catch (error) {
       console.error("Error creating inventory:", error);
@@ -48,7 +47,7 @@ export class InventoryController {
     try {
       const updatedInventory = await inventoryService.updateInventory(
         inventoryId,
-        updateData
+        updateData,
       );
       if (updatedInventory) {
         res.status(200).json(updatedInventory);
@@ -64,7 +63,7 @@ export class InventoryController {
   async deleteInventory(req: Request, res: Response): Promise<void> {
     const inventoryId: number = parseInt(req.params.id);
     try {
-      await inventoryService.deleteCategory(inventoryId);
+      await inventoryService.deleteInventory(inventoryId);
       res.status(200).json({ message: "Inventory deleted successfully" });
     } catch (error) {
       console.error("Error deleting inventory:", error);

@@ -9,13 +9,13 @@ export class InventoryService {
   }
 
   async getInventoryById(
-    inventoryId: number
+    inventoryId: number,
   ): Promise<ProductInventory | null> {
     return this.inventoryRepository.findOneBy({ id: inventoryId });
   }
 
   async createInventory(
-    inventoryData: Partial<ProductInventory>
+    inventoryData: Partial<ProductInventory>,
   ): Promise<ProductInventory> {
     const inventory = this.inventoryRepository.create(inventoryData);
     return this.inventoryRepository.save(inventory);
@@ -23,7 +23,7 @@ export class InventoryService {
 
   async updateInventory(
     inventoryId: number,
-    updateData: Partial<ProductInventory>
+    updateData: Partial<ProductInventory>,
   ): Promise<ProductInventory | undefined> {
     const inventory = await this.inventoryRepository.findOneBy({
       id: inventoryId,
@@ -35,7 +35,9 @@ export class InventoryService {
     return this.inventoryRepository.save(inventory);
   }
 
-  async deleteCategory(inventoryId: number): Promise<void> {
+  async deleteInventory(inventoryId: number): Promise<void> {
     await this.inventoryRepository.delete(inventoryId);
   }
 }
+
+export default InventoryService;

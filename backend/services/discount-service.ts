@@ -19,7 +19,7 @@ export class DiscountService {
   async validateDiscountCode(
     code: string,
     userId: number,
-    totalAmount: number
+    totalAmount: number,
   ): Promise<DiscountValidationResult> {
     const discount = await this.discountRepository.findOne({
       where: { code: code.toUpperCase(), active: true },
@@ -49,7 +49,10 @@ export class DiscountService {
       };
     }
 
-    if (discount.max_total_uses && discount.current_total_uses >= discount.max_total_uses) {
+    if (
+      discount.max_total_uses &&
+      discount.current_total_uses >= discount.max_total_uses
+    ) {
       return {
         valid: false,
         error: "Discount code has reached maximum uses",
@@ -117,9 +120,13 @@ export class DiscountService {
   async applyDiscount(
     code: string,
     userId: number,
-    totalAmount: number
+    totalAmount: number,
   ): Promise<DiscountValidationResult> {
-    const validation = await this.validateDiscountCode(code, userId, totalAmount);
+    const validation = await this.validateDiscountCode(
+      code,
+      userId,
+      totalAmount,
+    );
 
     if (!validation.valid || !validation.discount) {
       return validation;
@@ -149,7 +156,17 @@ export class DiscountService {
     });
   }
 
-  async createDiscount(discountData: Partial<ProductDiscount>): Promise<ProductDiscount> {
+  async getAllDiscounts(): Promise<ProductDiscount[]> {
+    return this.discountRepository.find({ relations: ["product"] });
+  }
+
+  async deleteDiscount(discountId: number): Promise<void> {
+    await this.discountRepository.delete(discountId);
+  }
+
+  async createDiscount(
+    discountData: Partial<ProductDiscount>,
+  ): Promise<ProductDiscount> {
     const discount = this.discountRepository.create(discountData);
     return this.discountRepository.save(discount);
   }

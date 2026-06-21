@@ -75,6 +75,7 @@ const Header = () => {
     { name: t("about"), path: "/about" },
     { name: t("contact"), path: "/contact" },
     { name: t("cart"), path: "/cart" },
+    ...(user?.user_type === "admin" ? [{ name: "Admin", path: "/admin" }] : []),
   ];
 
   return (

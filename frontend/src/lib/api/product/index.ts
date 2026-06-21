@@ -11,7 +11,7 @@ class ProductApi extends AxiosClient {
   }
 
   public async getProducts(
-    filters?: ProductFilters
+    filters?: ProductFilters,
   ): Promise<PaginatedProductsResponse> {
     try {
       const params = new URLSearchParams();
@@ -86,7 +86,7 @@ class ProductApi extends AxiosClient {
 
   public async getRecommendedProducts(
     productId: string,
-    limit?: number
+    limit?: number,
   ): Promise<Product[]> {
     try {
       const url = `/product/${productId}/recommendations${
@@ -96,6 +96,33 @@ class ProductApi extends AxiosClient {
       return response as unknown as Product[];
     } catch (error) {
       throw new Error(`Error fetching recommended products: ${error}`);
+    }
+  }
+
+  public async createProduct(productData: Partial<Product>): Promise<Product> {
+    try {
+      return await this.instance.post("/product", productData);
+    } catch (error) {
+      throw new Error(`Error creating product: ${error}`);
+    }
+  }
+
+  public async updateProduct(
+    id: number | string,
+    productData: Partial<Product>,
+  ): Promise<Product> {
+    try {
+      return await this.instance.put(`/product/${id}`, productData);
+    } catch (error) {
+      throw new Error(`Error updating product: ${error}`);
+    }
+  }
+
+  public async deleteProduct(id: number): Promise<void> {
+    try {
+      await this.instance.delete(`/product/${id}`);
+    } catch (error) {
+      throw new Error(`Error deleting product: ${error}`);
     }
   }
 }

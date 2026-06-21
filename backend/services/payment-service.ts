@@ -18,14 +18,14 @@ export class StripeService {
     userId: number,
     shippingAddress?: string,
     discountAmount: number = 0,
-    discountCode?: string | null
+    discountCode?: string | null,
   ) {
     try {
       const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:3000";
 
       let totalAmount = items.reduce(
         (sum, item) => sum + item.price * item.quantity,
-        0
+        0,
       );
 
       const lineItems = items.map((item) => {
@@ -60,23 +60,18 @@ export class StripeService {
         };
       });
 
-      if (discountAmount > 0) {
+      // Apply discount to the first line item by reducing its unit_amount
+      if (discountAmount > 0 && lineItems.length > 0) {
         const discountAmountInCents = Math.round(discountAmount * 100);
-        lineItems.push({
-          price_data: {
-            currency: "usd",
-            product_data: {
-              name: `Discount${discountCode ? ` (${discountCode})` : ""}`,
-              description: "Discount applied",
-              images: [],
-              metadata: {
-                productId: "", // Empty for discount items
-              },
-            },
-            unit_amount: -discountAmountInCents,
-          },
-          quantity: 1,
-        });
+        const firstItem = lineItems[0];
+        const originalUnitAmount = firstItem.price_data.unit_amount;
+
+        // Reduce the unit_amount by the discount, but ensure it doesn't go below 0
+        const reducedUnitAmount = Math.max(
+          0,
+          originalUnitAmount - discountAmountInCents,
+        );
+        firstItem.price_data.unit_amount = reducedUnitAmount;
       }
 
       const successUrl = `${CLIENT_URL}/order-success?session_id={CHECKOUT_SESSION_ID}`;
@@ -122,9 +117,9 @@ export class StripeService {
             "HU",
             "RO",
             "BG",
-            "HR", // Croatia
-            "BA", // Bosnia and Herzegovina
-            "RS", // Serbia
+            "HR",
+            "BA",
+            "RS",
             "SK",
             "SI",
             "LT",

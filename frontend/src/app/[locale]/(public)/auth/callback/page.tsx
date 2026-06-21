@@ -4,13 +4,14 @@ import { useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useAppDispatch } from "@/lib/hooks";
 import { setCredentials } from "@/lib/features/auth/authSlice";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 
 export default function AuthCallbackPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const dispatch = useAppDispatch();
   const t = useTranslations("AuthCallback");
+  const locale = useLocale();
 
   useEffect(() => {
     const token = searchParams.get("token");
@@ -20,16 +21,22 @@ export default function AuthCallbackPage() {
       try {
         const user = JSON.parse(userParam);
         dispatch(setCredentials({ user, token }));
-        router.push("/");
+        if (user?.user_type === "admin") {
+          router.push(`/${locale}/admin`);
+        } else {
+          router.push(`/${locale}`);
+        }
       } catch (error) {
         console.error("Error parsing user data:", error);
-        router.push("/login?error=Failed to parse authentication data");
+        router.push(
+          `/login?error=${encodeURIComponent("Failed to parse authentication data")}`,
+        );
       }
     } else {
       const error = searchParams.get("error") || "Authentication failed";
       router.push(`/login?error=${encodeURIComponent(error)}`);
     }
-  }, [searchParams, dispatch, router]);
+  }, [searchParams, dispatch, router, locale]);
 
   return (
     <div className="flex items-center justify-center min-h-screen">
