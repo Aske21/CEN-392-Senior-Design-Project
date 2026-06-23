@@ -31,12 +31,10 @@ app.use(
   }),
 );
 
-// Stripe webhook must receive the raw body for signature verification.
-app.use("/payment", webhookRouter);
-
 app.use(bodyParser.json());
 
 const loadRoutes = () => {
+  app.use("/payment", webhookRouter);
   app.use("/auth", authRoutes);
   app.use("/payment", paymentRoutes);
   app.use("/product", productRoutes);
