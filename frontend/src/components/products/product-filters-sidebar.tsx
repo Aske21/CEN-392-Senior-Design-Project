@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -30,6 +30,11 @@ export default function ProductFiltersSidebar({
   const t = useTranslations("ProductFilters");
   const [minPrice, setMinPrice] = useState(filters.minPrice?.toString() || "");
   const [maxPrice, setMaxPrice] = useState(filters.maxPrice?.toString() || "");
+
+  useEffect(() => {
+    setMinPrice(filters.minPrice?.toString() || "");
+    setMaxPrice(filters.maxPrice?.toString() || "");
+  }, [filters.minPrice, filters.maxPrice]);
 
   const handleCategoryChange = (value: string) => {
     onFiltersChange({

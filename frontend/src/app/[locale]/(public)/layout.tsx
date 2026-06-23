@@ -10,12 +10,12 @@ export default function PublicLayout({
   children: React.ReactNode;
 }) {
   return (
-    <>
+    <div className="overflow-x-hidden">
       <TopBar />
       <Header />
       <RegistrationBanner />
       <Container>{children}</Container>
       <Footer />
-    </>
+    </div>
   );
 }

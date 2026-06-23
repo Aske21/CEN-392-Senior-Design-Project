@@ -3,7 +3,6 @@ import cors from "cors";
 import express from "express";
 import config from "./config";
 import { appDataSource } from "./data-source";
-import path from "path";
 
 import paymentRoutes, { webhookRouter } from "../routes/payment";
 import productRoutes from "../routes/product";
@@ -32,13 +31,12 @@ app.use(
   }),
 );
 
-// Regular JSON parser for all routes (webhook will use raw body from its router)
+// Stripe webhook must receive the raw body for signature verification.
+app.use("/payment", webhookRouter);
+
 app.use(bodyParser.json());
 
 const loadRoutes = () => {
-  // Webhook route must be registered before JSON parser
-  app.use("/payment", webhookRouter);
-
   app.use("/auth", authRoutes);
   app.use("/payment", paymentRoutes);
   app.use("/product", productRoutes);
@@ -92,7 +90,7 @@ export const initializeServer = async () => {
 
   loadRoutes();
 
-  app.listen(config.port || 5000, () => {
-    console.log(`Server started at port ${config.port || 5000}`);
+  app.listen(config.port || 8080, () => {
+    console.log(`Server started at port ${config.port || 8080}`);
   });
 };

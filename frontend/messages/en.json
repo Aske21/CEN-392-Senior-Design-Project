@@ -9,34 +9,84 @@
     "newly_added": "Newly Added",
     "add_to_cart": "Add to Cart",
     "login": "Login",
+    "register": "Register",
     "profile": "Profile",
-    "logout": "Log out"
+    "logout": "Log out",
+    "admin": "Admin",
+    "home": "Home",
+    "userFallback": "User",
+    "registerNow": "Register",
+    "closeBanner": "Close banner",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "cartUpdated": "Cart updated",
+    "itemAdded": "Item added to cart!"
   },
   "Footer": {
     "eCommercePlatform": "Your go-to e-commerce platform.",
     "author": "Author"
   },
   "Landing": {
+    "heroEyebrow": "Curated for everyday life",
     "hero": "Welcome to ShoppyDev",
-    "hero_description": "Discover the best products at unbeatable prices",
+    "hero_description": "Discover quality products at fair prices, delivered with care.",
     "hero_cta": "Shop now",
+    "hero_secondary_cta": "Learn more",
     "benefitsSection": {
-      "title": "Why Shop With Us?",
+      "eyebrow": "Our promise",
+      "title": "Why shop with us?",
+      "subtitle": "A simple shopping experience built around quality, trust, and support.",
       "fastDelivery": {
-        "title": "Fast Delivery",
-        "description": "Get your products delivered quickly with our fast delivery service."
+        "title": "Fast delivery",
+        "description": "Orders are processed quickly and shipped straight to your door."
       },
       "securePayments": {
-        "title": "Secure Payments",
-        "description": "Shop with confidence knowing that your payments are secure."
+        "title": "Secure payments",
+        "description": "Your payment details are protected with industry-standard security."
       },
       "premiumProducts": {
-        "title": "Premium Products",
-        "description": "Discover high-quality premium products that meet your needs."
+        "title": "Quality products",
+        "description": "Every item is selected for quality, value, and lasting satisfaction."
+      },
+      "support": {
+        "title": "Friendly support",
+        "description": "Our team is here to help whenever you need assistance."
       }
+    },
+    "newArrivals": {
+      "eyebrow": "Fresh picks",
+      "title": "New arrivals",
+      "subtitle": "The latest products added to our store.",
+      "viewAll": "View all products"
+    },
+    "howItWorks": {
+      "eyebrow": "Simple process",
+      "title": "How it works",
+      "subtitle": "From browsing to delivery in three easy steps.",
+      "cta": "Start shopping",
+      "steps": {
+        "browse": {
+          "title": "Browse the catalog",
+          "description": "Explore categories and find products that fit your needs."
+        },
+        "cart": {
+          "title": "Add to your cart",
+          "description": "Save items you love and review your order before checkout."
+        },
+        "checkout": {
+          "title": "Checkout securely",
+          "description": "Complete your purchase with a fast and secure checkout flow."
+        }
+      }
+    },
+    "cta": {
+      "title": "Ready to start shopping?",
+      "subtitle": "Create an account for a smoother experience, or browse our catalog right away.",
+      "primary": "Browse products",
+      "secondary": "Create account"
     }
   },
-  "promoMessage": "Register and get 10% off your first purchase!",
+  "promoMessage": "10% off your first purchase",
   "LoginForm": {
     "title": "Login",
     "description": "Enter your email below to login to your account.",
@@ -45,7 +95,13 @@
     "signIn": "Sign in",
     "signingIn": "Signing in...",
     "signInWithGoogle": "Sign in with Google",
-    "orContinueWith": "Or continue with"
+    "orContinueWith": "Or continue with",
+    "emailPlaceholder": "example@email.com",
+    "noAdminAccess": "This account does not have admin access.",
+    "validation": {
+      "invalidEmail": "Invalid email address",
+      "passwordMin": "Password must be at least 6 characters"
+    }
   },
   "RegisterForm": {
     "title": "Register",
@@ -59,7 +115,24 @@
     "signIn": "Sign up",
     "registering": "Registering...",
     "signUpWithGoogle": "Sign up with Google",
-    "orContinueWith": "Or continue with"
+    "orContinueWith": "Or continue with",
+    "firstNamePlaceholder": "John",
+    "lastNamePlaceholder": "Doe",
+    "emailPlaceholder": "email@example.com",
+    "validation": {
+      "invalidEmail": "Invalid email address",
+      "passwordMin": "Password must be at least 6 characters",
+      "firstNameMin": "First name must be at least 2 characters",
+      "firstNameMax": "First name must be less than 50 characters",
+      "lastNameMin": "Last name must be at least 2 characters",
+      "lastNameMax": "Last name must be less than 50 characters",
+      "minAge": "You must be at least 18 years old",
+      "passwordsMismatch": "Passwords do not match"
+    }
+  },
+  "LoginPage": {
+    "loginTab": "Login",
+    "registerTab": "Register"
   },
   "LogoutPage": {
     "title": "Signing out...",
@@ -78,7 +151,8 @@
     "noProductsMessage": "Try adjusting your filters.",
     "previous": "Previous",
     "next": "Next",
-    "pageOfTotal": "Page {page} of {total}"
+    "pageOfTotal": "Page {page} of {total}",
+    "unknownError": "Unknown error"
   },
   "ProductFilters": {
     "filtersTitle": "Filters",
@@ -103,14 +177,16 @@
     "priceDesc": "Price (High to Low)"
   },
   "About": {
+    "eyebrow": "Our company",
     "title": "About Us",
-    "subtitle": "Learn more about our mission, values, and commitment to excellence",
+    "subtitle": "A simple store built around quality products and a better shopping experience.",
     "mission": {
       "title": "Our Mission",
       "description": "What drives us every day",
       "content": "At ShoppyDev, our mission is to provide customers with the best shopping experience possible. We are committed to offering high-quality products, exceptional customer service, and competitive prices. We believe that shopping should be convenient, enjoyable, and accessible to everyone."
     },
     "values": {
+      "eyebrow": "What we stand for",
       "title": "Our Values",
       "quality": {
         "title": "Quality First",
@@ -132,7 +208,8 @@
       "paragraph3": "Today, we continue to evolve and adapt to meet the changing needs of our customers while staying true to our core values and mission."
     },
     "whyChooseUs": {
-      "title": "Why Choose Us?",
+      "eyebrow": "The experience",
+      "title": "Why shop with us",
       "wideSelection": {
         "title": "Wide Selection",
         "description": "Browse through thousands of products across multiple categories to find exactly what you're looking for."
@@ -152,11 +229,13 @@
     }
   },
   "Contact": {
+    "eyebrow": "Support",
     "title": "Contact Us",
-    "subtitle": "We'd love to hear from you. Get in touch with us!",
+    "subtitle": "Questions, feedback, or order help — reach out anytime.",
     "info": {
-      "title": "Contact Information",
-      "description": "Feel free to reach out to us through any of the following channels:",
+      "eyebrow": "Reach us",
+      "title": "Contact information",
+      "description": "Use any of the channels below and we'll get back to you soon.",
       "email": {
         "title": "Email",
         "value": "support@shoppydev.com"
@@ -175,12 +254,13 @@
       }
     },
     "social": {
-      "title": "Follow Us",
-      "description": "Stay connected with us on social media for the latest updates, promotions, and news."
+      "title": "Follow us",
+      "description": "Stay up to date with new products, offers, and store news."
     },
     "form": {
-      "title": "Send us a Message",
-      "description": "Fill out the form below and we'll get back to you as soon as possible.",
+      "eyebrow": "Write to us",
+      "title": "Send a message",
+      "description": "Share a few details and we'll respond as soon as we can.",
       "name": "Name",
       "namePlaceholder": "Your full name",
       "email": "Email",
@@ -249,6 +329,326 @@
       "pageOfTotal": "Page {page} of {total}",
       "previous": "Previous",
       "next": "Next"
+    }
+  },
+  "OrderStatus": {
+    "pending": "Pending",
+    "paid": "Paid",
+    "processing": "Processing",
+    "shipped": "Shipped",
+    "delivered": "Delivered"
+  },
+  "UserRole": {
+    "admin": "Admin",
+    "customer": "Customer"
+  },
+  "LanguagePicker": {
+    "label": "Language",
+    "english": "English",
+    "german": "Deutsch"
+  },
+  "ThemeToggle": {
+    "toggleTheme": "Toggle theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "Cart": {
+    "title": "Shopping Cart",
+    "empty": "Your cart is empty.",
+    "browseProducts": "Browse products",
+    "orderSummary": "Order Summary",
+    "subtotal": "Subtotal",
+    "discount": "Discount ({code})",
+    "total": "Total",
+    "quantity": "Quantity:",
+    "each": "{price} each",
+    "remove": "Remove",
+    "removeDiscount": "Remove discount",
+    "discountPlaceholder": "Enter discount code",
+    "apply": "Apply",
+    "loginPrompt": "Please <login>login</login> to proceed with checkout.",
+    "processing": "Processing...",
+    "proceedToCheckout": "Proceed to checkout",
+    "clearCart": "Clear Cart",
+    "errors": {
+      "noCheckoutUrl": "No checkout URL received from server",
+      "emptyCheckoutUrl": "Empty checkout URL received",
+      "invalidUrlType": "Invalid URL type: {type}",
+      "invalidUrlProtocol": "Invalid URL protocol: {protocol}",
+      "invalidCheckoutUrl": "Invalid checkout URL",
+      "checkoutFailed": "Failed to create checkout session",
+      "enterDiscountCode": "Please enter a discount code",
+      "loginForDiscount": "Please login to apply discount codes",
+      "invalidDiscountCode": "Invalid discount code",
+      "validateDiscountFailed": "Failed to validate discount code"
+    }
+  },
+  "ProductPage": {
+    "notFoundTitle": "Product Not Found",
+    "notFoundMessage": "Unable to fetch product details. Please try again later.",
+    "browseProducts": "Browse Products",
+    "description": "Description",
+    "addToCart": "Add to Cart",
+    "viewCart": "View Cart",
+    "category": "Category",
+    "brand": "Brand",
+    "similarProducts": {
+      "eyebrow": "You may also like",
+      "title": "Similar products",
+      "subtitle": "Discover more items from our catalog.",
+      "subtitleWithCategory": "More from {category} and related picks.",
+      "viewAll": "View all"
+    },
+    "addedToCart": "Added to cart",
+    "addedToCartDescription": "{name} has been added to your cart"
+  },
+  "Admin": {
+    "common": {
+      "cancel": "Cancel",
+      "actions": "Actions",
+      "name": "Name",
+      "description": "Description",
+      "created": "Created",
+      "total": "Total",
+      "yes": "Yes",
+      "no": "No",
+      "unknown": "Unknown",
+      "imageUrl": "Image URL",
+      "imageUrlPlaceholder": "https://...",
+      "scrollHint": "Swipe horizontally to see more columns",
+      "createFailed": "Create failed",
+      "updateFailed": "Update failed",
+      "deleteFailed": "Delete failed",
+      "loadingCategories": "Loading categories...",
+      "errorLoadingCategories": "Error loading categories:",
+      "loadingProducts": "Loading products...",
+      "errorLoadingProducts": "Error loading products:",
+      "loadingDiscounts": "Loading discount codes...",
+      "errorLoadingDiscounts": "Error loading discount codes:",
+      "loadingOrders": "Loading orders...",
+      "errorLoadingOrders": "Error loading orders:",
+      "loadingUsers": "Loading users...",
+      "errorLoadingUsers": "Error loading users:",
+      "deleteConfirmCannotUndo": "This action cannot be undone.",
+      "deleteConfirmGeneric": "This cannot be undone.",
+      "markStatus": "Mark {status}"
+    },
+    "layout": {
+      "title": "Admin",
+      "backToStore": "Back to store",
+      "dashboard": "Dashboard",
+      "products": "Products",
+      "categories": "Categories",
+      "users": "Users",
+      "orders": "Orders",
+      "discounts": "Discounts"
+    },
+    "login": {
+      "title": "Admin Login",
+      "description": "Sign in with your admin account to access the dashboard.",
+      "backToStore": "Back to store"
+    },
+    "dashboard": {
+      "title": "Admin Dashboard",
+      "subtitle": "Quick overview of orders, users, products, discounts, and categories.",
+      "usersTitle": "Users",
+      "usersDescription": "Registered customers and admins",
+      "ordersTitle": "Orders",
+      "ordersDescription": "Recent sales volume",
+      "productsTitle": "Products",
+      "productsDescription": "Catalog size",
+      "categoriesTitle": "Categories",
+      "categoriesDescription": "Active product categories",
+      "latestOrders": "Latest Orders",
+      "latestOrdersDescription": "Most recent orders in the system.",
+      "noOrders": "No orders found.",
+      "tableId": "ID",
+      "tableCustomer": "Customer",
+      "tableStatus": "Status",
+      "tableTotal": "Total"
+    },
+    "categories": {
+      "title": "Categories",
+      "subtitle": "Create, review, and remove product categories.",
+      "createButton": "Create category",
+      "editTitle": "Edit category",
+      "newTitle": "New category",
+      "editDescription": "Update the category details.",
+      "newDescription": "Enter category details and save.",
+      "updateButton": "Update category",
+      "saveButton": "Save category",
+      "listTitle": "Category list",
+      "listDescription": "All available categories loaded from the API.",
+      "tableImage": "Image",
+      "editMenu": "Edit category",
+      "deleteMenu": "Delete category",
+      "footerCount": "{count} categories available.",
+      "deleteTitle": "Delete category",
+      "deleteDescription": "Are you sure you want to delete {name}?",
+      "deleteButton": "Delete category",
+      "toastAdded": "Category added",
+      "toastAddedDescription": "The category has been added successfully.",
+      "toastUpdated": "Category updated",
+      "toastUpdatedDescription": "Category {id} has been updated.",
+      "toastDeleted": "Category deleted",
+      "toastDeletedDescription": "Category #{id} has been removed."
+    },
+    "products": {
+      "title": "Products",
+      "subtitle": "Review and add new products to the store.",
+      "addButton": "Add product",
+      "editTitle": "Edit product",
+      "newTitle": "New product",
+      "editDescription": "Make updates and save them.",
+      "newDescription": "Fill out the product details to add it to inventory.",
+      "price": "Price",
+      "category": "Category",
+      "selectCategory": "Select category",
+      "saveChanges": "Save changes",
+      "saveProduct": "Save product",
+      "catalogTitle": "Product catalog",
+      "catalogDescription": "Latest products currently available in inventory.",
+      "tableCategory": "Category",
+      "tablePrice": "Price",
+      "uncategorized": "Uncategorized",
+      "editMenu": "Edit product",
+      "deleteMenu": "Delete product",
+      "footerCount": "{count} products shown.",
+      "deleteTitle": "Delete product",
+      "deleteDescription": "Are you sure you want to delete {name}?",
+      "deleteButton": "Delete product",
+      "toastAdded": "Product added",
+      "toastAddedDescription": "The product has been added to the catalog.",
+      "toastUpdated": "Product updated",
+      "toastUpdatedDescription": "Product {id} has been saved.",
+      "toastDeleted": "Product deleted",
+      "toastDeletedDescription": "Product #{id} has been removed."
+    },
+    "discounts": {
+      "title": "Discount codes",
+      "subtitle": "Create and manage site-wide discount codes.",
+      "addButton": "Add discount",
+      "listTitle": "Active discount codes",
+      "listDescription": "Manage code availability and expiration for campaigns.",
+      "tableCode": "Code",
+      "tableDiscount": "Discount",
+      "tableActive": "Active",
+      "tableUses": "Uses",
+      "deleteMenu": "Delete discount",
+      "footerCount": "{count} discount codes",
+      "newTitle": "New discount code",
+      "newDescription": "Set up your code and optional limits.",
+      "code": "Code",
+      "codeTitle": "Uppercase letters, numbers, dashes, and underscores only",
+      "discountPercentage": "Discount percentage",
+      "startDate": "Start date",
+      "endDate": "End date",
+      "maxUsesPerUser": "Max uses per user",
+      "maxTotalUses": "Max total uses",
+      "unlimitedPlaceholder": "Leave blank for unlimited",
+      "newUsersOnly": "New users only",
+      "saveButton": "Save discount",
+      "deleteTitle": "Delete discount",
+      "deleteDescription": "Are you sure you want to delete {code}?",
+      "deleteButton": "Delete discount",
+      "toastCreated": "Discount created",
+      "toastCreatedDescription": "The discount code is now available.",
+      "toastDeleted": "Discount deleted",
+      "toastDeletedDescription": "Discount #{id} has been removed.",
+      "toastMissingFields": "Missing fields",
+      "toastMissingFieldsDescription": "Please fill in name, code, and discount percentage.",
+      "toastInvalidPercentage": "Invalid percentage",
+      "toastInvalidPercentageDescription": "Enter a valid discount percentage between 1 and 100."
+    },
+    "orders": {
+      "title": "Orders",
+      "subtitle": "Manage order status and review recent purchases.",
+      "listTitle": "Order list",
+      "listDescription": "Update statuses and keep track of recent orders.",
+      "tableOrder": "Order",
+      "tableUser": "User",
+      "tableStatus": "Status",
+      "statusPlaceholder": "Status",
+      "footerCount": "{count} orders shown.",
+      "toastUpdated": "Order updated",
+      "toastUpdatedDescription": "Order #{id} status changed to {status}."
+    },
+    "users": {
+      "title": "Users",
+      "subtitle": "Review accounts, confirm role changes, and remove unwanted users safely.",
+      "totalBadge": "{count} users",
+      "insightsTitle": "User insights",
+      "insightsDescription": "Quick account metrics and role breakdowns.",
+      "totalAccounts": "Total registered accounts",
+      "roleBreakdown": "Admins and customers count",
+      "adminsCount": "Admins:",
+      "customersCount": "Customers:",
+      "listTitle": "User list",
+      "listDescription": "Manage users, change roles, and delete accounts safely.",
+      "tableId": "ID",
+      "tableEmail": "Email",
+      "tableRole": "Role",
+      "changeRoleMenu": "Change role",
+      "deleteUserMenu": "Delete user",
+      "footerCount": "{count} users shown.",
+      "confirmDeletion": "Confirm deletion",
+      "confirmRoleChange": "Confirm role change",
+      "deleteDescription": "This action will permanently remove {email}.",
+      "roleChangeDescription": "Update {email} to the selected role.",
+      "currentRole": "Current role: {role}",
+      "selectRole": "Select role",
+      "deleteUser": "Delete user",
+      "saveRole": "Save role",
+      "toastRoleUpdated": "Role updated",
+      "toastRoleUpdatedDescription": "User {id} is now {role}.",
+      "toastUserRemoved": "User removed",
+      "toastUserRemovedDescription": "User #{id} has been deleted."
+    }
+  },
+  "Metadata": {
+    "siteName": "ShoppyDev",
+    "defaultTitle": "ShoppyDev – Online Store",
+    "defaultDescription": "Discover quality products at fair prices. Shop curated items with fast delivery and secure checkout at ShoppyDev.",
+    "pages": {
+      "home": "Home",
+      "products": "Products",
+      "productDetail": "{name}",
+      "about": "About Us",
+      "contact": "Contact",
+      "cart": "Cart",
+      "login": "Login",
+      "profile": "My Profile",
+      "orderSuccess": "Order Confirmed",
+      "authCallback": "Signing In",
+      "authLogout": "Signing Out",
+      "admin": "Admin Dashboard",
+      "adminProducts": "Manage Products",
+      "adminCategories": "Manage Categories",
+      "adminUsers": "Manage Users",
+      "adminOrders": "Manage Orders",
+      "adminDiscounts": "Manage Discounts",
+      "adminLogin": "Admin Login"
+    },
+    "descriptions": {
+      "home": "Welcome to ShoppyDev. Browse new arrivals, explore categories, and shop quality products online.",
+      "products": "Browse our full product catalog with search, filters, and sorting.",
+      "productDetail": "View details, pricing, and availability for {name}.",
+      "about": "Learn about ShoppyDev, our mission, and why customers shop with us.",
+      "contact": "Get in touch with the ShoppyDev team for support and questions.",
+      "cart": "Review items in your cart and proceed to secure checkout.",
+      "login": "Sign in to your ShoppyDev account or create a new one.",
+      "profile": "Manage your ShoppyDev account and view your order history.",
+      "orderSuccess": "Your order was placed successfully.",
+      "authCallback": "Completing your ShoppyDev sign-in.",
+      "authLogout": "Signing you out of your ShoppyDev account.",
+      "admin": "Manage products, orders, users, and store settings.",
+      "adminProducts": "Create, update, and remove products in the ShoppyDev catalog.",
+      "adminCategories": "Organize products with categories and collections.",
+      "adminUsers": "View and manage customer and admin accounts.",
+      "adminOrders": "Track and update customer orders.",
+      "adminDiscounts": "Create and manage discount codes.",
+      "adminLogin": "Sign in to the ShoppyDev admin dashboard."
     }
   }
 }

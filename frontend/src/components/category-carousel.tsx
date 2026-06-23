@@ -1,5 +1,9 @@
+"use client";
+
 import * as React from "react";
+import Link from "next/link";
 import Autoplay from "embla-carousel-autoplay";
+import { useLocale, useTranslations } from "next-intl";
 
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -10,7 +14,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Category } from "@/@types/category";
-import { useTranslations } from "next-intl";
+import { buildProductsHref } from "@/lib/utils/product-filters-url";
 
 interface CategoryCarouselProps {
   categories: Category[];
@@ -18,46 +22,53 @@ interface CategoryCarouselProps {
 
 export function CategoryCarousel({ categories }: CategoryCarouselProps) {
   const t = useTranslations("Common");
+  const locale = useLocale();
   const plugin = React.useRef(
-    Autoplay({ delay: 2000, stopOnInteraction: true })
+    Autoplay({ delay: 2000, stopOnInteraction: true }),
   );
 
   return (
-    <div className="mb-8">
-      <h2 className="text-3xl font-semibold mb-10 text-center">
+    <div className="mb-8 overflow-hidden">
+      <h2 className="mb-10 text-center text-3xl font-semibold tracking-tight">
         {t("browseCategories")}
       </h2>
       <Carousel
         plugins={[plugin.current]}
-        className="w-full max-w-full"
+        className="w-full"
         onMouseEnter={plugin.current.stop}
         onMouseLeave={plugin.current.reset}
       >
         <CarouselContent className="-ml-1">
-          {categories.map((category, index) => (
+          {categories.map((category) => (
             <CarouselItem
-              key={index}
+              key={category.id}
               className="pl-1 md:basis-1/2 lg:basis-1/3"
             >
               <div className="p-1">
-                <Card
-                  style={{
-                    backgroundImage: `url(${category.image})`,
-                    backgroundSize: "cover",
-                  }}
+                <Link
+                  href={buildProductsHref(locale, { categoryId: category.id })}
+                  className="block transition-transform hover:scale-[1.02]"
                 >
-                  <CardContent className="flex aspect-square items-center justify-center p-6  bg-black bg-opacity-50">
-                    <span className="text-2xl font-semibold text-white">
-                      {category.name}
-                    </span>
-                  </CardContent>
-                </Card>
+                  <Card
+                    className="overflow-hidden"
+                    style={{
+                      backgroundImage: `url(${category.image})`,
+                      backgroundSize: "cover",
+                    }}
+                  >
+                    <CardContent className="flex aspect-square items-center justify-center bg-black/50 p-6">
+                      <span className="text-2xl font-semibold text-white">
+                        {category.name}
+                      </span>
+                    </CardContent>
+                  </Card>
+                </Link>
               </div>
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
+        <CarouselPrevious className="hidden sm:flex" />
+        <CarouselNext className="hidden sm:flex" />
       </Carousel>
     </div>
   );

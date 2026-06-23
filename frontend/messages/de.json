@@ -9,34 +9,84 @@
     "newly_added": "Neu hinzugefügt",
     "add_to_cart": "In den Warenkorb",
     "login": "Login",
+    "register": "Registrieren",
     "profile": "Profil",
-    "logout": "Abmelden"
+    "logout": "Abmelden",
+    "admin": "Admin",
+    "home": "Startseite",
+    "userFallback": "Benutzer",
+    "registerNow": "Registrieren",
+    "closeBanner": "Banner schließen",
+    "openMenu": "Menü öffnen",
+    "closeMenu": "Menü schließen",
+    "cartUpdated": "Warenkorb aktualisiert",
+    "itemAdded": "Artikel zum Warenkorb hinzugefügt!"
   },
   "Footer": {
     "eCommercePlatform": "Ihre bevorzugte E-Commerce-Plattform.",
     "author": "Autor"
   },
   "Landing": {
+    "heroEyebrow": "Für den Alltag kuratiert",
     "hero": "Willkommen bei ShoppyDev",
-    "hero_description": "Entdecken Sie die besten Produkte zu unschlagbaren Preisen",
+    "hero_description": "Entdecken Sie Qualitätsprodukte zu fairen Preisen, mit Sorgfalt geliefert.",
     "hero_cta": "Jetzt einkaufen",
+    "hero_secondary_cta": "Mehr erfahren",
     "benefitsSection": {
+      "eyebrow": "Unser Versprechen",
       "title": "Warum bei uns einkaufen?",
+      "subtitle": "Ein einfaches Shopping-Erlebnis mit Fokus auf Qualität, Vertrauen und Support.",
       "fastDelivery": {
         "title": "Schnelle Lieferung",
-        "description": "Erhalten Sie Ihre Produkte schnell geliefert mit unserem schnellen Lieferservice."
+        "description": "Bestellungen werden schnell bearbeitet und direkt zu Ihnen geliefert."
       },
       "securePayments": {
         "title": "Sichere Zahlungen",
-        "description": "Kaufen Sie mit Vertrauen ein, denn Ihre Zahlungen sind sicher."
+        "description": "Ihre Zahlungsdaten sind durch branchenübliche Sicherheit geschützt."
       },
       "premiumProducts": {
-        "title": "Premium-Produkte",
-        "description": "Entdecken Sie hochwertige Premium-Produkte, die Ihren Anforderungen entsprechen."
+        "title": "Qualitätsprodukte",
+        "description": "Jeder Artikel wird für Qualität, Wert und langfristige Zufriedenheit ausgewählt."
+      },
+      "support": {
+        "title": "Freundlicher Support",
+        "description": "Unser Team hilft Ihnen, wann immer Sie Unterstützung benötigen."
       }
+    },
+    "newArrivals": {
+      "eyebrow": "Neu eingetroffen",
+      "title": "Neue Artikel",
+      "subtitle": "Die neuesten Produkte in unserem Shop.",
+      "viewAll": "Alle Produkte anzeigen"
+    },
+    "howItWorks": {
+      "eyebrow": "Einfacher Ablauf",
+      "title": "So funktioniert's",
+      "subtitle": "Vom Stöbern bis zur Lieferung in drei einfachen Schritten.",
+      "cta": "Jetzt einkaufen",
+      "steps": {
+        "browse": {
+          "title": "Katalog durchstöbern",
+          "description": "Entdecken Sie Kategorien und finden Sie passende Produkte."
+        },
+        "cart": {
+          "title": "In den Warenkorb",
+          "description": "Speichern Sie Favoriten und prüfen Sie Ihre Bestellung vor dem Checkout."
+        },
+        "checkout": {
+          "title": "Sicher bezahlen",
+          "description": "Schließen Sie Ihren Einkauf mit einem schnellen und sicheren Checkout ab."
+        }
+      }
+    },
+    "cta": {
+      "title": "Bereit zum Einkaufen?",
+      "subtitle": "Erstellen Sie ein Konto für ein reibungsloses Erlebnis oder stöbern Sie direkt im Katalog.",
+      "primary": "Produkte ansehen",
+      "secondary": "Konto erstellen"
     }
   },
-  "promoMessage": "Registrieren Sie sich und erhalten Sie 10% Rabatt auf Ihren ersten Einkauf!",
+  "promoMessage": "10 % Rabatt beim ersten Einkauf",
   "LoginForm": {
     "title": "Anmelden",
     "description": "Geben Sie unten Ihre E-Mail-Adresse ein, um sich anzumelden.",
@@ -45,7 +95,13 @@
     "signIn": "Einloggen",
     "signingIn": "Anmeldung läuft...",
     "signInWithGoogle": "Mit Google anmelden",
-    "orContinueWith": "Oder fortfahren mit"
+    "orContinueWith": "Oder fortfahren mit",
+    "emailPlaceholder": "beispiel@email.com",
+    "noAdminAccess": "Dieses Konto hat keinen Admin-Zugang.",
+    "validation": {
+      "invalidEmail": "Ungültige E-Mail-Adresse",
+      "passwordMin": "Passwort muss mindestens 6 Zeichen lang sein"
+    }
   },
   "RegisterForm": {
     "title": "Registrieren",
@@ -59,7 +115,24 @@
     "signIn": "Registrieren",
     "registering": "Registrierung läuft...",
     "signUpWithGoogle": "Mit Google registrieren",
-    "orContinueWith": "Oder fortfahren mit"
+    "orContinueWith": "Oder fortfahren mit",
+    "firstNamePlaceholder": "Max",
+    "lastNamePlaceholder": "Mustermann",
+    "emailPlaceholder": "email@beispiel.com",
+    "validation": {
+      "invalidEmail": "Ungültige E-Mail-Adresse",
+      "passwordMin": "Passwort muss mindestens 6 Zeichen lang sein",
+      "firstNameMin": "Vorname muss mindestens 2 Zeichen lang sein",
+      "firstNameMax": "Vorname darf maximal 50 Zeichen lang sein",
+      "lastNameMin": "Nachname muss mindestens 2 Zeichen lang sein",
+      "lastNameMax": "Nachname darf maximal 50 Zeichen lang sein",
+      "minAge": "Sie müssen mindestens 18 Jahre alt sein",
+      "passwordsMismatch": "Passwörter stimmen nicht überein"
+    }
+  },
+  "LoginPage": {
+    "loginTab": "Anmelden",
+    "registerTab": "Registrieren"
   },
   "LogoutPage": {
     "title": "Abmeldung...",
@@ -78,7 +151,8 @@
     "noProductsMessage": "Passen Sie Ihre Filter an.",
     "previous": "Zurück",
     "next": "Weiter",
-    "pageOfTotal": "Seite {page} von {total}"
+    "pageOfTotal": "Seite {page} von {total}",
+    "unknownError": "Unbekannter Fehler"
   },
   "ProductFilters": {
     "filtersTitle": "Filter",
@@ -103,14 +177,16 @@
     "priceDesc": "Preis (absteigend)"
   },
   "About": {
+    "eyebrow": "Unser Unternehmen",
     "title": "Über uns",
-    "subtitle": "Erfahren Sie mehr über unsere Mission, Werte und unser Engagement für Exzellenz",
+    "subtitle": "Ein schlichter Shop mit Fokus auf Qualität und ein besseres Einkaufserlebnis.",
     "mission": {
       "title": "Unsere Mission",
       "description": "Was uns jeden Tag antreibt",
       "content": "Bei ShoppyDev ist es unsere Mission, unseren Kunden das bestmögliche Einkaufserlebnis zu bieten. Wir sind bestrebt, hochwertige Produkte, außergewöhnlichen Kundenservice und wettbewerbsfähige Preise anzubieten. Wir glauben, dass Einkaufen bequem, angenehm und für jeden zugänglich sein sollte."
     },
     "values": {
+      "eyebrow": "Wofür wir stehen",
       "title": "Unsere Werte",
       "quality": {
         "title": "Qualität zuerst",
@@ -132,7 +208,8 @@
       "paragraph3": "Heute entwickeln und passen wir uns weiterhin an, um die sich ändernden Bedürfnisse unserer Kunden zu erfüllen, während wir unseren Kernwerten und unserer Mission treu bleiben."
     },
     "whyChooseUs": {
-      "title": "Warum uns wählen?",
+      "eyebrow": "Das Erlebnis",
+      "title": "Warum bei uns einkaufen",
       "wideSelection": {
         "title": "Große Auswahl",
         "description": "Durchsuchen Sie Tausende von Produkten in mehreren Kategorien, um genau das zu finden, wonach Sie suchen."
@@ -152,11 +229,13 @@
     }
   },
   "Contact": {
+    "eyebrow": "Support",
     "title": "Kontaktieren Sie uns",
-    "subtitle": "Wir freuen uns, von Ihnen zu hören. Nehmen Sie Kontakt mit uns auf!",
+    "subtitle": "Fragen, Feedback oder Hilfe bei Bestellungen — melden Sie sich jederzeit.",
     "info": {
+      "eyebrow": "So erreichen Sie uns",
       "title": "Kontaktinformationen",
-      "description": "Kontaktieren Sie uns gerne über einen der folgenden Kanäle:",
+      "description": "Nutzen Sie einen der folgenden Kanäle — wir melden uns bald bei Ihnen.",
       "email": {
         "title": "E-Mail",
         "value": "support@shoppydev.com"
@@ -176,11 +255,12 @@
     },
     "social": {
       "title": "Folgen Sie uns",
-      "description": "Bleiben Sie über soziale Medien mit uns in Verbindung, um die neuesten Updates, Aktionen und Nachrichten zu erhalten."
+      "description": "Bleiben Sie über neue Produkte, Angebote und Neuigkeiten informiert."
     },
     "form": {
-      "title": "Senden Sie uns eine Nachricht",
-      "description": "Füllen Sie das untenstehende Formular aus und wir werden uns so schnell wie möglich bei Ihnen melden.",
+      "eyebrow": "Schreiben Sie uns",
+      "title": "Nachricht senden",
+      "description": "Teilen Sie uns kurz mit, worum es geht — wir antworten so schnell wie möglich.",
       "name": "Name",
       "namePlaceholder": "Ihr vollständiger Name",
       "email": "E-Mail",
@@ -249,6 +329,326 @@
       "pageOfTotal": "Seite {page} von {total}",
       "previous": "Zurück",
       "next": "Weiter"
+    }
+  },
+  "OrderStatus": {
+    "pending": "Ausstehend",
+    "paid": "Bezahlt",
+    "processing": "In Bearbeitung",
+    "shipped": "Versendet",
+    "delivered": "Geliefert"
+  },
+  "UserRole": {
+    "admin": "Admin",
+    "customer": "Kunde"
+  },
+  "LanguagePicker": {
+    "label": "Sprache",
+    "english": "English",
+    "german": "Deutsch"
+  },
+  "ThemeToggle": {
+    "toggleTheme": "Design umschalten",
+    "light": "Hell",
+    "dark": "Dunkel",
+    "system": "System"
+  },
+  "Cart": {
+    "title": "Warenkorb",
+    "empty": "Ihr Warenkorb ist leer.",
+    "browseProducts": "Produkte durchsuchen",
+    "orderSummary": "Bestellübersicht",
+    "subtotal": "Zwischensumme",
+    "discount": "Rabatt ({code})",
+    "total": "Gesamt",
+    "quantity": "Menge:",
+    "each": "{price} pro Stück",
+    "remove": "Entfernen",
+    "removeDiscount": "Rabatt entfernen",
+    "discountPlaceholder": "Rabattcode eingeben",
+    "apply": "Anwenden",
+    "loginPrompt": "Bitte <login>anmelden</login>, um zur Kasse zu gehen.",
+    "processing": "Wird verarbeitet...",
+    "proceedToCheckout": "Zur Kasse",
+    "clearCart": "Warenkorb leeren",
+    "errors": {
+      "noCheckoutUrl": "Keine Checkout-URL vom Server erhalten",
+      "emptyCheckoutUrl": "Leere Checkout-URL erhalten",
+      "invalidUrlType": "Ungültiger URL-Typ: {type}",
+      "invalidUrlProtocol": "Ungültiges URL-Protokoll: {protocol}",
+      "invalidCheckoutUrl": "Ungültige Checkout-URL",
+      "checkoutFailed": "Checkout-Sitzung konnte nicht erstellt werden",
+      "enterDiscountCode": "Bitte geben Sie einen Rabattcode ein",
+      "loginForDiscount": "Bitte melden Sie sich an, um Rabattcodes anzuwenden",
+      "invalidDiscountCode": "Ungültiger Rabattcode",
+      "validateDiscountFailed": "Rabattcode konnte nicht validiert werden"
+    }
+  },
+  "ProductPage": {
+    "notFoundTitle": "Produkt nicht gefunden",
+    "notFoundMessage": "Produktdetails konnten nicht abgerufen werden. Bitte versuchen Sie es später erneut.",
+    "browseProducts": "Produkte durchsuchen",
+    "description": "Beschreibung",
+    "addToCart": "In den Warenkorb",
+    "viewCart": "Warenkorb anzeigen",
+    "category": "Kategorie",
+    "brand": "Marke",
+    "similarProducts": {
+      "eyebrow": "Das könnte Ihnen auch gefallen",
+      "title": "Ähnliche Produkte",
+      "subtitle": "Entdecken Sie weitere Artikel aus unserem Katalog.",
+      "subtitleWithCategory": "Mehr aus {category} und verwandte Empfehlungen.",
+      "viewAll": "Alle anzeigen"
+    },
+    "addedToCart": "Zum Warenkorb hinzugefügt",
+    "addedToCartDescription": "{name} wurde in Ihren Warenkorb gelegt"
+  },
+  "Admin": {
+    "common": {
+      "cancel": "Abbrechen",
+      "actions": "Aktionen",
+      "name": "Name",
+      "description": "Beschreibung",
+      "created": "Erstellt",
+      "total": "Gesamt",
+      "yes": "Ja",
+      "no": "Nein",
+      "unknown": "Unbekannt",
+      "imageUrl": "Bild-URL",
+      "imageUrlPlaceholder": "https://...",
+      "scrollHint": "Wischen Sie horizontal, um weitere Spalten zu sehen",
+      "createFailed": "Erstellen fehlgeschlagen",
+      "updateFailed": "Aktualisieren fehlgeschlagen",
+      "deleteFailed": "Löschen fehlgeschlagen",
+      "loadingCategories": "Kategorien werden geladen...",
+      "errorLoadingCategories": "Fehler beim Laden der Kategorien:",
+      "loadingProducts": "Produkte werden geladen...",
+      "errorLoadingProducts": "Fehler beim Laden der Produkte:",
+      "loadingDiscounts": "Rabattcodes werden geladen...",
+      "errorLoadingDiscounts": "Fehler beim Laden der Rabattcodes:",
+      "loadingOrders": "Bestellungen werden geladen...",
+      "errorLoadingOrders": "Fehler beim Laden der Bestellungen:",
+      "loadingUsers": "Benutzer werden geladen...",
+      "errorLoadingUsers": "Fehler beim Laden der Benutzer:",
+      "deleteConfirmCannotUndo": "Diese Aktion kann nicht rückgängig gemacht werden.",
+      "deleteConfirmGeneric": "Dies kann nicht rückgängig gemacht werden.",
+      "markStatus": "{status} markieren"
+    },
+    "layout": {
+      "title": "Admin",
+      "backToStore": "Zurück zum Shop",
+      "dashboard": "Dashboard",
+      "products": "Produkte",
+      "categories": "Kategorien",
+      "users": "Benutzer",
+      "orders": "Bestellungen",
+      "discounts": "Rabatte"
+    },
+    "login": {
+      "title": "Admin-Anmeldung",
+      "description": "Melden Sie sich mit Ihrem Admin-Konto an, um auf das Dashboard zuzugreifen.",
+      "backToStore": "Zurück zum Shop"
+    },
+    "dashboard": {
+      "title": "Admin-Dashboard",
+      "subtitle": "Schneller Überblick über Bestellungen, Benutzer, Produkte, Rabatte und Kategorien.",
+      "usersTitle": "Benutzer",
+      "usersDescription": "Registrierte Kunden und Admins",
+      "ordersTitle": "Bestellungen",
+      "ordersDescription": "Aktuelles Verkaufsvolumen",
+      "productsTitle": "Produkte",
+      "productsDescription": "Kataloggröße",
+      "categoriesTitle": "Kategorien",
+      "categoriesDescription": "Aktive Produktkategorien",
+      "latestOrders": "Neueste Bestellungen",
+      "latestOrdersDescription": "Die neuesten Bestellungen im System.",
+      "noOrders": "Keine Bestellungen gefunden.",
+      "tableId": "ID",
+      "tableCustomer": "Kunde",
+      "tableStatus": "Status",
+      "tableTotal": "Gesamt"
+    },
+    "categories": {
+      "title": "Kategorien",
+      "subtitle": "Produktkategorien erstellen, prüfen und entfernen.",
+      "createButton": "Kategorie erstellen",
+      "editTitle": "Kategorie bearbeiten",
+      "newTitle": "Neue Kategorie",
+      "editDescription": "Kategoriedetails aktualisieren.",
+      "newDescription": "Kategoriedetails eingeben und speichern.",
+      "updateButton": "Kategorie aktualisieren",
+      "saveButton": "Kategorie speichern",
+      "listTitle": "Kategorieliste",
+      "listDescription": "Alle verfügbaren Kategorien aus der API.",
+      "tableImage": "Bild",
+      "editMenu": "Kategorie bearbeiten",
+      "deleteMenu": "Kategorie löschen",
+      "footerCount": "{count} Kategorien verfügbar.",
+      "deleteTitle": "Kategorie löschen",
+      "deleteDescription": "Möchten Sie {name} wirklich löschen?",
+      "deleteButton": "Kategorie löschen",
+      "toastAdded": "Kategorie hinzugefügt",
+      "toastAddedDescription": "Die Kategorie wurde erfolgreich hinzugefügt.",
+      "toastUpdated": "Kategorie aktualisiert",
+      "toastUpdatedDescription": "Kategorie {id} wurde aktualisiert.",
+      "toastDeleted": "Kategorie gelöscht",
+      "toastDeletedDescription": "Kategorie #{id} wurde entfernt."
+    },
+    "products": {
+      "title": "Produkte",
+      "subtitle": "Produkte prüfen und neue zum Shop hinzufügen.",
+      "addButton": "Produkt hinzufügen",
+      "editTitle": "Produkt bearbeiten",
+      "newTitle": "Neues Produkt",
+      "editDescription": "Änderungen vornehmen und speichern.",
+      "newDescription": "Produktdetails ausfüllen, um es dem Inventar hinzuzufügen.",
+      "price": "Preis",
+      "category": "Kategorie",
+      "selectCategory": "Kategorie auswählen",
+      "saveChanges": "Änderungen speichern",
+      "saveProduct": "Produkt speichern",
+      "catalogTitle": "Produktkatalog",
+      "catalogDescription": "Neueste Produkte, die derzeit im Inventar verfügbar sind.",
+      "tableCategory": "Kategorie",
+      "tablePrice": "Preis",
+      "uncategorized": "Ohne Kategorie",
+      "editMenu": "Produkt bearbeiten",
+      "deleteMenu": "Produkt löschen",
+      "footerCount": "{count} Produkte angezeigt.",
+      "deleteTitle": "Produkt löschen",
+      "deleteDescription": "Möchten Sie {name} wirklich löschen?",
+      "deleteButton": "Produkt löschen",
+      "toastAdded": "Produkt hinzugefügt",
+      "toastAddedDescription": "Das Produkt wurde dem Katalog hinzugefügt.",
+      "toastUpdated": "Produkt aktualisiert",
+      "toastUpdatedDescription": "Produkt {id} wurde gespeichert.",
+      "toastDeleted": "Produkt gelöscht",
+      "toastDeletedDescription": "Produkt #{id} wurde entfernt."
+    },
+    "discounts": {
+      "title": "Rabattcodes",
+      "subtitle": "Shop-weite Rabattcodes erstellen und verwalten.",
+      "addButton": "Rabatt hinzufügen",
+      "listTitle": "Aktive Rabattcodes",
+      "listDescription": "Code-Verfügbarkeit und Ablauf für Kampagnen verwalten.",
+      "tableCode": "Code",
+      "tableDiscount": "Rabatt",
+      "tableActive": "Aktiv",
+      "tableUses": "Nutzungen",
+      "deleteMenu": "Rabatt löschen",
+      "footerCount": "{count} Rabattcodes",
+      "newTitle": "Neuer Rabattcode",
+      "newDescription": "Code und optionale Limits einrichten.",
+      "code": "Code",
+      "codeTitle": "Nur Großbuchstaben, Zahlen, Bindestriche und Unterstriche",
+      "discountPercentage": "Rabattprozentsatz",
+      "startDate": "Startdatum",
+      "endDate": "Enddatum",
+      "maxUsesPerUser": "Max. Nutzungen pro Benutzer",
+      "maxTotalUses": "Max. Gesamtnutzungen",
+      "unlimitedPlaceholder": "Leer lassen für unbegrenzt",
+      "newUsersOnly": "Nur neue Benutzer",
+      "saveButton": "Rabatt speichern",
+      "deleteTitle": "Rabatt löschen",
+      "deleteDescription": "Möchten Sie {code} wirklich löschen?",
+      "deleteButton": "Rabatt löschen",
+      "toastCreated": "Rabatt erstellt",
+      "toastCreatedDescription": "Der Rabattcode ist jetzt verfügbar.",
+      "toastDeleted": "Rabatt gelöscht",
+      "toastDeletedDescription": "Rabatt #{id} wurde entfernt.",
+      "toastMissingFields": "Fehlende Felder",
+      "toastMissingFieldsDescription": "Bitte Name, Code und Rabattprozentsatz ausfüllen.",
+      "toastInvalidPercentage": "Ungültiger Prozentsatz",
+      "toastInvalidPercentageDescription": "Geben Sie einen gültigen Rabattprozentsatz zwischen 1 und 100 ein."
+    },
+    "orders": {
+      "title": "Bestellungen",
+      "subtitle": "Bestellstatus verwalten und aktuelle Käufe prüfen.",
+      "listTitle": "Bestellliste",
+      "listDescription": "Status aktualisieren und aktuelle Bestellungen verfolgen.",
+      "tableOrder": "Bestellung",
+      "tableUser": "Benutzer",
+      "tableStatus": "Status",
+      "statusPlaceholder": "Status",
+      "footerCount": "{count} Bestellungen angezeigt.",
+      "toastUpdated": "Bestellung aktualisiert",
+      "toastUpdatedDescription": "Bestellung #{id} Status geändert zu {status}."
+    },
+    "users": {
+      "title": "Benutzer",
+      "subtitle": "Konten prüfen, Rollenänderungen bestätigen und unerwünschte Benutzer sicher entfernen.",
+      "totalBadge": "{count} Benutzer",
+      "insightsTitle": "Benutzer-Insights",
+      "insightsDescription": "Schnelle Kontometriken und Rollenübersicht.",
+      "totalAccounts": "Registrierte Konten gesamt",
+      "roleBreakdown": "Anzahl Admins und Kunden",
+      "adminsCount": "Admins:",
+      "customersCount": "Kunden:",
+      "listTitle": "Benutzerliste",
+      "listDescription": "Benutzer verwalten, Rollen ändern und Konten sicher löschen.",
+      "tableId": "ID",
+      "tableEmail": "E-Mail",
+      "tableRole": "Rolle",
+      "changeRoleMenu": "Rolle ändern",
+      "deleteUserMenu": "Benutzer löschen",
+      "footerCount": "{count} Benutzer angezeigt.",
+      "confirmDeletion": "Löschen bestätigen",
+      "confirmRoleChange": "Rollenänderung bestätigen",
+      "deleteDescription": "Diese Aktion entfernt {email} dauerhaft.",
+      "roleChangeDescription": "{email} auf die ausgewählte Rolle aktualisieren.",
+      "currentRole": "Aktuelle Rolle: {role}",
+      "selectRole": "Rolle auswählen",
+      "deleteUser": "Benutzer löschen",
+      "saveRole": "Rolle speichern",
+      "toastRoleUpdated": "Rolle aktualisiert",
+      "toastRoleUpdatedDescription": "Benutzer {id} ist jetzt {role}.",
+      "toastUserRemoved": "Benutzer entfernt",
+      "toastUserRemovedDescription": "Benutzer #{id} wurde gelöscht."
+    }
+  },
+  "Metadata": {
+    "siteName": "ShoppyDev",
+    "defaultTitle": "ShoppyDev – Online-Shop",
+    "defaultDescription": "Entdecken Sie hochwertige Produkte zu fairen Preisen. Shoppen Sie mit schneller Lieferung und sicherer Kasse bei ShoppyDev.",
+    "pages": {
+      "home": "Startseite",
+      "products": "Produkte",
+      "productDetail": "{name}",
+      "about": "Über uns",
+      "contact": "Kontakt",
+      "cart": "Warenkorb",
+      "login": "Anmelden",
+      "profile": "Mein Profil",
+      "orderSuccess": "Bestellung bestätigt",
+      "authCallback": "Anmeldung läuft",
+      "authLogout": "Abmeldung läuft",
+      "admin": "Admin-Dashboard",
+      "adminProducts": "Produkte verwalten",
+      "adminCategories": "Kategorien verwalten",
+      "adminUsers": "Benutzer verwalten",
+      "adminOrders": "Bestellungen verwalten",
+      "adminDiscounts": "Rabatte verwalten",
+      "adminLogin": "Admin-Anmeldung"
+    },
+    "descriptions": {
+      "home": "Willkommen bei ShoppyDev. Entdecken Sie Neuheiten, Kategorien und hochwertige Produkte.",
+      "products": "Durchsuchen Sie unseren Produktkatalog mit Suche, Filtern und Sortierung.",
+      "productDetail": "Details, Preise und Verfügbarkeit für {name}.",
+      "about": "Erfahren Sie mehr über ShoppyDev, unsere Mission und unseren Shop.",
+      "contact": "Kontaktieren Sie das ShoppyDev-Team für Support und Fragen.",
+      "cart": "Überprüfen Sie Ihren Warenkorb und gehen Sie zur sicheren Kasse.",
+      "login": "Melden Sie sich bei ShoppyDev an oder erstellen Sie ein Konto.",
+      "profile": "Verwalten Sie Ihr ShoppyDev-Konto und sehen Sie Ihre Bestellungen.",
+      "orderSuccess": "Ihre Bestellung wurde erfolgreich aufgegeben.",
+      "authCallback": "Ihre ShoppyDev-Anmeldung wird abgeschlossen.",
+      "authLogout": "Sie werden von Ihrem ShoppyDev-Konto abgemeldet.",
+      "admin": "Verwalten Sie Produkte, Bestellungen, Benutzer und Shop-Einstellungen.",
+      "adminProducts": "Produkte im ShoppyDev-Katalog erstellen, bearbeiten und entfernen.",
+      "adminCategories": "Produkte mit Kategorien organisieren.",
+      "adminUsers": "Kunden- und Admin-Konten anzeigen und verwalten.",
+      "adminOrders": "Kundenbestellungen verfolgen und aktualisieren.",
+      "adminDiscounts": "Rabattcodes erstellen und verwalten.",
+      "adminLogin": "Melden Sie sich im ShoppyDev-Admin-Dashboard an."
     }
   }
 }

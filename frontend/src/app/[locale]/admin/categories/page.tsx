@@ -24,6 +24,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { TableScrollContainer } from "@/components/admin/TableScrollContainer";
 import {
   Table,
   TableBody,
@@ -49,8 +50,11 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { FiMoreVertical } from "react-icons/fi";
+import { useTranslations } from "next-intl";
 
 export default function AdminCategoriesPage() {
+  const t = useTranslations("Admin.categories");
+  const tc = useTranslations("Admin.common");
   const { data: categories, isLoading, error } = useGetCategories();
   const { toast } = useToast();
 
@@ -72,13 +76,13 @@ export default function AdminCategoriesPage() {
       setDescription("");
       setImage("");
       toast({
-        title: "Category added",
-        description: "The category has been added successfully.",
+        title: t("toastAdded"),
+        description: t("toastAddedDescription"),
       });
     },
     onError: (error) => {
       toast({
-        title: "Create failed",
+        title: tc("createFailed"),
         description: error.message,
       });
     },
@@ -89,13 +93,13 @@ export default function AdminCategoriesPage() {
       setOpen(false);
       setEditingCategory(null);
       toast({
-        title: "Category updated",
-        description: `Category ${variables.id} has been updated.`,
+        title: t("toastUpdated"),
+        description: t("toastUpdatedDescription", { id: variables.id }),
       });
     },
     onError: (error) => {
       toast({
-        title: "Update failed",
+        title: tc("updateFailed"),
         description: error.message,
       });
     },
@@ -106,13 +110,13 @@ export default function AdminCategoriesPage() {
       setDialogOpen(false);
       setDeletingCategory(null);
       toast({
-        title: "Category deleted",
-        description: `Category #${variables} has been removed.`,
+        title: t("toastDeleted"),
+        description: t("toastDeletedDescription", { id: variables }),
       });
     },
     onError: (error) => {
       toast({
-        title: "Delete failed",
+        title: tc("deleteFailed"),
         description: error.message,
       });
     },
@@ -174,16 +178,16 @@ export default function AdminCategoriesPage() {
 
   if (isLoading) {
     return (
-      <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-        Loading categories...
+      <div className="rounded-xl border bg-card p-6 shadow-sm">
+        {tc("loadingCategories")}
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-        Error loading categories: {error.message}
+      <div className="rounded-xl border bg-card p-6 shadow-sm">
+        {tc("errorLoadingCategories")} {error.message}
       </div>
     );
   }
@@ -192,12 +196,10 @@ export default function AdminCategoriesPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-semibold">Categories</h1>
-          <p className="text-sm text-slate-600">
-            Create, review, and remove product categories.
-          </p>
+          <h1 className="text-2xl font-semibold">{t("title")}</h1>
+          <p className="text-sm text-muted-foreground">{t("subtitle")}</p>
         </div>
-        <Button onClick={openCreateSheet}>Create category</Button>
+        <Button onClick={openCreateSheet}>{t("createButton")}</Button>
       </div>
 
       <Sheet
@@ -210,17 +212,15 @@ export default function AdminCategoriesPage() {
         <SheetContent side="right">
           <SheetHeader>
             <SheetTitle>
-              {editingCategory ? "Edit category" : "New category"}
+              {editingCategory ? t("editTitle") : t("newTitle")}
             </SheetTitle>
             <SheetDescription>
-              {editingCategory
-                ? "Update the category details."
-                : "Enter category details and save."}
+              {editingCategory ? t("editDescription") : t("newDescription")}
             </SheetDescription>
           </SheetHeader>
           <form className="space-y-4 py-4" onSubmit={handleSaveCategory}>
             <div className="grid gap-2">
-              <Label htmlFor="category-name">Name</Label>
+              <Label htmlFor="category-name">{tc("name")}</Label>
               <Input
                 id="category-name"
                 value={name}
@@ -229,7 +229,7 @@ export default function AdminCategoriesPage() {
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="category-description">Description</Label>
+              <Label htmlFor="category-description">{tc("description")}</Label>
               <Textarea
                 id="category-description"
                 value={description}
@@ -238,12 +238,12 @@ export default function AdminCategoriesPage() {
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="category-image">Image URL</Label>
+              <Label htmlFor="category-image">{tc("imageUrl")}</Label>
               <Input
                 id="category-image"
                 value={image}
                 onChange={(event) => setImage(event.target.value)}
-                placeholder="https://..."
+                placeholder={tc("imageUrlPlaceholder")}
               />
             </div>
             <SheetFooter>
@@ -254,7 +254,7 @@ export default function AdminCategoriesPage() {
                   updateCategoryMutation.isLoading
                 }
               >
-                {editingCategory ? "Update category" : "Save category"}
+                {editingCategory ? t("updateButton") : t("saveButton")}
               </Button>
             </SheetFooter>
           </form>
@@ -263,32 +263,40 @@ export default function AdminCategoriesPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Category list</CardTitle>
-          <CardDescription>
-            All available categories loaded from the API.
-          </CardDescription>
+          <CardTitle>{t("listTitle")}</CardTitle>
+          <CardDescription>{t("listDescription")}</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="overflow-x-auto -mx-6 px-6 md:mx-0 md:px-0">
+          <TableScrollContainer>
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Description</TableHead>
-                  <TableHead>Image</TableHead>
-                  <TableHead>Created</TableHead>
-                  <TableHead>Actions</TableHead>
+                  <TableHead>{tc("name")}</TableHead>
+                  <TableHead className="hidden md:table-cell">
+                    {tc("description")}
+                  </TableHead>
+                  <TableHead className="hidden lg:table-cell">
+                    {t("tableImage")}
+                  </TableHead>
+                  <TableHead className="hidden sm:table-cell">
+                    {tc("created")}
+                  </TableHead>
+                  <TableHead>{tc("actions")}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {categories?.map((category) => (
                   <TableRow key={category.id}>
-                    <TableCell>{category.name}</TableCell>
-                    <TableCell>{category.description}</TableCell>
-                    <TableCell className="max-w-xs truncate">
+                    <TableCell className="max-w-[120px] truncate sm:max-w-none">
+                      {category.name}
+                    </TableCell>
+                    <TableCell className="hidden max-w-xs truncate md:table-cell">
+                      {category.description}
+                    </TableCell>
+                    <TableCell className="hidden max-w-xs truncate lg:table-cell">
                       {category.image || "—"}
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="hidden sm:table-cell">
                       {new Date(category.created_at).toLocaleDateString()}
                     </TableCell>
                     <TableCell>
@@ -302,7 +310,7 @@ export default function AdminCategoriesPage() {
                           <Button
                             variant="ghost"
                             size="icon"
-                            className="text-slate-600 hover:bg-slate-100"
+                            className="text-muted-foreground hover:bg-accent hover:text-accent-foreground"
                           >
                             <FiMoreVertical className="h-4 w-4" />
                           </Button>
@@ -314,7 +322,7 @@ export default function AdminCategoriesPage() {
                               openEditSheet(category);
                             }}
                           >
-                            Edit category
+                            {t("editMenu")}
                           </DropdownMenuItem>
                           <DropdownMenuItem
                             onSelect={() => {
@@ -322,7 +330,7 @@ export default function AdminCategoriesPage() {
                               openDeleteDialog(category);
                             }}
                           >
-                            Delete category
+                            {t("deleteMenu")}
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
@@ -331,10 +339,10 @@ export default function AdminCategoriesPage() {
                 ))}
               </TableBody>
             </Table>
-          </div>
+          </TableScrollContainer>
         </CardContent>
-        <CardFooter className="text-sm text-slate-500">
-          {categories?.length ?? 0} categories available.
+        <CardFooter className="text-sm text-muted-foreground">
+          {t("footerCount", { count: categories?.length ?? 0 })}
         </CardFooter>
       </Card>
 
@@ -347,23 +355,22 @@ export default function AdminCategoriesPage() {
       >
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Delete category</DialogTitle>
+            <DialogTitle>{t("deleteTitle")}</DialogTitle>
             <DialogDescription>
-              Are you sure you want to delete{" "}
-              <strong>{deletingCategory?.name}</strong>? This action cannot be
-              undone.
+              {t("deleteDescription", { name: deletingCategory?.name ?? "" })}{" "}
+              {tc("deleteConfirmCannotUndo")}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <Button variant="outline" onClick={handleCloseDialog}>
-              Cancel
+              {tc("cancel")}
             </Button>
             <Button
               variant="destructive"
               onClick={handleDelete}
               disabled={deleteCategoryMutation.isLoading}
             >
-              Delete category
+              {t("deleteButton")}
             </Button>
           </DialogFooter>
         </DialogContent>

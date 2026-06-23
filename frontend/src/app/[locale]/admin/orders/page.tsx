@@ -4,7 +4,6 @@ import useGetAdminOrders from "@/hooks/admin/useGetAdminOrders";
 import useUpdateAdminOrderStatus from "@/hooks/admin/useUpdateAdminOrderStatus";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -12,6 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { TableScrollContainer } from "@/components/admin/TableScrollContainer";
 import {
   Table,
   TableBody,
@@ -37,8 +37,17 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { FiMoreVertical } from "react-icons/fi";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
-const orderStatuses = ["pending", "paid", "processing", "shipped", "delivered"];
+const orderStatuses = [
+  "pending",
+  "paid",
+  "processing",
+  "shipped",
+  "delivered",
+] as const;
+
+type OrderStatus = (typeof orderStatuses)[number];
 
 const statusVariant = (status: string) => {
   switch (status) {
@@ -58,20 +67,31 @@ const statusVariant = (status: string) => {
 };
 
 export default function AdminOrdersPage() {
+  const t = useTranslations("Admin.orders");
+  const tc = useTranslations("Admin.common");
+  const tStatus = useTranslations("OrderStatus");
   const { data, error, isLoading } = useGetAdminOrders(1, 50);
   const { toast } = useToast();
   const [openMenuOrderId, setOpenMenuOrderId] = useState<number | null>(null);
 
+  const translateStatus = (status: string) =>
+    orderStatuses.includes(status as OrderStatus)
+      ? tStatus(status as OrderStatus)
+      : status;
+
   const updateStatusMutation = useUpdateAdminOrderStatus({
     onSuccess: (_, variables) => {
       toast({
-        title: "Order updated",
-        description: `Order #${variables.id} status changed to ${variables.status}.`,
+        title: t("toastUpdated"),
+        description: t("toastUpdatedDescription", {
+          id: variables.id,
+          status: translateStatus(variables.status),
+        }),
       });
     },
     onError: (error) => {
       toast({
-        title: "Update failed",
+        title: tc("updateFailed"),
         description: error.message,
       });
     },
@@ -79,16 +99,16 @@ export default function AdminOrdersPage() {
 
   if (isLoading) {
     return (
-      <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-        Loading orders...
+      <div className="rounded-xl border bg-card p-6 shadow-sm">
+        {tc("loadingOrders")}
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-        Error loading orders: {error.message}
+      <div className="rounded-xl border bg-card p-6 shadow-sm">
+        {tc("errorLoadingOrders")} {error.message}
       </div>
     );
   }
@@ -99,14 +119,12 @@ export default function AdminOrdersPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-semibold">Orders</h1>
-          <p className="text-sm text-slate-600">
-            Manage order status and review recent purchases.
-          </p>
+          <h1 className="text-2xl font-semibold">{t("title")}</h1>
+          <p className="text-sm text-muted-foreground">{t("subtitle")}</p>
         </div>
-        <div className="flex items-center gap-2 text-sm text-slate-500">
-          <span className="font-medium">Total</span>
-          <span className="rounded-full bg-slate-100 px-3 py-1">
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <span className="font-medium">{tc("total")}</span>
+          <span className="rounded-full bg-muted px-3 py-1">
             {data?.total || 0}
           </span>
         </div>
@@ -114,32 +132,36 @@ export default function AdminOrdersPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Order list</CardTitle>
-          <CardDescription>
-            Update statuses and keep track of recent orders.
-          </CardDescription>
+          <CardTitle>{t("listTitle")}</CardTitle>
+          <CardDescription>{t("listDescription")}</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="overflow-x-auto -mx-6 px-6 md:mx-0 md:px-0">
+          <TableScrollContainer>
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Order</TableHead>
-                  <TableHead>User</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Total</TableHead>
-                  <TableHead>Created</TableHead>
-                  <TableHead>Actions</TableHead>
+                  <TableHead>{t("tableOrder")}</TableHead>
+                  <TableHead>{t("tableUser")}</TableHead>
+                  <TableHead>{t("tableStatus")}</TableHead>
+                  <TableHead>{tc("total")}</TableHead>
+                  <TableHead className="hidden md:table-cell">
+                    {tc("created")}
+                  </TableHead>
+                  <TableHead>{tc("actions")}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {orders.map((order: any) => (
                   <TableRow key={order.id}>
                     <TableCell>#{order.id}</TableCell>
-                    <TableCell>{order.user?.email ?? "Unknown"}</TableCell>
+                    <TableCell className="max-w-[140px] truncate sm:max-w-xs">
+                      {order.user?.email ?? tc("unknown")}
+                    </TableCell>
                     <TableCell>
-                      <Badge variant={statusVariant(order.status ?? "pending")}>
-                        {order.status}
+                      <Badge
+                        variant={statusVariant(order.status ?? "pending")}
+                      >
+                        {translateStatus(order.status ?? "pending")}
                       </Badge>
                     </TableCell>
                     <TableCell>
@@ -148,33 +170,35 @@ export default function AdminOrdersPage() {
                         order.totalAmount ??
                         "0.00"}
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="hidden md:table-cell">
                       {new Date(
                         order.orderDate || order.created_at,
                       ).toLocaleDateString()}
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2">
-                        <Select
-                          defaultValue={order.status}
-                          onValueChange={(value) =>
-                            updateStatusMutation.mutate({
-                              id: order.id,
-                              status: value,
-                            })
-                          }
-                        >
-                          <SelectTrigger className="w-40">
-                            <SelectValue placeholder="Status" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {orderStatuses.map((status) => (
-                              <SelectItem key={status} value={status}>
-                                {status}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
+                        <div className="hidden md:block">
+                          <Select
+                            defaultValue={order.status}
+                            onValueChange={(value) =>
+                              updateStatusMutation.mutate({
+                                id: order.id,
+                                status: value,
+                              })
+                            }
+                          >
+                            <SelectTrigger className="w-40">
+                              <SelectValue placeholder={t("statusPlaceholder")} />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {orderStatuses.map((status) => (
+                                <SelectItem key={status} value={status}>
+                                  {translateStatus(status)}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
                         <DropdownMenu
                           open={openMenuOrderId === order.id}
                           onOpenChange={(value) =>
@@ -185,7 +209,7 @@ export default function AdminOrdersPage() {
                             <Button
                               variant="ghost"
                               size="icon"
-                              className="text-slate-600 hover:bg-slate-100"
+                              className="text-muted-foreground hover:bg-accent hover:text-accent-foreground"
                             >
                               <FiMoreVertical className="h-4 w-4" />
                             </Button>
@@ -202,7 +226,9 @@ export default function AdminOrdersPage() {
                                   });
                                 }}
                               >
-                                Mark {status}
+                                {tc("markStatus", {
+                                  status: translateStatus(status),
+                                })}
                               </DropdownMenuItem>
                             ))}
                           </DropdownMenuContent>
@@ -213,10 +239,10 @@ export default function AdminOrdersPage() {
                 ))}
               </TableBody>
             </Table>
-          </div>
+          </TableScrollContainer>
         </CardContent>
-        <CardFooter className="text-sm text-slate-500">
-          {orders.length} orders shown.
+        <CardFooter className="text-sm text-muted-foreground">
+          {t("footerCount", { count: orders.length })}
         </CardFooter>
       </Card>
     </div>

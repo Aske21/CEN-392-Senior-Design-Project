@@ -11,6 +11,7 @@ import { FiX } from "react-icons/fi";
 export default function RegistrationBanner() {
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
   const t = useTranslations();
+  const tc = useTranslations("Common");
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -53,13 +54,13 @@ export default function RegistrationBanner() {
               size="sm"
               className="bg-white text-blue-600 hover:bg-gray-100 dark:bg-gray-100 dark:text-blue-600 dark:hover:bg-gray-200"
             >
-              Register Now
+              {tc("registerNow")}
             </Button>
           </Link>
           <button
             onClick={handleClose}
             className="text-white hover:text-gray-200 transition-colors p-1"
-            aria-label="Close banner"
+            aria-label={tc("closeBanner")}
           >
             <FiX className="w-5 h-5" />
           </button>

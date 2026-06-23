@@ -1,138 +1,105 @@
 "use client";
 
-import React from "react";
 import { useTranslations } from "next-intl";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+
+const valueKeys = ["quality", "customer", "innovation"] as const;
+
+const highlightKeys = [
+  "wideSelection",
+  "competitivePrices",
+  "excellentService",
+  "fastShipping",
+] as const;
 
 const AboutPage = () => {
   const t = useTranslations("About");
 
   return (
     <div className="py-12 md:py-16 lg:py-20">
-      {/* Hero Section */}
-      <div className="text-center mb-12 md:mb-16">
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
+      <header className="mx-auto mb-16 max-w-2xl text-center md:mb-20">
+        <p className="mb-3 text-sm font-medium uppercase tracking-wider text-muted-foreground">
+          {t("eyebrow")}
+        </p>
+        <h1 className="text-3xl font-semibold tracking-tight md:text-4xl">
           {t("title")}
         </h1>
-        <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
+        <p className="mt-4 text-base text-muted-foreground md:text-lg">
           {t("subtitle")}
         </p>
-      </div>
+      </header>
 
-      {/* Mission Section */}
-      <section className="mb-12 md:mb-16">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-2xl md:text-3xl">{t("mission.title")}</CardTitle>
-            <CardDescription className="text-base md:text-lg">
-              {t("mission.description")}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-muted-foreground leading-relaxed">
-              {t("mission.content")}
+      <div className="mx-auto max-w-3xl space-y-16 md:space-y-20">
+        <section className="space-y-4">
+          <p className="text-sm font-medium uppercase tracking-wider text-muted-foreground">
+            {t("mission.description")}
+          </p>
+          <h2 className="text-2xl font-semibold tracking-tight">
+            {t("mission.title")}
+          </h2>
+          <p className="text-base leading-relaxed text-muted-foreground">
+            {t("mission.content")}
+          </p>
+        </section>
+
+        <section className="space-y-4 border-t border-border pt-16 md:pt-20">
+          <h2 className="text-2xl font-semibold tracking-tight">
+            {t("story.title")}
+          </h2>
+          <div className="space-y-4 text-base leading-relaxed text-muted-foreground">
+            <p>{t("story.paragraph1")}</p>
+            <p>{t("story.paragraph2")}</p>
+            <p>{t("story.paragraph3")}</p>
+          </div>
+        </section>
+
+        <section className="border-t border-border pt-16 md:pt-20">
+          <div className="mb-10 space-y-3">
+            <p className="text-sm font-medium uppercase tracking-wider text-muted-foreground">
+              {t("values.eyebrow")}
             </p>
-          </CardContent>
-        </Card>
-      </section>
+            <h2 className="text-2xl font-semibold tracking-tight">
+              {t("values.title")}
+            </h2>
+          </div>
 
-      {/* Values Section */}
-      <section className="mb-12 md:mb-16">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-8 md:mb-12">
-          {t("values.title")}
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          <Card>
-            <CardHeader>
-              <CardTitle>{t("values.quality.title")}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground">{t("values.quality.description")}</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle>{t("values.customer.title")}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground">{t("values.customer.description")}</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle>{t("values.innovation.title")}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground">{t("values.innovation.description")}</p>
-            </CardContent>
-          </Card>
-        </div>
-      </section>
+          <ul className="divide-y divide-border">
+            {valueKeys.map((key) => (
+              <li key={key} className="py-6 first:pt-0 last:pb-0">
+                <h3 className="text-base font-semibold tracking-tight">
+                  {t(`values.${key}.title`)}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                  {t(`values.${key}.description`)}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </section>
 
-      {/* Story Section */}
-      <section className="mb-12 md:mb-16">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-2xl md:text-3xl">{t("story.title")}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4 text-muted-foreground leading-relaxed">
-              <p>{t("story.paragraph1")}</p>
-              <p>{t("story.paragraph2")}</p>
-              <p>{t("story.paragraph3")}</p>
-            </div>
-          </CardContent>
-        </Card>
-      </section>
+        <section className="border-t border-border pt-16 md:pt-20">
+          <div className="mb-10 space-y-3">
+            <p className="text-sm font-medium uppercase tracking-wider text-muted-foreground">
+              {t("whyChooseUs.eyebrow")}
+            </p>
+            <h2 className="text-2xl font-semibold tracking-tight">
+              {t("whyChooseUs.title")}
+            </h2>
+          </div>
 
-      {/* Why Choose Us Section */}
-      <section>
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-8 md:mb-12">
-          {t("whyChooseUs.title")}
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-          <Card>
-            <CardHeader>
-              <CardTitle>{t("whyChooseUs.wideSelection.title")}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground">
-                {t("whyChooseUs.wideSelection.description")}
-              </p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle>{t("whyChooseUs.competitivePrices.title")}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground">
-                {t("whyChooseUs.competitivePrices.description")}
-              </p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle>{t("whyChooseUs.excellentService.title")}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground">
-                {t("whyChooseUs.excellentService.description")}
-              </p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle>{t("whyChooseUs.fastShipping.title")}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground">
-                {t("whyChooseUs.fastShipping.description")}
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-      </section>
+          <div className="grid gap-6 sm:grid-cols-2">
+            {highlightKeys.map((key) => (
+              <div key={key} className="space-y-2">
+                <h3 className="text-base font-semibold tracking-tight">
+                  {t(`whyChooseUs.${key}.title`)}
+                </h3>
+                <p className="text-sm leading-relaxed text-muted-foreground">
+                  {t(`whyChooseUs.${key}.description`)}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+      </div>
     </div>
   );
 };

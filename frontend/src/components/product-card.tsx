@@ -37,8 +37,8 @@ export default function ProductCard({
   const handleAddToCart = () => {
     dispatch(addItem({ id, title, description, price, imageSrc, quantity: 1 }));
     toast({
-      title: "Cart updated",
-      description: "Item added to cart!",
+      title: t("cartUpdated"),
+      description: t("itemAdded"),
       className: cn(
         "top-0 right-0 flex fixed md:max-w-[200px] md:top-4 md:right-4"
       ),

@@ -22,6 +22,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { TableScrollContainer } from "@/components/admin/TableScrollContainer";
 import {
   Table,
   TableBody,
@@ -45,6 +46,10 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { FiMoreVertical } from "react-icons/fi";
+import { useTranslations } from "next-intl";
+
+const roles = ["customer", "admin"] as const;
+type UserRole = (typeof roles)[number];
 
 const roleVariant = (role: string) =>
   role === "admin" ? "success" : "secondary";
@@ -58,19 +63,28 @@ type PendingAction = {
 } | null;
 
 export default function AdminUsersPage() {
+  const t = useTranslations("Admin.users");
+  const tc = useTranslations("Admin.common");
+  const tRole = useTranslations("UserRole");
   const { data, error, isLoading } = useGetAdminUsers(1, 50);
   const { toast } = useToast();
+
+  const translateRole = (role: string) =>
+    roles.includes(role as UserRole) ? tRole(role as UserRole) : role;
 
   const updateRoleMutation = useUpdateAdminUserRole({
     onSuccess: (_, variables) => {
       toast({
-        title: "Role updated",
-        description: `User ${variables.id} is now ${variables.role}.`,
+        title: t("toastRoleUpdated"),
+        description: t("toastRoleUpdatedDescription", {
+          id: variables.id,
+          role: translateRole(variables.role),
+        }),
       });
     },
     onError: (error) => {
       toast({
-        title: "Update failed",
+        title: tc("updateFailed"),
         description: error.message,
       });
     },
@@ -79,13 +93,13 @@ export default function AdminUsersPage() {
   const deleteUserMutation = useDeleteAdminUser({
     onSuccess: (_, variables) => {
       toast({
-        title: "User removed",
-        description: `User #${variables} has been deleted.`,
+        title: t("toastUserRemoved"),
+        description: t("toastUserRemovedDescription", { id: variables }),
       });
     },
     onError: (error) => {
       toast({
-        title: "Delete failed",
+        title: tc("deleteFailed"),
         description: error.message,
       });
     },
@@ -132,16 +146,16 @@ export default function AdminUsersPage() {
 
   if (isLoading) {
     return (
-      <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-        Loading users...
+      <div className="rounded-xl border bg-card p-6 shadow-sm">
+        {tc("loadingUsers")}
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-        Error loading users: {error.message}
+      <div className="rounded-xl border bg-card p-6 shadow-sm">
+        {tc("errorLoadingUsers")} {error.message}
       </div>
     );
   }
@@ -150,50 +164,45 @@ export default function AdminUsersPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-semibold">Users</h1>
-          <p className="text-sm text-slate-600">
-            Review accounts, confirm role changes, and remove unwanted users
-            safely.
-          </p>
+          <h1 className="text-2xl font-semibold">{t("title")}</h1>
+          <p className="text-sm text-muted-foreground">{t("subtitle")}</p>
         </div>
-        <div className="flex items-center gap-2 text-sm text-slate-500">
-          <span className="rounded-full bg-slate-100 px-3 py-1">
-            {data?.total || users.length} users
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <span className="rounded-full bg-muted px-3 py-1">
+            {t("totalBadge", { count: data?.total || users.length })}
           </span>
         </div>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>User insights</CardTitle>
-          <CardDescription>
-            Quick account metrics and role breakdowns.
-          </CardDescription>
+          <CardTitle>{t("insightsTitle")}</CardTitle>
+          <CardDescription>{t("insightsDescription")}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid gap-4 sm:grid-cols-2">
-            <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-              <p className="text-sm text-slate-500">
-                Total registered accounts
+            <div className="rounded-2xl border bg-muted p-4">
+              <p className="text-sm text-muted-foreground">
+                {t("totalAccounts")}
               </p>
-              <div className="mt-2 text-3xl font-semibold text-slate-900">
+              <div className="mt-2 text-3xl font-semibold text-foreground">
                 {data?.total || users.length}
               </div>
             </div>
-            <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-              <p className="text-sm text-slate-500">
-                Admins and customers count
+            <div className="rounded-2xl border bg-muted p-4">
+              <p className="text-sm text-muted-foreground">
+                {t("roleBreakdown")}
               </p>
-              <div className="mt-2 text-xl font-semibold text-slate-900">
+              <div className="mt-2 text-xl font-semibold text-foreground">
                 <Badge variant="success">
-                  Admins:{" "}
+                  {t("adminsCount")}{" "}
                   {
                     users.filter((user: any) => user.user_type === "admin")
                       .length
                   }{" "}
                 </Badge>{" "}
                 <Badge variant="secondary">
-                  Customers:{" "}
+                  {t("customersCount")}{" "}
                   {
                     users.filter((user: any) => user.user_type !== "admin")
                       .length
@@ -207,75 +216,80 @@ export default function AdminUsersPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>User list</CardTitle>
-          <CardDescription>
-            Manage users, change roles, and delete accounts safely.
-          </CardDescription>
+          <CardTitle>{t("listTitle")}</CardTitle>
+          <CardDescription>{t("listDescription")}</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="overflow-x-auto -mx-6 px-6 md:mx-0 md:px-0"></div>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>ID</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead>Role</TableHead>
-                <TableHead>Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {users.map((user: any) => (
-                <TableRow key={user.id}>
-                  <TableCell>#{user.id}</TableCell>
-                  <TableCell>{user.email}</TableCell>
-                  <TableCell>
-                    <Badge variant={roleVariant(user.user_type)}>
-                      {user.user_type}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    <DropdownMenu
-                      open={openMenuUserId === user.id}
-                      onOpenChange={(value) =>
-                        setOpenMenuUserId(value ? user.id : null)
-                      }
-                    >
-                      <DropdownMenuTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="text-slate-600 hover:bg-slate-100"
-                        >
-                          <FiMoreVertical className="h-4 w-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem
-                          onSelect={() => {
-                            setOpenMenuUserId(null);
-                            handleOpenRoleChange(user);
-                          }}
-                        >
-                          Change role
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          onSelect={() => {
-                            setOpenMenuUserId(null);
-                            handleOpenDelete(user);
-                          }}
-                        >
-                          Delete user
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TableCell>
+          <TableScrollContainer>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="hidden sm:table-cell">
+                    {t("tableId")}
+                  </TableHead>
+                  <TableHead>{t("tableEmail")}</TableHead>
+                  <TableHead>{t("tableRole")}</TableHead>
+                  <TableHead>{tc("actions")}</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {users.map((user: any) => (
+                  <TableRow key={user.id}>
+                    <TableCell className="hidden sm:table-cell">
+                      #{user.id}
+                    </TableCell>
+                    <TableCell className="max-w-[160px] truncate sm:max-w-xs">
+                      {user.email}
+                    </TableCell>
+                    <TableCell>
+                      <Badge variant={roleVariant(user.user_type)}>
+                        {translateRole(user.user_type)}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <DropdownMenu
+                        open={openMenuUserId === user.id}
+                        onOpenChange={(value) =>
+                          setOpenMenuUserId(value ? user.id : null)
+                        }
+                      >
+                        <DropdownMenuTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                          >
+                            <FiMoreVertical className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem
+                            onSelect={() => {
+                              setOpenMenuUserId(null);
+                              handleOpenRoleChange(user);
+                            }}
+                          >
+                            {t("changeRoleMenu")}
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            onSelect={() => {
+                              setOpenMenuUserId(null);
+                              handleOpenDelete(user);
+                            }}
+                          >
+                            {t("deleteUserMenu")}
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableScrollContainer>
         </CardContent>
-        <CardFooter className="text-sm text-slate-500">
-          {users.length} users shown.
+        <CardFooter className="text-sm text-muted-foreground">
+          {t("footerCount", { count: users.length })}
         </CardFooter>
       </Card>
 
@@ -290,30 +304,29 @@ export default function AdminUsersPage() {
           <DialogHeader>
             <DialogTitle>
               {pendingAction?.type === "delete"
-                ? "Confirm deletion"
-                : "Confirm role change"}
+                ? t("confirmDeletion")
+                : t("confirmRoleChange")}
             </DialogTitle>
             <DialogDescription>
-              {pendingAction?.type === "delete" ? (
-                <>
-                  This action will permanently remove{" "}
-                  <strong>{pendingAction.user.email}</strong>. This cannot be
-                  undone.
-                </>
-              ) : (
-                <>
-                  Update <strong>{pendingAction?.user.email}</strong> to the
-                  selected role.
-                </>
-              )}
+              {pendingAction?.type === "delete"
+                ? t("deleteDescription", {
+                    email: pendingAction.user.email,
+                  })
+                : t("roleChangeDescription", {
+                    email: pendingAction?.user.email ?? "",
+                  })}{" "}
+              {pendingAction?.type === "delete" &&
+                tc("deleteConfirmCannotUndo")}
             </DialogDescription>
           </DialogHeader>
 
           {pendingAction?.type === "role" && (
             <div className="mt-4 space-y-4">
-              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                <p className="text-sm text-slate-500">
-                  Current role: {pendingAction.user.user_type}
+              <div className="rounded-2xl border bg-muted p-4">
+                <p className="text-sm text-muted-foreground">
+                  {t("currentRole", {
+                    role: translateRole(pendingAction.user.user_type),
+                  })}
                 </p>
                 <div className="mt-3">
                   <Select
@@ -325,11 +338,14 @@ export default function AdminUsersPage() {
                     }
                   >
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select role" />
+                      <SelectValue placeholder={t("selectRole")} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="customer">customer</SelectItem>
-                      <SelectItem value="admin">admin</SelectItem>
+                      {roles.map((role) => (
+                        <SelectItem key={role} value={role}>
+                          {translateRole(role)}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>
@@ -339,7 +355,7 @@ export default function AdminUsersPage() {
 
           <DialogFooter>
             <Button variant="outline" onClick={handleClose}>
-              Cancel
+              {tc("cancel")}
             </Button>
             <Button
               variant={
@@ -350,7 +366,9 @@ export default function AdminUsersPage() {
                 deleteUserMutation.isLoading || updateRoleMutation.isLoading
               }
             >
-              {pendingAction?.type === "delete" ? "Delete user" : "Save role"}
+              {pendingAction?.type === "delete"
+                ? t("deleteUser")
+                : t("saveRole")}
             </Button>
           </DialogFooter>
         </DialogContent>

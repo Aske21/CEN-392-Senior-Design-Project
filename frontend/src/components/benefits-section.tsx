@@ -1,43 +1,70 @@
 import { useTranslations } from "next-intl";
-import { FaTruck, FaLock, FaGem } from "react-icons/fa";
+import { FaGem, FaHeadset, FaLock, FaTruck } from "react-icons/fa";
+
+const benefitIcons = [FaTruck, FaLock, FaGem, FaHeadset];
 
 const BenefitsSection = () => {
   const t = useTranslations("Landing");
 
+  const benefits = [
+    {
+      icon: benefitIcons[0],
+      title: t("benefitsSection.fastDelivery.title"),
+      description: t("benefitsSection.fastDelivery.description"),
+    },
+    {
+      icon: benefitIcons[1],
+      title: t("benefitsSection.securePayments.title"),
+      description: t("benefitsSection.securePayments.description"),
+    },
+    {
+      icon: benefitIcons[2],
+      title: t("benefitsSection.premiumProducts.title"),
+      description: t("benefitsSection.premiumProducts.description"),
+    },
+    {
+      icon: benefitIcons[3],
+      title: t("benefitsSection.support.title"),
+      description: t("benefitsSection.support.description"),
+    },
+  ];
+
   return (
-    <section className="py-16">
-      <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-semibold mb-10 text-center">
-          {t("benefitsSection.title")}
-        </h2>
-        <div className="grid grid-cols-1 gap-12 md:grid-cols-3">
-          <div className="flex flex-col items-center justify-center space-y-4 py-8 px-6">
-            <FaTruck className="text-5xl " />
-            <h3 className="text-2xl font-semibold mb-2 ">
-              {t("benefitsSection.fastDelivery.title")}
-            </h3>
-            <p className="text-lg text-center">
-              {t("benefitsSection.fastDelivery.description")}
-            </p>
-          </div>
-          <div className="flex flex-col items-center justify-center space-y-4 py-8 px-6">
-            <FaLock className="text-5xl " />
-            <h3 className="text-2xl font-semibold mb-2 ">
-              {t("benefitsSection.securePayments.title")}
-            </h3>
-            <p className="text-lg text-center">
-              {t("benefitsSection.securePayments.description")}
-            </p>
-          </div>
-          <div className="flex flex-col items-center justify-center space-y-4 py-8 px-6">
-            <FaGem className="text-5xl " />
-            <h3 className="text-2xl font-semibold mb-2 ">
-              {t("benefitsSection.premiumProducts.title")}
-            </h3>
-            <p className="text-lg text-center	">
-              {t("benefitsSection.premiumProducts.description")}
-            </p>
-          </div>
+    <section className="py-16 md:py-20">
+      <div className="mx-auto max-w-5xl">
+        <div className="mb-12 space-y-3 text-center">
+          <p className="text-sm font-medium uppercase tracking-wider text-muted-foreground">
+            {t("benefitsSection.eyebrow")}
+          </p>
+          <h2 className="text-3xl font-semibold tracking-tight">
+            {t("benefitsSection.title")}
+          </h2>
+          <p className="mx-auto max-w-2xl text-muted-foreground">
+            {t("benefitsSection.subtitle")}
+          </p>
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-2">
+          {benefits.map((benefit) => {
+            const Icon = benefit.icon;
+
+            return (
+              <div
+                key={benefit.title}
+                className="rounded-2xl border border-border bg-card p-6 transition-colors hover:bg-accent/40"
+              >
+                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                  <Icon className="h-5 w-5" />
+                </div>
+                <h3 className="text-lg font-semibold tracking-tight">
+                  {benefit.title}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                  {benefit.description}
+                </p>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

@@ -27,13 +27,29 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 
+const orderStatuses = [
+  "pending",
+  "paid",
+  "processing",
+  "shipped",
+  "delivered",
+] as const;
+
+type OrderStatus = (typeof orderStatuses)[number];
+
 const ProfilePage = () => {
   const t = useTranslations("Profile");
+  const tStatus = useTranslations("OrderStatus");
   const user = useAppSelector(selectAuthUser);
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
   const ordersPerPage = 5;
+
+  const translateStatus = (status: string) =>
+    orderStatuses.includes(status as OrderStatus)
+      ? tStatus(status as OrderStatus)
+      : status;
 
   const { data: ordersData, isLoading: ordersLoading } = useGetUserOrders(
     currentPage,
@@ -179,7 +195,7 @@ const ProfilePage = () => {
                                   {formatPrice(order.totalAmount)}
                                 </span>
                                 <span className="text-xs text-muted-foreground">
-                                  {t("orders.status")}: {order.status}
+                                  {t("orders.status")}: {translateStatus(order.status)}
                                 </span>
                               </div>
                             </div>

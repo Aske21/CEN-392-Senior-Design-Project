@@ -2,11 +2,14 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 const badgeVariants = {
-  default: "bg-slate-100 text-slate-800",
-  success: "bg-emerald-100 text-emerald-800",
-  warning: "bg-amber-100 text-amber-800",
-  destructive: "bg-rose-100 text-rose-800",
-  secondary: "bg-slate-200 text-slate-800",
+  default: "bg-muted text-muted-foreground",
+  success:
+    "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300",
+  warning:
+    "bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300",
+  destructive:
+    "bg-rose-100 text-rose-800 dark:bg-rose-900/40 dark:text-rose-300",
+  secondary: "bg-secondary text-secondary-foreground",
 };
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLDivElement> {

@@ -6,7 +6,7 @@ dotenv.config({
 });
 
 const ENVIRONMENT = {
-  port: process.env.PORT || 5000,
+  port: process.env.PORT || 8080,
   db: {
     database: process.env.DB_DATABASE,
     username: process.env.DB_USERNAME,

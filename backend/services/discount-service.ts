@@ -3,6 +3,7 @@ import { ProductDiscount } from "../core/db/entity/product_discount";
 import { DiscountUsage } from "../core/db/entity/discount_usage";
 import { Users } from "../core/db/entity/user";
 import { Order } from "../core/db/entity/order";
+import { calculateDiscountAmount } from "./discount-calculations";
 
 export interface DiscountValidationResult {
   valid: boolean;
@@ -108,12 +109,15 @@ export class DiscountService {
       };
     }
 
-    const discountAmount = (totalAmount * discount.discount_percentage) / 100;
+    const discountAmount = calculateDiscountAmount(
+      totalAmount,
+      discount.discount_percentage,
+    );
 
     return {
       valid: true,
       discount,
-      discountAmount: Math.round(discountAmount * 100) / 100,
+      discountAmount,
     };
   }
 

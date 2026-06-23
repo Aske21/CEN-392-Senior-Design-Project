@@ -1,15 +1,17 @@
-import React from "react";
+import type { Metadata } from "next";
+import { createMetadata } from "@/lib/metadata";
 
-export default function AdminLoginLayout({
-  children,
-  params,
-}: {
+type AdminLoginLayoutProps = {
   children: React.ReactNode;
   params: { locale: string };
-}) {
-  return (
-    <div className="min-h-screen bg-slate-100 flex items-center justify-center px-4 py-8">
-      <div className="w-full max-w-2xl">{children}</div>
-    </div>
-  );
+};
+
+export async function generateMetadata({
+  params,
+}: AdminLoginLayoutProps): Promise<Metadata> {
+  return createMetadata(params.locale, "adminLogin");
+}
+
+export default function AdminLoginLayout({ children }: AdminLoginLayoutProps) {
+  return children;
 }

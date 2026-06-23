@@ -3,8 +3,11 @@ import QueryProvider from "@/hooks/QueryProvider";
 import AuthInitializer from "@/components/auth-initializer";
 import { cn } from "@/lib/utils";
 import "@/styles/globals.css";
-import { NextIntlClientProvider, useMessages } from "next-intl";
+import { createRootMetadata } from "@/lib/metadata";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
 import { Inter as FontSans } from "next/font/google";
+import type { Metadata } from "next";
 import StoreProvider from "./StoreProvider";
 import { Toaster } from "@/components/ui/toaster";
 
@@ -18,12 +21,26 @@ const fontSans = FontSans({
   variable: "--font-sans",
 });
 
-export default function RootLayout({ children, params }: RootLayoutProps) {
-  const messages = useMessages();
+export async function generateMetadata({
+  params,
+}: RootLayoutProps): Promise<Metadata> {
+  return {
+    ...(await createRootMetadata(params.locale)),
+    icons: {
+      icon: [{ url: "/favicon.ico", type: "image/x-icon" }],
+      shortcut: "/favicon.ico",
+    },
+  };
+}
+
+export default async function RootLayout({
+  children,
+  params,
+}: RootLayoutProps) {
+  const messages = await getMessages();
 
   return (
     <html lang={params.locale} suppressHydrationWarning>
-      <head />
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased",

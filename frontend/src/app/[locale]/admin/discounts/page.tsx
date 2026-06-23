@@ -23,6 +23,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { TableScrollContainer } from "@/components/admin/TableScrollContainer";
 import {
   Table,
   TableBody,
@@ -47,8 +48,11 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { FiMoreVertical } from "react-icons/fi";
+import { useTranslations } from "next-intl";
 
 export default function AdminDiscountsPage() {
+  const t = useTranslations("Admin.discounts");
+  const tc = useTranslations("Admin.common");
   const { data: discounts, isLoading, error } = useGetDiscounts();
   const { toast } = useToast();
 
@@ -78,13 +82,13 @@ export default function AdminDiscountsPage() {
       setMaxTotalUses("");
       setForNewUsersOnly(false);
       toast({
-        title: "Discount created",
-        description: "The discount code is now available.",
+        title: t("toastCreated"),
+        description: t("toastCreatedDescription"),
       });
     },
     onError: (error) => {
       toast({
-        title: "Create failed",
+        title: tc("createFailed"),
         description: error.message,
       });
     },
@@ -95,13 +99,13 @@ export default function AdminDiscountsPage() {
       setDeleteDialogOpen(false);
       setDiscountToDelete(null);
       toast({
-        title: "Discount deleted",
-        description: `Discount #${variables} has been removed.`,
+        title: t("toastDeleted"),
+        description: t("toastDeletedDescription", { id: variables }),
       });
     },
     onError: (error) => {
       toast({
-        title: "Delete failed",
+        title: tc("deleteFailed"),
         description: error.message,
       });
     },
@@ -111,8 +115,8 @@ export default function AdminDiscountsPage() {
     event.preventDefault();
     if (!name.trim() || !code.trim() || !discountPercentage.trim()) {
       toast({
-        title: "Missing fields",
-        description: "Please fill in name, code, and discount percentage.",
+        title: t("toastMissingFields"),
+        description: t("toastMissingFieldsDescription"),
       });
       return;
     }
@@ -120,8 +124,8 @@ export default function AdminDiscountsPage() {
     const percentage = parseFloat(discountPercentage);
     if (Number.isNaN(percentage) || percentage <= 0 || percentage > 100) {
       toast({
-        title: "Invalid percentage",
-        description: "Enter a valid discount percentage between 1 and 100.",
+        title: t("toastInvalidPercentage"),
+        description: t("toastInvalidPercentageDescription"),
       });
       return;
     }
@@ -152,16 +156,16 @@ export default function AdminDiscountsPage() {
 
   if (isLoading) {
     return (
-      <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-        Loading discount codes...
+      <div className="rounded-xl border bg-card p-6 shadow-sm">
+        {tc("loadingDiscounts")}
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-        Error loading discount codes: {error.message}
+      <div className="rounded-xl border bg-card p-6 shadow-sm">
+        {tc("errorLoadingDiscounts")} {error.message}
       </div>
     );
   }
@@ -170,42 +174,50 @@ export default function AdminDiscountsPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-semibold">Discount codes</h1>
-          <p className="text-sm text-slate-600">
-            Create and manage site-wide discount codes.
-          </p>
+          <h1 className="text-2xl font-semibold">{t("title")}</h1>
+          <p className="text-sm text-muted-foreground">{t("subtitle")}</p>
         </div>
-        <Button onClick={() => setSheetOpen(true)}>Add discount</Button>
+        <Button onClick={() => setSheetOpen(true)}>{t("addButton")}</Button>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>Active discount codes</CardTitle>
-          <CardDescription>
-            Manage code availability and expiration for campaigns.
-          </CardDescription>
+          <CardTitle>{t("listTitle")}</CardTitle>
+          <CardDescription>{t("listDescription")}</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="overflow-x-auto -mx-6 px-6 md:mx-0 md:px-0">
+          <TableScrollContainer>
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Code</TableHead>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Discount</TableHead>
-                  <TableHead>Active</TableHead>
-                  <TableHead>Uses</TableHead>
-                  <TableHead>Actions</TableHead>
+                  <TableHead>{t("tableCode")}</TableHead>
+                  <TableHead className="hidden md:table-cell">
+                    {tc("name")}
+                  </TableHead>
+                  <TableHead>{t("tableDiscount")}</TableHead>
+                  <TableHead className="hidden sm:table-cell">
+                    {t("tableActive")}
+                  </TableHead>
+                  <TableHead className="hidden lg:table-cell">
+                    {t("tableUses")}
+                  </TableHead>
+                  <TableHead>{tc("actions")}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {(discounts || []).map((discount: any) => (
                   <TableRow key={discount.id}>
                     <TableCell>{discount.code}</TableCell>
-                    <TableCell>{discount.name}</TableCell>
+                    <TableCell className="hidden max-w-xs truncate md:table-cell">
+                      {discount.name}
+                    </TableCell>
                     <TableCell>{discount.discount_percentage}%</TableCell>
-                    <TableCell>{discount.active ? "Yes" : "No"}</TableCell>
-                    <TableCell>{discount.current_total_uses ?? 0}</TableCell>
+                    <TableCell className="hidden sm:table-cell">
+                      {discount.active ? tc("yes") : tc("no")}
+                    </TableCell>
+                    <TableCell className="hidden lg:table-cell">
+                      {discount.current_total_uses ?? 0}
+                    </TableCell>
                     <TableCell>
                       <DropdownMenu
                         open={openMenuId === discount.id}
@@ -217,7 +229,7 @@ export default function AdminDiscountsPage() {
                           <Button
                             variant="ghost"
                             size="icon"
-                            className="text-slate-600 hover:bg-slate-100"
+                            className="text-muted-foreground hover:bg-accent hover:text-accent-foreground"
                           >
                             <FiMoreVertical className="h-4 w-4" />
                           </Button>
@@ -226,7 +238,7 @@ export default function AdminDiscountsPage() {
                           <DropdownMenuItem
                             onSelect={() => handleOpenDelete(discount)}
                           >
-                            Delete discount
+                            {t("deleteMenu")}
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
@@ -235,24 +247,22 @@ export default function AdminDiscountsPage() {
                 ))}
               </TableBody>
             </Table>
-          </div>
+          </TableScrollContainer>
         </CardContent>
-        <CardFooter className="text-sm text-slate-500">
-          {discounts?.length ?? 0} discount codes
+        <CardFooter className="text-sm text-muted-foreground">
+          {t("footerCount", { count: discounts?.length ?? 0 })}
         </CardFooter>
       </Card>
 
       <Sheet open={sheetOpen} onOpenChange={(open) => setSheetOpen(open)}>
         <SheetContent side="right">
           <SheetHeader>
-            <SheetTitle>New discount code</SheetTitle>
-            <SheetDescription>
-              Set up your code and optional limits.
-            </SheetDescription>
+            <SheetTitle>{t("newTitle")}</SheetTitle>
+            <SheetDescription>{t("newDescription")}</SheetDescription>
           </SheetHeader>
           <form className="space-y-4 py-4" onSubmit={handleCreateDiscount}>
             <div className="grid gap-2">
-              <Label htmlFor="discount-name">Name</Label>
+              <Label htmlFor="discount-name">{tc("name")}</Label>
               <Input
                 id="discount-name"
                 value={name}
@@ -261,19 +271,21 @@ export default function AdminDiscountsPage() {
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="discount-code">Code</Label>
+              <Label htmlFor="discount-code">{t("code")}</Label>
               <Input
                 id="discount-code"
                 value={code}
                 onChange={(event) => setCode(event.target.value.toUpperCase())}
                 maxLength={20}
                 pattern="[A-Z0-9_-]+"
-                title="Uppercase letters, numbers, dashes, and underscores only"
+                title={t("codeTitle")}
                 required
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="discount-percentage">Discount percentage</Label>
+              <Label htmlFor="discount-percentage">
+                {t("discountPercentage")}
+              </Label>
               <Input
                 id="discount-percentage"
                 type="number"
@@ -286,7 +298,7 @@ export default function AdminDiscountsPage() {
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="discount-start">Start date</Label>
+              <Label htmlFor="discount-start">{t("startDate")}</Label>
               <Input
                 id="discount-start"
                 type="date"
@@ -295,7 +307,7 @@ export default function AdminDiscountsPage() {
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="discount-end">End date</Label>
+              <Label htmlFor="discount-end">{t("endDate")}</Label>
               <Input
                 id="discount-end"
                 type="date"
@@ -304,7 +316,7 @@ export default function AdminDiscountsPage() {
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="discount-max-user">Max uses per user</Label>
+              <Label htmlFor="discount-max-user">{t("maxUsesPerUser")}</Label>
               <Input
                 id="discount-max-user"
                 type="number"
@@ -315,29 +327,29 @@ export default function AdminDiscountsPage() {
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="discount-max-total">Max total uses</Label>
+              <Label htmlFor="discount-max-total">{t("maxTotalUses")}</Label>
               <Input
                 id="discount-max-total"
                 type="number"
                 min={1}
                 value={maxTotalUses}
                 onChange={(event) => setMaxTotalUses(event.target.value)}
-                placeholder="Leave blank for unlimited"
+                placeholder={t("unlimitedPlaceholder")}
               />
             </div>
             <div className="flex items-center gap-2">
               <input
                 id="discount-new-users"
                 type="checkbox"
-                className="h-4 w-4 rounded border-slate-300 text-primary focus:ring-primary"
+                className="h-4 w-4 rounded border-input text-primary focus:ring-primary"
                 checked={forNewUsersOnly}
                 onChange={(event) => setForNewUsersOnly(event.target.checked)}
               />
-              <Label htmlFor="discount-new-users">New users only</Label>
+              <Label htmlFor="discount-new-users">{t("newUsersOnly")}</Label>
             </div>
             <SheetFooter>
               <Button type="submit" disabled={createDiscountMutation.isLoading}>
-                Save discount
+                {t("saveButton")}
               </Button>
             </SheetFooter>
           </form>
@@ -350,10 +362,10 @@ export default function AdminDiscountsPage() {
       >
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Delete discount</DialogTitle>
+            <DialogTitle>{t("deleteTitle")}</DialogTitle>
             <DialogDescription>
-              Are you sure you want to delete{" "}
-              <strong>{discountToDelete?.code}</strong>? This cannot be undone.
+              {t("deleteDescription", { code: discountToDelete?.code ?? "" })}{" "}
+              {tc("deleteConfirmGeneric")}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
@@ -361,14 +373,14 @@ export default function AdminDiscountsPage() {
               variant="outline"
               onClick={() => setDeleteDialogOpen(false)}
             >
-              Cancel
+              {tc("cancel")}
             </Button>
             <Button
               variant="destructive"
               onClick={handleDelete}
               disabled={deleteDiscountMutation.isLoading}
             >
-              Delete discount
+              {t("deleteButton")}
             </Button>
           </DialogFooter>
         </DialogContent>

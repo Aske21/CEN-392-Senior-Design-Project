@@ -107,8 +107,14 @@ class StripeController {
 
       let event;
 
-      // req.body is a Buffer when using express.raw()
-      const body = Buffer.isBuffer(req.body) ? req.body : req.body;
+      // req.body must stay a Buffer for constructEvent()
+      const body = req.body;
+      if (!Buffer.isBuffer(body)) {
+        res.status(400).send(
+          "Webhook Error: Raw request body required for signature verification",
+        );
+        return;
+      }
 
       if (webhookSecret) {
         // Verify webhook signature in production

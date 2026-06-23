@@ -32,6 +32,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { TableScrollContainer } from "@/components/admin/TableScrollContainer";
 import {
   Table,
   TableBody,
@@ -57,8 +58,11 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { FiMoreVertical } from "react-icons/fi";
+import { useTranslations } from "next-intl";
 
 export default function AdminProductsPage() {
+  const t = useTranslations("Admin.products");
+  const tc = useTranslations("Admin.common");
   const { data, error, isLoading } = useGetAdminProducts({
     page: 1,
     limit: 50,
@@ -89,13 +93,13 @@ export default function AdminProductsPage() {
       setImageUrl("");
       setDescription("");
       toast({
-        title: "Product added",
-        description: "The product has been added to the catalog.",
+        title: t("toastAdded"),
+        description: t("toastAddedDescription"),
       });
     },
     onError: (error) => {
       toast({
-        title: "Create failed",
+        title: tc("createFailed"),
         description: error.message,
       });
     },
@@ -106,13 +110,13 @@ export default function AdminProductsPage() {
       setSheetOpen(false);
       setSelectedProduct(null);
       toast({
-        title: "Product updated",
-        description: `Product ${variables.id} has been saved.`,
+        title: t("toastUpdated"),
+        description: t("toastUpdatedDescription", { id: variables.id }),
       });
     },
     onError: (error) => {
       toast({
-        title: "Update failed",
+        title: tc("updateFailed"),
         description: error.message,
       });
     },
@@ -123,13 +127,13 @@ export default function AdminProductsPage() {
       setConfirmDeleteOpen(false);
       setProductToDelete(null);
       toast({
-        title: "Product deleted",
-        description: `Product #${variables} has been removed.`,
+        title: t("toastDeleted"),
+        description: t("toastDeletedDescription", { id: variables }),
       });
     },
     onError: (error) => {
       toast({
-        title: "Delete failed",
+        title: tc("deleteFailed"),
         description: error.message,
       });
     },
@@ -199,16 +203,16 @@ export default function AdminProductsPage() {
 
   if (isLoading || categoriesLoading) {
     return (
-      <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-        Loading products...
+      <div className="rounded-xl border bg-card p-6 shadow-sm">
+        {tc("loadingProducts")}
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-        Error loading products: {error.message}
+      <div className="rounded-xl border bg-card p-6 shadow-sm">
+        {tc("errorLoadingProducts")} {error.message}
       </div>
     );
   }
@@ -219,29 +223,25 @@ export default function AdminProductsPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-semibold">Products</h1>
-          <p className="text-sm text-slate-600">
-            Review and add new products to the store.
-          </p>
+          <h1 className="text-2xl font-semibold">{t("title")}</h1>
+          <p className="text-sm text-muted-foreground">{t("subtitle")}</p>
         </div>
-        <Button onClick={openCreateSheet}>Add product</Button>
+        <Button onClick={openCreateSheet}>{t("addButton")}</Button>
       </div>
 
       <Sheet open={sheetOpen} onOpenChange={handleCloseSheet}>
         <SheetContent side="right">
           <SheetHeader>
             <SheetTitle>
-              {selectedProduct ? "Edit product" : "New product"}
+              {selectedProduct ? t("editTitle") : t("newTitle")}
             </SheetTitle>
             <SheetDescription>
-              {selectedProduct
-                ? "Make updates and save them."
-                : "Fill out the product details to add it to inventory."}
+              {selectedProduct ? t("editDescription") : t("newDescription")}
             </SheetDescription>
           </SheetHeader>
           <form className="space-y-4 py-4" onSubmit={handleSave}>
             <div className="grid gap-2">
-              <Label htmlFor="product-name">Name</Label>
+              <Label htmlFor="product-name">{tc("name")}</Label>
               <Input
                 id="product-name"
                 value={name}
@@ -250,7 +250,7 @@ export default function AdminProductsPage() {
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="product-price">Price</Label>
+              <Label htmlFor="product-price">{t("price")}</Label>
               <Input
                 id="product-price"
                 type="number"
@@ -261,10 +261,10 @@ export default function AdminProductsPage() {
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="product-category">Category</Label>
+              <Label htmlFor="product-category">{t("category")}</Label>
               <Select value={categoryId} onValueChange={setCategoryId}>
                 <SelectTrigger id="product-category" className="w-full">
-                  <SelectValue placeholder="Select category" />
+                  <SelectValue placeholder={t("selectCategory")} />
                 </SelectTrigger>
                 <SelectContent>
                   {categories?.map((category) => (
@@ -279,16 +279,16 @@ export default function AdminProductsPage() {
               </Select>
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="product-image">Image URL</Label>
+              <Label htmlFor="product-image">{tc("imageUrl")}</Label>
               <Input
                 id="product-image"
                 value={imageUrl}
                 onChange={(event) => setImageUrl(event.target.value)}
-                placeholder="https://..."
+                placeholder={tc("imageUrlPlaceholder")}
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="product-description">Description</Label>
+              <Label htmlFor="product-description">{tc("description")}</Label>
               <Textarea
                 id="product-description"
                 value={description}
@@ -304,7 +304,7 @@ export default function AdminProductsPage() {
                   updateProductMutation.isLoading
                 }
               >
-                {selectedProduct ? "Save changes" : "Save product"}
+                {selectedProduct ? t("saveChanges") : t("saveProduct")}
               </Button>
             </SheetFooter>
           </form>
@@ -313,85 +313,90 @@ export default function AdminProductsPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Product catalog</CardTitle>
-          <CardDescription>
-            Latest products currently available in inventory.
-          </CardDescription>
+          <CardTitle>{t("catalogTitle")}</CardTitle>
+          <CardDescription>{t("catalogDescription")}</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="overflow-x-auto -mx-6 px-6 md:mx-0 md:px-0"></div>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Category</TableHead>
-                <TableHead>Price</TableHead>
-                <TableHead>Description</TableHead>
-                <TableHead>Created</TableHead>
-                <TableHead>Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {products.map((product: any) => (
-                <TableRow key={product.id}>
-                  <TableCell>{product.name}</TableCell>
-                  <TableCell>
-                    {product.category?.name ?? "Uncategorized"}
-                  </TableCell>
-                  <TableCell>
-                    ${product.price?.toFixed?.(2) ?? product.price}
-                  </TableCell>
-                  <TableCell className="max-w-xs truncate">
-                    {product.description}
-                  </TableCell>
-                  <TableCell>
-                    {new Date(
-                      product.created_at ?? product.createdAt,
-                    ).toLocaleDateString()}
-                  </TableCell>
-                  <TableCell>
-                    <DropdownMenu
-                      open={openMenuProductId === product.id}
-                      onOpenChange={(value) =>
-                        setOpenMenuProductId(value ? product.id : null)
-                      }
-                    >
-                      <DropdownMenuTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="text-slate-600 hover:bg-slate-100"
-                        >
-                          <FiMoreVertical className="h-4 w-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem
-                          onSelect={() => {
-                            setOpenMenuProductId(null);
-                            openEditSheet(product);
-                          }}
-                        >
-                          Edit product
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          onSelect={() => {
-                            setOpenMenuProductId(null);
-                            openDeleteDialog(product);
-                          }}
-                        >
-                          Delete product
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TableCell>
+          <TableScrollContainer>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>{tc("name")}</TableHead>
+                  <TableHead>{t("tableCategory")}</TableHead>
+                  <TableHead>{t("tablePrice")}</TableHead>
+                  <TableHead className="hidden md:table-cell">
+                    {tc("description")}
+                  </TableHead>
+                  <TableHead className="hidden lg:table-cell">
+                    {tc("created")}
+                  </TableHead>
+                  <TableHead>{tc("actions")}</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {products.map((product: any) => (
+                  <TableRow key={product.id}>
+                    <TableCell className="max-w-[120px] truncate sm:max-w-none">
+                      {product.name}
+                    </TableCell>
+                    <TableCell>
+                      {product.category?.name ?? t("uncategorized")}
+                    </TableCell>
+                    <TableCell>
+                      ${product.price?.toFixed?.(2) ?? product.price}
+                    </TableCell>
+                    <TableCell className="hidden max-w-xs truncate md:table-cell">
+                      {product.description}
+                    </TableCell>
+                    <TableCell className="hidden lg:table-cell">
+                      {new Date(
+                        product.created_at ?? product.createdAt,
+                      ).toLocaleDateString()}
+                    </TableCell>
+                    <TableCell>
+                      <DropdownMenu
+                        open={openMenuProductId === product.id}
+                        onOpenChange={(value) =>
+                          setOpenMenuProductId(value ? product.id : null)
+                        }
+                      >
+                        <DropdownMenuTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                          >
+                            <FiMoreVertical className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem
+                            onSelect={() => {
+                              setOpenMenuProductId(null);
+                              openEditSheet(product);
+                            }}
+                          >
+                            {t("editMenu")}
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            onSelect={() => {
+                              setOpenMenuProductId(null);
+                              openDeleteDialog(product);
+                            }}
+                          >
+                            {t("deleteMenu")}
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableScrollContainer>
         </CardContent>
-        <CardFooter className="text-sm text-slate-500">
-          {products.length} products shown.
+        <CardFooter className="text-sm text-muted-foreground">
+          {t("footerCount", { count: products.length })}
         </CardFooter>
       </Card>
 
@@ -404,10 +409,10 @@ export default function AdminProductsPage() {
       >
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Delete product</DialogTitle>
+            <DialogTitle>{t("deleteTitle")}</DialogTitle>
             <DialogDescription>
-              Are you sure you want to delete{" "}
-              <strong>{productToDelete?.name}</strong>? This cannot be undone.
+              {t("deleteDescription", { name: productToDelete?.name ?? "" })}{" "}
+              {tc("deleteConfirmGeneric")}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
@@ -415,14 +420,14 @@ export default function AdminProductsPage() {
               variant="outline"
               onClick={() => setConfirmDeleteOpen(false)}
             >
-              Cancel
+              {tc("cancel")}
             </Button>
             <Button
               variant="destructive"
               onClick={handleDelete}
               disabled={deleteProductMutation.isLoading}
             >
-              Delete product
+              {t("deleteButton")}
             </Button>
           </DialogFooter>
         </DialogContent>

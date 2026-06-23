@@ -14,55 +14,67 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { registerUser, googleAuthUser } from "@/lib/features/auth/authThunks";
+import { registerUser } from "@/lib/features/auth/authThunks";
 import {
   selectAuthLoading,
   selectAuthError,
 } from "@/lib/features/auth/authSelectors";
 import { setError } from "@/lib/features/auth/authSlice";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
-const registerSchema = z
-  .object({
-    firstName: z
-      .string()
-      .min(2, "First name must be at least 2 characters")
-      .max(50, "First name must be less than 50 characters"),
-    lastName: z
-      .string()
-      .min(2, "Last name must be at least 2 characters")
-      .max(50, "Last name must be less than 50 characters"),
-    email: z.string().email("Invalid email address"),
-    password: z.string().min(6, "Password must be at least 6 characters"),
-    repeatPassword: z.string(),
-    dateOfBirth: z.string().refine(
-      (date) => {
-        const parsedDate = new Date(date);
-        const today = new Date();
-        const age = today.getFullYear() - parsedDate.getFullYear();
-        const monthDiff = today.getMonth() - parsedDate.getMonth();
-        const validAge = age > 18 || (age === 18 && monthDiff >= 0);
-        return !isNaN(parsedDate.getTime()) && validAge;
-      },
-      {
-        message: "You must be at least 18 years old",
-      }
-    ),
-  })
-  .refine((data) => data.password === data.repeatPassword, {
-    message: "Passwords do not match",
-    path: ["repeatPassword"],
-  });
-
-type RegisterFormData = z.infer<typeof registerSchema>;
+type RegisterFormData = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  repeatPassword: string;
+  dateOfBirth: string;
+};
 
 const RegisterForm = () => {
   const t = useTranslations("RegisterForm");
+  const tv = useTranslations("RegisterForm.validation");
   const dispatch = useAppDispatch();
   const router = useRouter();
   const loading = useAppSelector(selectAuthLoading);
   const error = useAppSelector(selectAuthError);
+
+  const registerSchema = useMemo(
+    () =>
+      z
+        .object({
+          firstName: z
+            .string()
+            .min(2, tv("firstNameMin"))
+            .max(50, tv("firstNameMax")),
+          lastName: z
+            .string()
+            .min(2, tv("lastNameMin"))
+            .max(50, tv("lastNameMax")),
+          email: z.string().email(tv("invalidEmail")),
+          password: z.string().min(6, tv("passwordMin")),
+          repeatPassword: z.string(),
+          dateOfBirth: z.string().refine(
+            (date) => {
+              const parsedDate = new Date(date);
+              const today = new Date();
+              const age = today.getFullYear() - parsedDate.getFullYear();
+              const monthDiff = today.getMonth() - parsedDate.getMonth();
+              const validAge = age > 18 || (age === 18 && monthDiff >= 0);
+              return !isNaN(parsedDate.getTime()) && validAge;
+            },
+            {
+              message: tv("minAge"),
+            },
+          ),
+        })
+        .refine((data) => data.password === data.repeatPassword, {
+          message: tv("passwordsMismatch"),
+          path: ["repeatPassword"],
+        }),
+    [tv],
+  );
 
   const {
     register,
@@ -91,7 +103,7 @@ const RegisterForm = () => {
           firstName: data.firstName,
           lastName: data.lastName,
           dateOfBirth: data.dateOfBirth,
-        })
+        }),
       ).unwrap();
       router.push("/");
     } catch (err) {}
@@ -119,7 +131,7 @@ const RegisterForm = () => {
             <Input
               id="firstName"
               type="text"
-              placeholder="John"
+              placeholder={t("firstNamePlaceholder")}
               {...register("firstName")}
               className={errors.firstName ? "border-red-500" : ""}
             />
@@ -132,7 +144,7 @@ const RegisterForm = () => {
             <Input
               id="lastName"
               type="text"
-              placeholder="Doe"
+              placeholder={t("lastNamePlaceholder")}
               {...register("lastName")}
               className={errors.lastName ? "border-red-500" : ""}
             />
@@ -145,7 +157,7 @@ const RegisterForm = () => {
             <Input
               id="email"
               type="email"
-              placeholder="email@example.com"
+              placeholder={t("emailPlaceholder")}
               {...register("email")}
               className={errors.email ? "border-red-500" : ""}
             />

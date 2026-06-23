@@ -1,235 +1,171 @@
 "use client";
 
-import useDisclosure from "@/hooks/useDisclossure";
+import { useRef, useState } from "react";
 import { selectCartTotalItems } from "@/lib/features/cart/cartSelectors";
-import { useAppSelector, useAppDispatch } from "@/lib/hooks";
+import { useAppSelector } from "@/lib/hooks";
 import {
-  selectIsAuthenticated,
   selectAuthUser,
+  selectIsAuthenticated,
 } from "@/lib/features/auth/authSelectors";
-import { logout } from "@/lib/features/auth/authSlice";
 import { useLocale, useTranslations } from "next-intl";
 import NextLink from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { FaBars, FaShoppingCart, FaTimes, FaUser } from "react-icons/fa";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { usePathname } from "next/navigation";
+import { FaBars, FaShoppingCart } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
+import SlideSidebar, {
+  SIDEBAR_NAV_LIST_CLASS,
+  sidebarNavLinkClassName,
+} from "@/components/slide-sidebar";
+import UserMenu from "@/components/user-menu";
 
 const Header = () => {
   const t = useTranslations("Common");
-  const { isOpen, onToggle } = useDisclosure();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
   const locale = useLocale();
-  const router = useRouter();
   const totalCartItems = useAppSelector(selectCartTotalItems);
-  const isAuthenticated = useAppSelector(selectIsAuthenticated);
   const user = useAppSelector(selectAuthUser);
-  const dispatch = useAppDispatch();
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
   const pathname = usePathname();
-
-  const handleLogout = () => {
-    dispatch(logout());
-    router.push("/auth/logout");
-  };
-
-  // Generate a consistent color based on user's username or email
-  const getUserColor = () => {
-    if (!user) return "#6366f1"; // Default color if no user
-
-    const seed = user.username || user.email || "user";
-    let hash = 0;
-    for (let i = 0; i < seed.length; i++) {
-      hash = seed.charCodeAt(i) + ((hash << 5) - hash);
-    }
-
-    // Generate a vibrant color (avoiding too light or too dark colors)
-    const hue = Math.abs(hash) % 360;
-    const saturation = 60 + (Math.abs(hash) % 20); // 60-80%
-    const lightness = 45 + (Math.abs(hash) % 15); // 45-60%
-
-    return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
-  };
-
-  // Determine if text should be light or dark based on background color
-  const getTextColor = (bgColor: string) => {
-    // For HSL colors, check lightness
-    const match = bgColor.match(/hsl\((\d+),\s*(\d+)%,\s*(\d+)%\)/);
-    if (match) {
-      const lightness = parseInt(match[3]);
-      return lightness < 50 ? "#ffffff" : "#000000";
-    }
-    return "#ffffff"; // Default to white
-  };
-
-  const userColor = getUserColor();
-  const textColor = getTextColor(userColor);
 
   const routes = [
     { name: t("products"), path: "/products" },
     { name: t("about"), path: "/about" },
     { name: t("contact"), path: "/contact" },
     { name: t("cart"), path: "/cart" },
-    ...(user?.user_type === "admin" ? [{ name: "Admin", path: "/admin" }] : []),
+    ...(user?.user_type === "admin" ? [{ name: t("admin"), path: "/admin" }] : []),
   ];
 
+  const sidebarRoutes = routes.filter((route) => route.path !== "/cart");
+
+  const isRouteActive = (path: string) => pathname === `/${locale}${path}`;
+
+  const closeSidebar = () => setSidebarOpen(false);
+
+  const renderDesktopRouteContent = (route: { name: string; path: string }) => {
+    const isCart = route.name === t("cart");
+
+    if (isCart) {
+      return (
+        <span className="relative inline-flex">
+          <FaShoppingCart />
+          {totalCartItems > 0 && (
+            <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
+              {totalCartItems}
+            </span>
+          )}
+        </span>
+      );
+    }
+
+    return route.name;
+  };
+
   return (
-    <header className="sticky top-0 z-50 shadow py-4 bg-background border-b">
-      <div className="container mx-auto flex justify-between items-center">
-        <NextLink href="/" locale={locale}>
-          <span>ShoppyDev</span>
-        </NextLink>
-        <nav className="hidden md:flex md:space-x-4 items-center">
-          {routes.map((route, index) => (
+    <>
+      <header className="sticky top-0 z-40 border-b bg-background shadow">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
             <NextLink
-              key={index}
-              href={`${route.path}`}
+              href="/"
               locale={locale}
-              onClick={(e) => route.path === pathname && e.preventDefault()}
-              className={`${
-                `/${locale}${route.path}` === pathname
-                  ? "underline decoration-slate-900 decoration-2 underline-offset-4"
-                  : ""
-              }`}
+              className="text-xl font-semibold tracking-tight transition-opacity hover:opacity-80 md:text-2xl lg:text-3xl"
             >
-              <span>
-                <div className="relative">
-                  <div className="relative py-2">
-                    <div className="t-0 absolute left-3">
-                      {route.name === t("cart") && totalCartItems > 0 && (
-                        <p className="flex h-0.5 w-0.5 items-center justify-center rounded-full bg-red-500 p-2 text-xs text-white">
-                          {totalCartItems}{" "}
-                        </p>
-                      )}
-                    </div>
-                    {route.name !== t("cart") ? route.name : <FaShoppingCart />}
-                  </div>
-                </div>
-              </span>
+              ShoppyDev
             </NextLink>
-          ))}
-          {isAuthenticated ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  className="relative h-10 w-10 rounded-full p-0 border-0"
-                  style={{ backgroundColor: userColor, color: textColor }}
+
+            <nav className="hidden items-center gap-4 md:flex">
+              {routes.map((route) => (
+                <NextLink
+                  key={route.path}
+                  href={route.path}
+                  locale={locale}
+                  className={
+                    isRouteActive(route.path)
+                      ? "underline decoration-foreground decoration-2 underline-offset-4"
+                      : ""
+                  }
                 >
-                  <span className="text-sm font-medium">
-                    {user?.username?.[0]?.toUpperCase() || "U"}
-                  </span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56" align="end" forceMount>
-                <DropdownMenuLabel className="font-normal">
-                  <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-medium leading-none">
-                      {user?.username || "User"}
-                    </p>
-                    <p className="text-xs leading-none text-muted-foreground">
-                      {user?.email}
-                    </p>
-                  </div>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
-                  <NextLink href="/profile" locale={locale}>
-                    {t("profile")}
-                  </NextLink>
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={handleLogout}>
-                  {t("logout")}
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : (
-            <NextLink href="/login" locale={locale}>
-              <Button variant="ghost" size="icon">
-                <FaUser />
-              </Button>
-            </NextLink>
-          )}
-        </nav>
-        <div className="md:hidden">
-          {isOpen ? (
-            <FaTimes className="text-gray-600" onClick={onToggle} />
-          ) : (
-            <FaBars
-              className="text-gray-600"
-              onClick={() => {
-                onToggle();
-              }}
-            />
-          )}
-        </div>
-        {isOpen && (
-          <nav className="md:hidden absolute top-full left-0 w-full z-50 bg-background border-t">
-            <ul className="flex flex-col items-center">
-              {routes.map((route, index) => (
-                <li key={index} className="py-2">
-                  <NextLink
-                    href={`${route.path}`}
-                    locale={locale}
-                    onClick={(e) =>
-                      route.path === pathname && e.preventDefault()
-                    }
-                    className={`${
-                      `/${locale}${route.path}` === pathname
-                        ? "underline decoration-slate-900 decoration-2 underline-offset-4"
-                        : ""
-                    }`}
-                  >
-                    <span>
-                      <div className="relative">
-                        <div className="relative py-2">
-                          <div className="t-0 absolute left-3">
-                            {route.name === t("cart") && totalCartItems > 0 && (
-                              <p className="flex h-0.5 w-0.5 items-center justify-center rounded-full bg-red-500 p-2 text-xs text-white">
-                                {totalCartItems}{" "}
-                              </p>
-                            )}
-                          </div>
-                          {route.name !== t("cart") ? (
-                            route.name
-                          ) : (
-                            <FaShoppingCart />
-                          )}
-                        </div>
-                      </div>
-                    </span>
-                  </NextLink>
-                </li>
+                  {renderDesktopRouteContent(route)}
+                </NextLink>
               ))}
-              <li className="py-2">
-                {isAuthenticated ? (
-                  <div className="flex flex-col items-center space-y-2">
-                    <div className="text-sm font-medium">
-                      {user?.username || "User"}
-                    </div>
-                    <Button variant="outline" size="sm" onClick={handleLogout}>
-                      {t("logout")}
-                    </Button>
-                  </div>
-                ) : (
-                  <NextLink href="/login" locale={locale}>
-                    <Button variant="ghost" size="sm">
-                      <FaUser className="mr-2" />
-                      {t("login")}
-                    </Button>
-                  </NextLink>
-                )}
-              </li>
-            </ul>
-          </nav>
-        )}
-      </div>
-    </header>
+              <UserMenu />
+            </nav>
+
+            <div className="flex items-center gap-1 md:hidden">
+              <NextLink
+                href="/cart"
+                locale={locale}
+                aria-label={t("cart")}
+                className={
+                  isRouteActive("/cart")
+                    ? "underline decoration-foreground decoration-2 underline-offset-4"
+                    : ""
+                }
+              >
+                <Button variant="ghost" size="icon" className="relative">
+                  <FaShoppingCart className="h-5 w-5" />
+                  {totalCartItems > 0 && (
+                    <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
+                      {totalCartItems}
+                    </span>
+                  )}
+                </Button>
+              </NextLink>
+
+              <Button
+                ref={menuButtonRef}
+                variant="ghost"
+                size="icon"
+                onClick={() => setSidebarOpen(true)}
+                aria-label={t("openMenu")}
+                aria-expanded={sidebarOpen}
+                aria-controls="mobile-nav"
+              >
+                <FaBars className="h-5 w-5" />
+              </Button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <SlideSidebar
+        open={sidebarOpen}
+        onClose={closeSidebar}
+        side="right"
+        returnFocusRef={menuButtonRef}
+        header={
+          <NextLink
+            href="/"
+            locale={locale}
+            onClick={closeSidebar}
+            className="min-w-0 flex-1"
+          >
+            <div className="rounded-2xl bg-muted p-4">
+              <span className="text-2xl font-semibold text-foreground">ShoppyDev</span>
+            </div>
+          </NextLink>
+        }
+        footer={
+          isAuthenticated ? <UserMenu showName /> : undefined
+        }
+      >
+        <ul className={SIDEBAR_NAV_LIST_CLASS}>
+          {sidebarRoutes.map((route) => (
+            <li key={route.path}>
+              <NextLink
+                href={route.path}
+                locale={locale}
+                onClick={closeSidebar}
+                className={sidebarNavLinkClassName(isRouteActive(route.path))}
+              >
+                {route.name}
+              </NextLink>
+            </li>
+          ))}
+        </ul>
+      </SlideSidebar>
+    </>
   );
 };
 

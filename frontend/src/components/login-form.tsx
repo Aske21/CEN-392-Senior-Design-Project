@@ -21,14 +21,12 @@ import {
 } from "@/lib/features/auth/authSelectors";
 import { setError } from "@/lib/features/auth/authSlice";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
-const loginSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-});
-
-type LoginFormData = z.infer<typeof loginSchema>;
+type LoginFormData = {
+  email: string;
+  password: string;
+};
 
 interface LoginFormProps {
   adminLogin?: boolean;
@@ -36,10 +34,20 @@ interface LoginFormProps {
 
 const LoginForm = ({ adminLogin = false }: LoginFormProps) => {
   const t = useTranslations("LoginForm");
+  const tv = useTranslations("LoginForm.validation");
   const dispatch = useAppDispatch();
   const router = useRouter();
   const loading = useAppSelector(selectAuthLoading);
   const error = useAppSelector(selectAuthError);
+
+  const loginSchema = useMemo(
+    () =>
+      z.object({
+        email: z.string().email(tv("invalidEmail")),
+        password: z.string().min(6, tv("passwordMin")),
+      }),
+    [tv],
+  );
 
   const {
     register,
@@ -67,7 +75,7 @@ const LoginForm = ({ adminLogin = false }: LoginFormProps) => {
         router.push(`/${locale}/admin`);
       } else {
         if (adminLogin) {
-          dispatch(setError("This account does not have admin access."));
+          dispatch(setError(t("noAdminAccess")));
         }
         router.push(`/${locale}`);
       }
@@ -85,7 +93,7 @@ const LoginForm = ({ adminLogin = false }: LoginFormProps) => {
         <CardDescription>{t("description")}</CardDescription>
       </CardHeader>
       <CardContent className="grid gap-4">
-        <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4" noValidate>
           {error && (
             <div className="text-sm text-red-500 bg-red-50 p-2 rounded">
               {error}
@@ -96,7 +104,7 @@ const LoginForm = ({ adminLogin = false }: LoginFormProps) => {
             <Input
               id="email"
               type="email"
-              placeholder="example@email.com"
+              placeholder={t("emailPlaceholder")}
               {...register("email")}
               className={errors.email ? "border-red-500" : ""}
             />

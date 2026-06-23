@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import ProductCard from "@/components/product-card";
 import useGetProducts from "@/hooks/product/useGetProducts";
 import useGetCategories from "@/hooks/category/useGetCategories";
@@ -18,18 +19,43 @@ import {
 } from "@/components/ui/sheet";
 import { FaFilter } from "react-icons/fa";
 import { useTranslations } from "next-intl";
+import {
+  buildProductFiltersSearchParams,
+  parseProductFiltersFromSearchParams,
+} from "@/lib/utils/product-filters-url";
+
+const DEFAULT_FILTERS: ProductFilters = {
+  page: 1,
+  limit: 20,
+};
+
+function filtersFromSearchParams(
+  searchParams: URLSearchParams,
+): ProductFilters {
+  const fromUrl = parseProductFiltersFromSearchParams(searchParams);
+
+  return {
+    page: fromUrl.page ?? 1,
+    limit: 20,
+    categoryId: fromUrl.categoryId,
+    search: fromUrl.search,
+    sortBy: fromUrl.sortBy,
+    sortOrder: fromUrl.sortOrder,
+    minPrice: fromUrl.minPrice,
+    maxPrice: fromUrl.maxPrice,
+  };
+}
 
 const Products = () => {
   const t = useTranslations("ProductsPage");
   const tf = useTranslations("ProductFilters");
-  const [filters, setFilters] = useState<ProductFilters>({
-    page: 1,
-    limit: 20,
-  });
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const [filters, setFilters] = useState<ProductFilters>(DEFAULT_FILTERS);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
   const { data, isLoading, isError, error } = useGetProducts(filters);
-
   const { data: categories } = useGetCategories();
 
   const products = data?.products || [];
@@ -37,20 +63,35 @@ const Products = () => {
   const totalPages = data?.totalPages || 0;
   const total = data?.total || 0;
 
+  useEffect(() => {
+    setFilters(filtersFromSearchParams(searchParams));
+  }, [searchParams]);
+
+  const syncUrl = (updated: ProductFilters) => {
+    const params = buildProductFiltersSearchParams(updated);
+    const query = params.toString();
+    const url = query ? `${pathname}?${query}` : pathname;
+    router.replace(url, { scroll: false });
+  };
+
   const handlePageChange = (newPage: number) => {
     if (newPage >= 1 && newPage <= totalPages) {
-      setFilters((prev) => ({ ...prev, page: newPage }));
+      const updated = { ...filters, page: newPage };
+      setFilters(updated);
+      syncUrl(updated);
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 
   const handleFiltersChange = (newFilters: ProductFilters) => {
-    console.log("Filters changing from:", filters, "to:", newFilters);
-    setFilters((prev) => {
-      const updated = { ...prev, ...newFilters, page: 1 };
-      console.log("Updated filters:", updated);
-      return updated;
-    });
+    const updated = {
+      ...filters,
+      ...newFilters,
+      page: newFilters.page ?? 1,
+      limit: filters.limit ?? 20,
+    };
+    setFilters(updated);
+    syncUrl(updated);
     setMobileFiltersOpen(false);
   };
 
@@ -106,7 +147,7 @@ const Products = () => {
               <h2 className="text-2xl font-semibold mb-4">{t("errorTitle")}</h2>
               <p>{t("errorMessage")}</p>
               <p className="text-sm text-muted-foreground mt-2">
-                {error?.message || "Unknown error"}
+                {error?.message || t("unknownError")}
               </p>
             </div>
           ) : products.length === 0 ? (
