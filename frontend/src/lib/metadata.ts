@@ -15,6 +15,7 @@ export type MetadataPage =
   | "authLogout"
   | "admin"
   | "adminProducts"
+  | "adminInventory"
   | "adminCategories"
   | "adminUsers"
   | "adminOrders"

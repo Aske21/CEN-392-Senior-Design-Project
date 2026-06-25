@@ -35,6 +35,39 @@ class StripeController {
         return;
       }
 
+      // Validate stock for any item whose product has a tracked inventory
+      // record. Products without an inventory record are treated as untracked
+      // and are not blocked here.
+      const productService = new ProductService();
+      for (const item of items) {
+        const productId = Number(item.id);
+        if (!productId || Number.isNaN(productId)) {
+          continue;
+        }
+
+        const product = await productService.getProductById(productId);
+        if (!product || !product.inventory_id) {
+          continue;
+        }
+
+        const available = product.inventory_id.total_stock_quantity ?? 0;
+        const requested = Number(item.quantity) || 0;
+
+        if (available <= 0) {
+          res
+            .status(400)
+            .json({ error: `${product.name} is out of stock.` });
+          return;
+        }
+
+        if (requested > available) {
+          res.status(400).json({
+            error: `Only ${available} unit(s) of ${product.name} are available.`,
+          });
+          return;
+        }
+      }
+
       let totalAmount = items.reduce(
         (sum, item) => sum + item.price * item.quantity,
         0,

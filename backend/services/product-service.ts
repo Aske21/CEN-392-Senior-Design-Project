@@ -1,4 +1,5 @@
 import { Product } from "../core/db/entity/product";
+import { ProductInventory } from "../core/db/entity/product_inventory";
 import { appDataSource } from "../core/data-source";
 import { Brackets } from "typeorm";
 
@@ -23,16 +24,32 @@ export interface PaginatedProductsResponse {
 
 export class ProductService {
   private productRepository = appDataSource.getRepository(Product);
+  private inventoryRepository = appDataSource.getRepository(ProductInventory);
+
+  private attachStock(product: Product): Product {
+    (product as any).stockQuantity =
+      product.inventory_id?.total_stock_quantity ?? 0;
+    return product;
+  }
+
+  private normalizeStock(value: number): number {
+    const parsed = Math.floor(Number(value));
+    if (Number.isNaN(parsed) || parsed < 0) {
+      return 0;
+    }
+    return parsed;
+  }
 
   async getProductById(productId: number): Promise<Product | null> {
-    return this.productRepository.findOne({
+    const product = await this.productRepository.findOne({
       where: { id: productId },
-      relations: ["category"],
+      relations: ["category", "inventory_id"],
     });
+    return product ? this.attachStock(product) : null;
   }
 
   async getAllProducts(
-    filters?: ProductFilters
+    filters?: ProductFilters,
   ): Promise<PaginatedProductsResponse> {
     const page = filters?.page || 1;
     const limit = filters?.limit || 20;
@@ -41,6 +58,7 @@ export class ProductService {
     const queryBuilder = this.productRepository
       .createQueryBuilder("product")
       .leftJoinAndSelect("product.category", "category")
+      .leftJoinAndSelect("product.inventory_id", "inventory")
       .distinct(true);
 
     let hasWhere = false;
@@ -57,7 +75,7 @@ export class ProductService {
             }).orWhere("product.description ILIKE :search", {
               search: searchPattern,
             });
-          })
+          }),
         )
         .addSelect(
           `
@@ -69,7 +87,7 @@ export class ProductService {
             ELSE 0
           END
           `,
-          "search_rank"
+          "search_rank",
         )
         .setParameter("exactMatch", searchTerm)
         .setParameter("startsWith", `${searchTerm}%`)
@@ -144,12 +162,12 @@ export class ProductService {
         "First product:",
         products[0].name,
         "Category:",
-        products[0].category?.name
+        products[0].category?.name,
       );
     }
 
     return {
-      products,
+      products: products.map((product) => this.attachStock(product)),
       total,
       page,
       limit,
@@ -157,21 +175,55 @@ export class ProductService {
     };
   }
 
-  async createProduct(productData: Partial<Product>): Promise<Product> {
+  async createProduct(
+    productData: Partial<Product>,
+    stockQuantity: number = 0,
+  ): Promise<Product> {
     const product = this.productRepository.create(productData);
-    return this.productRepository.save(product);
+    const savedProduct = await this.productRepository.save(product);
+
+    const inventory = this.inventoryRepository.create({
+      name: savedProduct.name,
+      total_stock_quantity: this.normalizeStock(stockQuantity),
+    });
+    const savedInventory = await this.inventoryRepository.save(inventory);
+
+    savedProduct.inventory_id = savedInventory;
+    await this.productRepository.save(savedProduct);
+
+    return this.attachStock(savedProduct);
   }
 
   async updateProduct(
     productId: number,
-    updateData: Partial<Product>
+    updateData: Partial<Product>,
+    stockQuantity?: number,
   ): Promise<Product | undefined> {
-    const product = await this.productRepository.findOneBy({ id: productId });
+    const product = await this.productRepository.findOne({
+      where: { id: productId },
+      relations: ["category", "inventory_id"],
+    });
     if (!product) {
       throw new Error("Product not found");
     }
     Object.assign(product, updateData);
-    return this.productRepository.save(product);
+
+    if (stockQuantity !== undefined) {
+      const safeQuantity = this.normalizeStock(stockQuantity);
+      if (product.inventory_id) {
+        product.inventory_id.total_stock_quantity = safeQuantity;
+        await this.inventoryRepository.save(product.inventory_id);
+      } else {
+        const inventory = this.inventoryRepository.create({
+          name: product.name,
+          total_stock_quantity: safeQuantity,
+        });
+        product.inventory_id = await this.inventoryRepository.save(inventory);
+      }
+    }
+
+    const saved = await this.productRepository.save(product);
+    return this.attachStock(saved);
   }
 
   async deleteProduct(productId: number): Promise<void> {
@@ -188,6 +240,7 @@ export class ProductService {
 
     const products = await this.productRepository
       .createQueryBuilder("product")
+      .leftJoinAndSelect("product.inventory_id", "inventory")
       .where("product.created_at >= :twoWeeksAgo", { twoWeeksAgo })
       .orderBy("product.created_at", "DESC")
       .take(6)
@@ -196,15 +249,19 @@ export class ProductService {
     if (products.length < 6) {
       const latestProducts = await this.productRepository.find({
         order: { created_at: "DESC" },
+        relations: ["inventory_id"],
         take: 6,
       });
-      return latestProducts;
+      return latestProducts.map((product) => this.attachStock(product));
     }
 
-    return products;
+    return products.map((product) => this.attachStock(product));
   }
 
-  async getRecommendedProducts(productId: number, limit: number = 4): Promise<Product[]> {
+  async getRecommendedProducts(
+    productId: number,
+    limit: number = 4,
+  ): Promise<Product[]> {
     const product = await this.productRepository.findOne({
       where: { id: productId },
       relations: ["category"],
@@ -217,6 +274,7 @@ export class ProductService {
     const queryBuilder = this.productRepository
       .createQueryBuilder("product")
       .leftJoinAndSelect("product.category", "category")
+      .leftJoinAndSelect("product.inventory_id", "inventory")
       .where("product.id != :productId", { productId });
 
     if (product.category) {
@@ -234,20 +292,23 @@ export class ProductService {
       const additionalProducts = await this.productRepository
         .createQueryBuilder("product")
         .leftJoinAndSelect("product.category", "category")
+        .leftJoinAndSelect("product.inventory_id", "inventory")
         .where("product.id != :productId", { productId })
         .andWhere(
           product.category
             ? "product.categoryId != :categoryId OR product.categoryId IS NULL"
             : "product.categoryId IS NOT NULL",
-          product.category ? { categoryId: product.category.id } : {}
+          product.category ? { categoryId: product.category.id } : {},
         )
         .orderBy("product.created_at", "DESC")
         .take(limit - recommended.length)
         .getMany();
 
-      return [...recommended, ...additionalProducts].slice(0, limit);
+      return [...recommended, ...additionalProducts]
+        .slice(0, limit)
+        .map((item) => this.attachStock(item));
     }
 
-    return recommended;
+    return recommended.map((item) => this.attachStock(item));
   }
 }

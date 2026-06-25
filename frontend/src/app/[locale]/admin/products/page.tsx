@@ -59,6 +59,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { FiMoreVertical } from "react-icons/fi";
 import { useTranslations } from "next-intl";
+import { Badge } from "@/components/ui/badge";
+import {
+  getStockQuantity,
+  getStockStatus,
+  stockBadgeVariant,
+} from "@/lib/inventory";
 
 export default function AdminProductsPage() {
   const t = useTranslations("Admin.products");
@@ -82,6 +88,7 @@ export default function AdminProductsPage() {
   const [categoryId, setCategoryId] = useState<string>("");
   const [imageUrl, setImageUrl] = useState("");
   const [description, setDescription] = useState("");
+  const [stock, setStock] = useState("");
 
   const createProductMutation = useCreateAdminProduct({
     onSuccess: () => {
@@ -145,6 +152,7 @@ export default function AdminProductsPage() {
     setCategoryId("");
     setImageUrl("");
     setDescription("");
+    setStock("");
   };
 
   const openCreateSheet = () => {
@@ -160,6 +168,7 @@ export default function AdminProductsPage() {
     setCategoryId(product.category?.id?.toString() ?? "");
     setImageUrl(product.images?.[0] ?? "");
     setDescription(product.description || "");
+    setStock(getStockQuantity(product).toString());
     setSheetOpen(true);
   };
 
@@ -170,15 +179,40 @@ export default function AdminProductsPage() {
 
   const handleSave = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!categoryId) return;
+    if (!categoryId) {
+      toast({
+        title: tc("validationFailed"),
+        description: t("validationCategory"),
+      });
+      return;
+    }
+
+    const parsedPrice = parseFloat(price);
+    if (Number.isNaN(parsedPrice) || parsedPrice < 0) {
+      toast({
+        title: tc("validationFailed"),
+        description: t("validationPrice"),
+      });
+      return;
+    }
+
+    const parsedStock = parseInt(stock, 10);
+    if (stock === "" || Number.isNaN(parsedStock) || parsedStock < 0) {
+      toast({
+        title: tc("validationFailed"),
+        description: t("validationStock"),
+      });
+      return;
+    }
 
     const payload = {
       name,
       description,
-      price: parseFloat(price),
+      price: parsedPrice,
       images: imageUrl ? [imageUrl] : [],
       category: { id: Number(categoryId) },
       attributes: {},
+      stockQuantity: parsedStock,
     };
 
     if (selectedProduct) {
@@ -261,6 +295,19 @@ export default function AdminProductsPage() {
               />
             </div>
             <div className="grid gap-2">
+              <Label htmlFor="product-stock">{t("stock")}</Label>
+              <Input
+                id="product-stock"
+                type="number"
+                min="0"
+                step="1"
+                value={stock}
+                onChange={(event) => setStock(event.target.value)}
+                placeholder="0"
+                required
+              />
+            </div>
+            <div className="grid gap-2">
               <Label htmlFor="product-category">{t("category")}</Label>
               <Select value={categoryId} onValueChange={setCategoryId}>
                 <SelectTrigger id="product-category" className="w-full">
@@ -324,6 +371,7 @@ export default function AdminProductsPage() {
                   <TableHead>{tc("name")}</TableHead>
                   <TableHead>{t("tableCategory")}</TableHead>
                   <TableHead>{t("tablePrice")}</TableHead>
+                  <TableHead>{t("tableStock")}</TableHead>
                   <TableHead className="hidden md:table-cell">
                     {tc("description")}
                   </TableHead>
@@ -344,6 +392,19 @@ export default function AdminProductsPage() {
                     </TableCell>
                     <TableCell>
                       ${product.price?.toFixed?.(2) ?? product.price}
+                    </TableCell>
+                    <TableCell>
+                      {(() => {
+                        const quantity = getStockQuantity(product);
+                        const status = getStockStatus(quantity);
+                        return (
+                          <Badge variant={stockBadgeVariant(status)}>
+                            {status === "out"
+                              ? t("stockOut")
+                              : t("stockCount", { count: quantity })}
+                          </Badge>
+                        );
+                      })()}
                     </TableCell>
                     <TableCell className="hidden max-w-xs truncate md:table-cell">
                       {product.description}

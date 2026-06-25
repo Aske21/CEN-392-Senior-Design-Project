@@ -401,7 +401,10 @@
       "viewAll": "View all"
     },
     "addedToCart": "Added to cart",
-    "addedToCartDescription": "{name} has been added to your cart"
+    "addedToCartDescription": "{name} has been added to your cart",
+    "inStock": "{count} in stock",
+    "lowStock": "Only {count} left in stock",
+    "outOfStock": "Out of stock"
   },
   "Admin": {
     "common": {
@@ -432,13 +435,15 @@
       "errorLoadingUsers": "Error loading users:",
       "deleteConfirmCannotUndo": "This action cannot be undone.",
       "deleteConfirmGeneric": "This cannot be undone.",
-      "markStatus": "Mark {status}"
+      "markStatus": "Mark {status}",
+      "validationFailed": "Validation failed"
     },
     "layout": {
       "title": "Admin",
       "backToStore": "Back to store",
       "dashboard": "Dashboard",
       "products": "Products",
+      "inventory": "Inventory",
       "categories": "Categories",
       "users": "Users",
       "orders": "Orders",
@@ -466,7 +471,14 @@
       "tableId": "ID",
       "tableCustomer": "Customer",
       "tableStatus": "Status",
-      "tableTotal": "Total"
+      "tableTotal": "Total",
+      "lowStockTitle": "Low stock alerts",
+      "lowStockDescription": "Products that are low or out of stock.",
+      "lowStockEmpty": "All products are sufficiently stocked.",
+      "lowStockStatus": "Status",
+      "lowStockQuantity": "Quantity",
+      "lowStockOut": "Out of stock",
+      "lowStockLow": "Low stock"
     },
     "categories": {
       "title": "Categories",
@@ -503,6 +515,7 @@
       "editDescription": "Make updates and save them.",
       "newDescription": "Fill out the product details to add it to inventory.",
       "price": "Price",
+      "stock": "Stock quantity",
       "category": "Category",
       "selectCategory": "Select category",
       "saveChanges": "Save changes",
@@ -511,6 +524,12 @@
       "catalogDescription": "Latest products currently available in inventory.",
       "tableCategory": "Category",
       "tablePrice": "Price",
+      "tableStock": "Stock",
+      "stockOut": "Out of stock",
+      "stockCount": "{count} in stock",
+      "validationCategory": "Please select a category.",
+      "validationPrice": "Please enter a valid price (0 or more).",
+      "validationStock": "Please enter a valid stock quantity (0 or more).",
       "uncategorized": "Uncategorized",
       "editMenu": "Edit product",
       "deleteMenu": "Delete product",
@@ -524,6 +543,31 @@
       "toastUpdatedDescription": "Product {id} has been saved.",
       "toastDeleted": "Product deleted",
       "toastDeletedDescription": "Product #{id} has been removed."
+    },
+    "inventory": {
+      "title": "Inventory",
+      "subtitle": "Track stock levels and adjust quantities.",
+      "inStockTitle": "In stock",
+      "inStockDescription": "Products with healthy stock",
+      "lowStockTitle": "Low stock",
+      "lowStockDescription": "At or below {threshold} units",
+      "outOfStockTitle": "Out of stock",
+      "outOfStockDescription": "Products with no stock",
+      "adjustTitle": "Adjust stock",
+      "adjustDescription": "Update the stock quantity for {name}.",
+      "stockLabel": "Stock quantity",
+      "saveStock": "Save stock",
+      "listTitle": "Stock levels",
+      "listDescription": "Current stock for every product in the catalog.",
+      "tableStatus": "Status",
+      "tableQuantity": "Quantity",
+      "statusIn": "In stock",
+      "statusLow": "Low stock",
+      "statusOut": "Out of stock",
+      "adjustButton": "Adjust",
+      "footerCount": "{count} products tracked.",
+      "toastUpdated": "Stock updated",
+      "toastUpdatedDescription": "The stock quantity has been saved."
     },
     "discounts": {
       "title": "Discount codes",
@@ -624,6 +668,7 @@
       "authLogout": "Signing Out",
       "admin": "Admin Dashboard",
       "adminProducts": "Manage Products",
+      "adminInventory": "Manage Inventory",
       "adminCategories": "Manage Categories",
       "adminUsers": "Manage Users",
       "adminOrders": "Manage Orders",
@@ -644,6 +689,7 @@
       "authLogout": "Signing you out of your ShoppyDev account.",
       "admin": "Manage products, orders, users, and store settings.",
       "adminProducts": "Create, update, and remove products in the ShoppyDev catalog.",
+      "adminInventory": "Track stock levels and adjust product quantities.",
       "adminCategories": "Organize products with categories and collections.",
       "adminUsers": "View and manage customer and admin accounts.",
       "adminOrders": "Track and update customer orders.",

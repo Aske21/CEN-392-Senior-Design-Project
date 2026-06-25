@@ -13,6 +13,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { FiShoppingCart, FiTag, FiPackage } from "react-icons/fi";
 import { useTranslations, useLocale } from "next-intl";
 import { buildProductsHref } from "@/lib/utils/product-filters-url";
+import { getStockQuantity, getStockStatus } from "@/lib/inventory";
 
 const ProductPage = ({ params }: { params: { id: string } }) => {
   const t = useTranslations("ProductPage");
@@ -62,7 +63,12 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
   const categoryIdForLink =
     typeof category === "object" && category?.id ? category.id : null;
 
+  const stockQuantity = getStockQuantity(data);
+  const stockStatus = getStockStatus(stockQuantity);
+  const isOutOfStock = stockStatus === "out";
+
   const handleAddToCart = () => {
+    if (isOutOfStock) return;
     dispatch(
       addItem({
         id: id as unknown as string,
@@ -152,6 +158,26 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
             <p className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2">
               ${price}
             </p>
+            <div className="mb-4">
+              {stockStatus === "in" && (
+                <span className="inline-flex items-center gap-2 text-sm font-medium text-emerald-600 dark:text-emerald-400">
+                  <FiPackage className="w-4 h-4" />
+                  {t("inStock", { count: stockQuantity })}
+                </span>
+              )}
+              {stockStatus === "low" && (
+                <span className="inline-flex items-center gap-2 text-sm font-medium text-amber-600 dark:text-amber-400">
+                  <FiPackage className="w-4 h-4" />
+                  {t("lowStock", { count: stockQuantity })}
+                </span>
+              )}
+              {stockStatus === "out" && (
+                <span className="inline-flex items-center gap-2 text-sm font-medium text-rose-600 dark:text-rose-400">
+                  <FiPackage className="w-4 h-4" />
+                  {t("outOfStock")}
+                </span>
+              )}
+            </div>
             {brand && (
               <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400 mb-4">
                 <FiPackage className="w-4 h-4" />
@@ -173,10 +199,11 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
             <Button
               onClick={handleAddToCart}
               size="lg"
+              disabled={isOutOfStock}
               className="w-full sm:w-auto sm:min-w-[220px] h-14 px-6 text-base font-semibold"
             >
               <FiShoppingCart className="w-5 h-5 mr-2" />
-              {t("addToCart")}
+              {isOutOfStock ? t("outOfStock") : t("addToCart")}
             </Button>
             <Link href="/cart" className="w-full sm:w-auto">
               <Button

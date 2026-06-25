@@ -22,6 +22,11 @@ import useGetAdminProducts from "@/hooks/admin/useGetAdminProducts";
 import useGetCategories from "@/hooks/category/useGetCategories";
 import { TableScrollContainer } from "@/components/admin/TableScrollContainer";
 import { useTranslations } from "next-intl";
+import {
+  getStockQuantity,
+  getStockStatus,
+  stockBadgeVariant,
+} from "@/lib/inventory";
 
 const orderStatuses = [
   "pending",
@@ -67,6 +72,10 @@ export default function AdminDashboardPage() {
   );
   const { data: productsData, isLoading: isProductsLoading } =
     useGetAdminProducts({ page: 1, limit: 1 });
+  const { data: stockData, isLoading: isStockLoading } = useGetAdminProducts({
+    page: 1,
+    limit: 100,
+  });
   const { data: categoriesData, isLoading: isCategoriesLoading } =
     useGetCategories();
 
@@ -80,6 +89,14 @@ export default function AdminDashboardPage() {
   const productsCount = productsData?.total || 0;
   const categoriesCount = categoriesData?.length || 0;
   const recentOrders = ordersData?.orders ?? [];
+
+  const lowStockItems = (stockData?.products ?? [])
+    .map((product: any) => ({
+      ...product,
+      quantity: getStockQuantity(product),
+    }))
+    .filter((product) => getStockStatus(product.quantity) !== "in")
+    .sort((a, b) => a.quantity - b.quantity);
 
   return (
     <div className="space-y-8">
@@ -138,6 +155,56 @@ export default function AdminDashboardPage() {
           </CardContent>
         </Card>
       </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>{t("lowStockTitle")}</CardTitle>
+          <CardDescription>{t("lowStockDescription")}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {isStockLoading ? (
+            <div className="py-6 text-center text-sm text-muted-foreground">
+              {tc("loadingProducts")}
+            </div>
+          ) : lowStockItems.length === 0 ? (
+            <div className="py-6 text-center text-sm text-muted-foreground">
+              {t("lowStockEmpty")}
+            </div>
+          ) : (
+            <TableScrollContainer>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>{tc("name")}</TableHead>
+                    <TableHead>{t("lowStockStatus")}</TableHead>
+                    <TableHead>{t("lowStockQuantity")}</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {lowStockItems.slice(0, 5).map((product: any) => {
+                    const status = getStockStatus(product.quantity);
+                    return (
+                      <TableRow key={product.id}>
+                        <TableCell className="max-w-[160px] truncate sm:max-w-none">
+                          {product.name}
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant={stockBadgeVariant(status)}>
+                            {status === "out"
+                              ? t("lowStockOut")
+                              : t("lowStockLow")}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>{product.quantity}</TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </TableScrollContainer>
+          )}
+        </CardContent>
+      </Card>
 
       <div className="grid h-full ">
         <Card>

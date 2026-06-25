@@ -56,9 +56,14 @@ export class ProductController {
   }
 
   async createProduct(req: Request, res: Response): Promise<void> {
-    const productData = req.body;
+    const { stockQuantity, ...productData } = req.body;
     try {
-      const newProduct = await productService.createProduct(productData);
+      const newProduct = await productService.createProduct(
+        productData,
+        stockQuantity !== undefined && stockQuantity !== null
+          ? Number(stockQuantity)
+          : 0
+      );
       res.status(201).json(newProduct);
     } catch (error) {
       console.error("Error creating product:", error);
@@ -68,11 +73,16 @@ export class ProductController {
 
   async updateProduct(req: Request, res: Response): Promise<void> {
     const productId: number = parseInt(req.params.id);
-    const updateData = req.body;
+    const { stockQuantity, ...updateData } = req.body;
     try {
       const updatedProduct = await productService.updateProduct(
         productId,
-        updateData
+        updateData,
+        stockQuantity !== undefined &&
+          stockQuantity !== null &&
+          stockQuantity !== ""
+          ? Number(stockQuantity)
+          : undefined
       );
       if (updatedProduct) {
         res.status(200).json(updatedProduct);

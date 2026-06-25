@@ -401,7 +401,10 @@
       "viewAll": "Alle anzeigen"
     },
     "addedToCart": "Zum Warenkorb hinzugefügt",
-    "addedToCartDescription": "{name} wurde in Ihren Warenkorb gelegt"
+    "addedToCartDescription": "{name} wurde in Ihren Warenkorb gelegt",
+    "inStock": "{count} auf Lager",
+    "lowStock": "Nur noch {count} auf Lager",
+    "outOfStock": "Nicht auf Lager"
   },
   "Admin": {
     "common": {
@@ -432,13 +435,15 @@
       "errorLoadingUsers": "Fehler beim Laden der Benutzer:",
       "deleteConfirmCannotUndo": "Diese Aktion kann nicht rückgängig gemacht werden.",
       "deleteConfirmGeneric": "Dies kann nicht rückgängig gemacht werden.",
-      "markStatus": "{status} markieren"
+      "markStatus": "{status} markieren",
+      "validationFailed": "Validierung fehlgeschlagen"
     },
     "layout": {
       "title": "Admin",
       "backToStore": "Zurück zum Shop",
       "dashboard": "Dashboard",
       "products": "Produkte",
+      "inventory": "Inventar",
       "categories": "Kategorien",
       "users": "Benutzer",
       "orders": "Bestellungen",
@@ -466,7 +471,14 @@
       "tableId": "ID",
       "tableCustomer": "Kunde",
       "tableStatus": "Status",
-      "tableTotal": "Gesamt"
+      "tableTotal": "Gesamt",
+      "lowStockTitle": "Warnungen bei niedrigem Bestand",
+      "lowStockDescription": "Produkte mit niedrigem oder fehlendem Bestand.",
+      "lowStockEmpty": "Alle Produkte sind ausreichend bevorratet.",
+      "lowStockStatus": "Status",
+      "lowStockQuantity": "Menge",
+      "lowStockOut": "Nicht auf Lager",
+      "lowStockLow": "Niedriger Bestand"
     },
     "categories": {
       "title": "Kategorien",
@@ -503,6 +515,7 @@
       "editDescription": "Änderungen vornehmen und speichern.",
       "newDescription": "Produktdetails ausfüllen, um es dem Inventar hinzuzufügen.",
       "price": "Preis",
+      "stock": "Lagerbestand",
       "category": "Kategorie",
       "selectCategory": "Kategorie auswählen",
       "saveChanges": "Änderungen speichern",
@@ -511,6 +524,12 @@
       "catalogDescription": "Neueste Produkte, die derzeit im Inventar verfügbar sind.",
       "tableCategory": "Kategorie",
       "tablePrice": "Preis",
+      "tableStock": "Bestand",
+      "stockOut": "Nicht auf Lager",
+      "stockCount": "{count} auf Lager",
+      "validationCategory": "Bitte wählen Sie eine Kategorie.",
+      "validationPrice": "Bitte geben Sie einen gültigen Preis ein (0 oder mehr).",
+      "validationStock": "Bitte geben Sie eine gültige Menge ein (0 oder mehr).",
       "uncategorized": "Ohne Kategorie",
       "editMenu": "Produkt bearbeiten",
       "deleteMenu": "Produkt löschen",
@@ -524,6 +543,31 @@
       "toastUpdatedDescription": "Produkt {id} wurde gespeichert.",
       "toastDeleted": "Produkt gelöscht",
       "toastDeletedDescription": "Produkt #{id} wurde entfernt."
+    },
+    "inventory": {
+      "title": "Inventar",
+      "subtitle": "Lagerbestände verfolgen und Mengen anpassen.",
+      "inStockTitle": "Auf Lager",
+      "inStockDescription": "Produkte mit ausreichendem Bestand",
+      "lowStockTitle": "Niedriger Bestand",
+      "lowStockDescription": "Bei oder unter {threshold} Einheiten",
+      "outOfStockTitle": "Nicht auf Lager",
+      "outOfStockDescription": "Produkte ohne Bestand",
+      "adjustTitle": "Bestand anpassen",
+      "adjustDescription": "Aktualisieren Sie den Lagerbestand für {name}.",
+      "stockLabel": "Lagerbestand",
+      "saveStock": "Bestand speichern",
+      "listTitle": "Lagerbestände",
+      "listDescription": "Aktueller Bestand für jedes Produkt im Katalog.",
+      "tableStatus": "Status",
+      "tableQuantity": "Menge",
+      "statusIn": "Auf Lager",
+      "statusLow": "Niedriger Bestand",
+      "statusOut": "Nicht auf Lager",
+      "adjustButton": "Anpassen",
+      "footerCount": "{count} Produkte erfasst.",
+      "toastUpdated": "Bestand aktualisiert",
+      "toastUpdatedDescription": "Der Lagerbestand wurde gespeichert."
     },
     "discounts": {
       "title": "Rabattcodes",
@@ -624,6 +668,7 @@
       "authLogout": "Abmeldung läuft",
       "admin": "Admin-Dashboard",
       "adminProducts": "Produkte verwalten",
+      "adminInventory": "Inventar verwalten",
       "adminCategories": "Kategorien verwalten",
       "adminUsers": "Benutzer verwalten",
       "adminOrders": "Bestellungen verwalten",
@@ -644,6 +689,7 @@
       "authLogout": "Sie werden von Ihrem ShoppyDev-Konto abgemeldet.",
       "admin": "Verwalten Sie Produkte, Bestellungen, Benutzer und Shop-Einstellungen.",
       "adminProducts": "Produkte im ShoppyDev-Katalog erstellen, bearbeiten und entfernen.",
+      "adminInventory": "Lagerbestände verfolgen und Produktmengen anpassen.",
       "adminCategories": "Produkte mit Kategorien organisieren.",
       "adminUsers": "Kunden- und Admin-Konten anzeigen und verwalten.",
       "adminOrders": "Kundenbestellungen verfolgen und aktualisieren.",

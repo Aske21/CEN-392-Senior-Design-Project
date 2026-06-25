@@ -11,6 +11,8 @@ import SlideSidebar, {
 import UserMenu from "@/components/user-menu";
 import { FiArrowLeft, FiMenu } from "react-icons/fi";
 import { useTranslations } from "next-intl";
+import { ModeToggle } from "@/components/theme-toggle";
+import { LanguagePicker } from "@/components/language-switcher";
 
 export default function AdminLayoutClient({
   children,
@@ -29,6 +31,7 @@ export default function AdminLayoutClient({
   const navItems = [
     { label: t("dashboard"), href: `/${locale}/admin` },
     { label: t("products"), href: `/${locale}/admin/products` },
+    { label: t("inventory"), href: `/${locale}/admin/inventory` },
     { label: t("categories"), href: `/${locale}/admin/categories` },
     { label: t("users"), href: `/${locale}/admin/users` },
     { label: t("orders"), href: `/${locale}/admin/orders` },
@@ -93,27 +96,32 @@ export default function AdminLayoutClient({
         </SlideSidebar>
 
         <main className="flex min-w-0 flex-1 flex-col">
-          <div className="sticky top-0 z-30 flex items-center justify-between gap-3 border-b border-border bg-background p-4 lg:hidden">
+          <div className="sticky top-0 z-30 flex items-center justify-between gap-3 border-b border-border bg-background p-4">
             <Link
               href={storeHref}
-              className="flex min-w-0 items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              className="flex min-w-0 items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground lg:hidden"
             >
               <FiArrowLeft className="h-4 w-4 shrink-0" />
               <span className="truncate">{t("backToStore")}</span>
             </Link>
-            <h1 className="shrink-0 text-lg font-semibold text-foreground">
+            <h1 className="shrink-0 text-lg font-semibold text-foreground lg:hidden">
               {t("title")}
             </h1>
-            <Button
-              ref={menuButtonRef}
-              variant="ghost"
-              size="icon"
-              onClick={() => setSidebarOpen(true)}
-              className="shrink-0"
-              aria-expanded={sidebarOpen}
-            >
-              <FiMenu className="h-5 w-5" />
-            </Button>
+            <div className="hidden flex-1 lg:block" />
+            <div className="flex items-center gap-1">
+              <LanguagePicker />
+              <ModeToggle />
+              <Button
+                ref={menuButtonRef}
+                variant="ghost"
+                size="icon"
+                onClick={() => setSidebarOpen(true)}
+                className="shrink-0 lg:hidden"
+                aria-expanded={sidebarOpen}
+              >
+                <FiMenu className="h-5 w-5" />
+              </Button>
+            </div>
           </div>
           <div className="min-w-0 flex-1 overflow-auto p-4 md:p-6 lg:p-8">
             {children}
